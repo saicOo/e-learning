@@ -37,6 +37,7 @@ class StudentController extends Controller
                 'phone' => 'required|string|max:255|unique:users,phone',
                 'password' => 'required|string|max:255|confirmed',
                 'attendance_type' => 'required|in:online,offnline,mix',
+                'level_id' => 'required|exists:level,id',
             ]);
 
             if($validate->fails()){
@@ -52,6 +53,7 @@ class StudentController extends Controller
                 'email' => $request->email,
                 'attendance_type' => $request->attendance_type,
                 'phone' => $request->phone,
+                'level_id' => $request->level_id,
                 'password' => Hash::make($request->password)
             ]);
 
@@ -78,6 +80,7 @@ class StudentController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:students,email,'.$student->id,
                 'phone' => 'required|string|max:255|unique:students,phone,'.$student->id,
+                'level_id' => 'required|exists:level,id',
                 'active' => 'required|in:1,0',
             ]);
 
@@ -93,6 +96,7 @@ class StudentController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
+                'level_id' => $request->level_id,
                 'attendance_type' => $request->attendance_type,
                 'active' => $request->active,
             ]);
