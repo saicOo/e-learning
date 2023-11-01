@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class SubscribeController extends Controller
 {
-    
-    public function index()
-    {
-        return Student::with('courses')->get();
-    }
 
     public function subscrip(Request $request)
     {
@@ -46,23 +41,25 @@ class SubscribeController extends Controller
         $completion_date = $current->addMonth(1);
 
         if($student->courses()->where('course_id', $courseId)->first()){
-            $student->courses()->sync($course,
+            $student->courses()->updateExistingPivot($courseId,
             [
                 'enrollment_date' => now(),
                 'completion_date' => $completion_date,
             ]);
+            $message = 'Student Is Updated Subscription Successfully';
         }else{
-            $student->courses()->attach($course,
+            $student->courses()->attach($courseId,
             [
                 'enrollment_date' => now(),
                 'completion_date' => $completion_date,
             ]);
+            $message = 'Student Is Subscription Successfully';
         }
 
 
         return response()->json([
             'status' => true,
-            'message' => 'Student Is Subscriptions Successfully',
+            'message' => $message,
         ], 200);
     }
 }
