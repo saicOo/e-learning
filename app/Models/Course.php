@@ -24,4 +24,9 @@ class Course extends Model
     public function listens(){
         return $this->hasMany(Listen::class);
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class)->withPivot(['enrollment_date','completion_date']);
+    }
 }

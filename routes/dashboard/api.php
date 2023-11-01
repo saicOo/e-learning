@@ -21,8 +21,14 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     Route::apiResource('students', 'StudentController')->except(['edit','create']);
     // routes courses
     Route::apiResource('courses', 'CourseController')->except(['edit','create']);
+    Route::put('/courses/{course}/approve','CourseController@approve');
     // routes listens
     Route::apiResource('listens', 'ListenController')->except(['edit','create']);
+    Route::put('/listens/{listen}/approve','ListenController@approve');
+    // routes subscriptions
+    Route::get('/subscriptions','SubscribeController@index');
+    Route::post('/subscriptions','SubscribeController@subscrip');
+    // Route::delete('/subscriptions/{student}/','SubscribeController@destroy');
     // routes levels
     Route::get('/levels','LevelController@index');
 

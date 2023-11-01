@@ -20,7 +20,9 @@ class UserController extends Controller
         $users = User::when($request->role,function ($query) use ($request){ // if role
             return $query->where('role',$request->role);
         })->when($request->search,function ($query) use ($request){ // if search
-            return $query->where('name','Like','%'.$request->search.'%')->OrWhere('email','Like','%'.$request->search.'%');
+            return $query->where('name','Like','%'.$request->search.'%')
+            ->OrWhere('email','Like','%'.$request->search.'%')
+            ->OrWhere('phone','Like','%'.$request->search.'%');
         })->get();
 
         return response()->json([

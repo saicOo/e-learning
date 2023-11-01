@@ -22,7 +22,7 @@ class CourseController extends Controller
             'level_id'=> 'nullable|exists:level,id'
         ]);
 
-        $courses = Course::when($request->user_id,function ($query) use ($request){ // if user_id
+        $courses = Course::with(['user','level','students'])->when($request->user_id,function ($query) use ($request){ // if user_id
             return $query->where('user_id',$request->user_id);
         })->when($request->level_id,function ($query) use ($request){ // if level_id
             return $query->where('level_id',$request->level_id);
@@ -46,6 +46,7 @@ class CourseController extends Controller
          $validate = Validator::make($request->all(),
          [
              'name' => 'required|string|max:255',
+            'price' => 'required',
              'description' => 'required|string|max:255',
              'image' => 'required|string|max:255',
              'semester' => 'required|in:first semester,second semester,full semester',
@@ -65,6 +66,7 @@ class CourseController extends Controller
          $course = Course::create([
             'name'=>$request->name,
             'description'=>$request->description,
+            'price'=>$request->price,
             'semester'=>$request->semester,
             'image'=>$request->image,
             'user_id'=>$request->user_id,
@@ -93,12 +95,13 @@ class CourseController extends Controller
         $validate = Validator::make($request->all(),
         [
             'name' => 'required|string|max:255',
+            'price' => 'required',
             'description' => 'required|string|max:255',
             'image' => 'required|string|max:255',
             'semester' => 'required|in:first semester,second semester,full semester',
             'user_id' => ['required',Rule::exists('users','id')->where('role','teacher')],
             'level_id'=> 'required|exists:levels,id',
-            'active' => 'required|in:1,0',
+            // 'active' => 'required|in:1,0',
         ]);
 
 
@@ -113,11 +116,12 @@ class CourseController extends Controller
         $course->update([
             'name'=>$request->name,
             'description'=>$request->description,
+            'price'=>$request->price,
             'semester'=>$request->semester,
             'image'=>$request->image,
             'user_id'=>$request->user_id,
             'level_id'=>$request->level_id,
-            'active'=>$request->active,
+            'active'=> 0,
         ]);
 
         return response()->json([
@@ -133,5 +137,17 @@ class CourseController extends Controller
                 'status' => true,
                 'message' => 'Deleted Data Successfully',
             ], 200);
+    }
+
+    public function approve(Course $course)
+    {
+        $course->update([
+            'active'=> 1,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Course Approved Successfully',
+        ], 200);
     }
 }

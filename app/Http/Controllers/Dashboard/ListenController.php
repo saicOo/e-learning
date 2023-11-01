@@ -78,9 +78,8 @@ class ListenController extends Controller
             'description' => 'required|string|max:255',
             'video' => 'required|string|max:255',
             'course_id'=> 'required|exists:courses,id',
-            'active' => 'required|in:1,0',
+            // 'active' => 'required|in:1,0',
         ]);
-
 
         if($validate->fails()){
             return response()->json([
@@ -95,7 +94,7 @@ class ListenController extends Controller
             'description'=>$request->description,
             'video'=>$request->video,
             'course_id'=>$request->course_id,
-            'active'=>$request->active,
+            'active'=> 0,
         ]);
 
         return response()->json([
@@ -111,5 +110,17 @@ class ListenController extends Controller
                 'status' => true,
                 'message' => 'Deleted Data Successfully',
             ], 200);
+    }
+
+    public function approve(Listen $listen)
+    {
+        $listen->update([
+            'active'=> 1,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Listen Approved Successfully',
+        ], 200);
     }
 }

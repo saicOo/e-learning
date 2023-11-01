@@ -17,11 +17,7 @@ class Student extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -41,4 +37,14 @@ class Student extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function level()
+    {
+        return $this->belongsTo(Level::class, 'user_id', 'id');
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class)->withPivot(['enrollment_date','completion_date']);
+    }
 }

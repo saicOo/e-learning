@@ -13,7 +13,13 @@ class StudentController extends Controller
 
     public function index()
     {
-            $students = Student::all();
+            $students = Student::with('courses')->when($request->level_id,function ($query) use ($request){ // if level_id
+                return $query->where('level_id',$request->level_id);
+            })->when($request->search,function ($query) use ($request){ // if search
+                return $query->where('name','Like','%'.$request->search.'%')
+                ->OrWhere('email','Like','%'.$request->search.'%')
+                ->OrWhere('phone','Like','%'.$request->search.'%');
+            })->get();
             return response()->json([
                 'status' => true,
                 'data' => ['studenets' => $students],
@@ -29,7 +35,8 @@ class StudentController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:students,email',
                 'phone' => 'required|string|max:255|unique:users,phone',
-                'password' => 'required|string|max:255|confirmed'
+                'password' => 'required|string|max:255|confirmed',
+                'attendance_type' => 'required|in:online,offnline,mix',
             ]);
 
             if($validate->fails()){
@@ -43,6 +50,8 @@ class StudentController extends Controller
             $student = Student::create([
                 'name' => $request->name,
                 'email' => $request->email,
+                'attendance_type' => $request->attendance_type,
+                'phone' => $request->phone,
                 'password' => Hash::make($request->password)
             ]);
 
@@ -84,6 +93,7 @@ class StudentController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
+                'attendance_type' => $request->attendance_type,
                 'active' => $request->active,
             ]);
 
