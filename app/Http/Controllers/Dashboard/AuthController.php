@@ -8,38 +8,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+
 class AuthController extends Controller
 {
 
-    // public function register(Request $request){
-    //         //Validated
-    //         $validate = Validator::make($request->all(),
-    //         [
-    //             'name' => 'required|string|max:255',
-    //             'email' => 'required|string|max:255|email|unique:users,email',
-    //             'password' => 'required|string|max:255|confirmed',
-    //             'phone' => 'required|string|max:255',
-    //             'role' => 'required|in:manger,teacher,assistant'
-    //         ]);
-
-    //         if($validate->fails()){
-    //             return response()->json([
-    //                 'status' => false,
-    //                 'message' => 'validation error',
-    //                 'errors' => $validate->errors()
-    //             ], 401);
-    //         }
-    //         $request_data = $request->except(['password','password_confirmation']);
-    //         $request_data['password'] = Hash::make($request->password);
-    //         $user = User::create($request_data);
-
-    //         return response()->json([
-    //             'status' => true,
-    //             'message' => 'User Created Successfully',
-    //         ], 200);
-
-    // }
-
+    /**
+     * @OA\Post(
+     *     path="/api/login",
+     *      tags={"Auth User"},
+     *     summary="Login User in Dashboard",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="email", type="string", example="manger@app.com"),
+     *             @OA\Property(property="password", type="string", example="1234"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     * )
+     */
     public function login(Request $request){
 
            try {
@@ -79,7 +66,15 @@ class AuthController extends Controller
         }
     }
 
-
+    /**
+     * @OA\Post(
+     *     path="/api/logout",
+     *     tags={"Auth User"},
+     *     summary="Auth Logout",
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function logout(Request $request)
     {
         try {

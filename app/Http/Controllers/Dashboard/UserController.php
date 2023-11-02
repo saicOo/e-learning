@@ -11,9 +11,35 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/api/users",
+     *      tags={"Users"},
+     *     summary="get all users",
+     *   @OA\Parameter(
+     *         name="role",
+     *         in="query",
+     *         description="filter users with role",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="manger , teacher , assistant",
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="filter search name , email or phone",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="keyword",
+     *             type="string",
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
      */
     public function index(Request $request)
     {
@@ -33,6 +59,26 @@ class UserController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/users",
+     *      tags={"Users"},
+     *     summary="Add New User",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="string"),
+     *             @OA\Property(property="email", type="string", example="string"),
+     *             @OA\Property(property="phone", type="string", example="string"),
+     *             @OA\Property(property="password", type="string", example="string"),
+     *             @OA\Property(property="role", type="enum", example="manger , teacher , assistant"),
+     *             @OA\Property(property="user_id", type="integer", example="Sets the teacher assistant's ID"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function store(Request $request)
     {
         //Validated
@@ -77,6 +123,25 @@ class UserController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/users/{user_id}",
+     *      tags={"Users"},
+     *     summary="show user",
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function show(User $user)
     {
         return response()->json([
@@ -87,6 +152,24 @@ class UserController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/users/{user_id}",
+     *      tags={"Users"},
+     *     summary="update user",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="string"),
+     *             @OA\Property(property="email", type="string", example="string"),
+     *             @OA\Property(property="phone", type="string", example="string"),
+     *             @OA\Property(property="active", type="boolen", example="integer"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function update(Request $request, User $user)
     {
         //Validated
@@ -120,6 +203,26 @@ class UserController extends Controller
 
     }
 
+
+    /**
+     * @OA\Delete(
+     *     path="/api/users/{user_id}",
+     *      tags={"Users"},
+     *     summary="Delete User",
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function destroy(User $user)
     {
         $user->delete();

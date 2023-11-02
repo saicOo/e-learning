@@ -8,12 +8,44 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+
 class StudentController extends Controller
 {
 
+    /**
+     * @OA\Get(
+     *     path="/api/students",
+     *      tags={"Students"},
+     *     summary="get all students",
+     *   @OA\Parameter(
+     *         name="level_id",
+     *         in="query",
+     *         description="filter students with level",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="null",
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="filter search name , email or phone",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="keyword",
+     *             type="string",
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function index(Request $request)
     {
-            $students = Student::with('courses')->when($request->level_id,function ($query) use ($request){ // if level_id
+            $students = Student::with(['courses','level'])->when($request->level_id,function ($query) use ($request){ // if level_id
                 return $query->where('level_id',$request->level_id);
             })->when($request->search,function ($query) use ($request){ // if search
                 return $query->where('name','Like','%'.$request->search.'%')
@@ -27,6 +59,26 @@ class StudentController extends Controller
     }
 
 
+    /**
+     * @OA\Post(
+     *     path="/api/students",
+     *      tags={"Students"},
+     *     summary="Add New Student",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="string"),
+     *             @OA\Property(property="email", type="string", example="string"),
+     *             @OA\Property(property="phone", type="string", example="string"),
+     *             @OA\Property(property="password", type="string", example="string"),
+     *             @OA\Property(property="attendance_type", type="enum", example="online , offnline , mix"),
+     *             @OA\Property(property="level_id", type="integer", example="integer"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function store(Request $request)
     {
             //Validated
@@ -64,6 +116,25 @@ class StudentController extends Controller
 
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/students/{student_id}",
+     *      tags={"Students"},
+     *     summary="show student",
+     *     @OA\Parameter(
+     *         name="student_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function show(Student $student)
     {
             return response()->json([
@@ -72,6 +143,27 @@ class StudentController extends Controller
             ], 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/students/{student_id}",
+     *      tags={"Students"},
+     *     summary="update student",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="string"),
+     *             @OA\Property(property="email", type="string", example="string"),
+     *             @OA\Property(property="phone", type="string", example="string"),
+     *             @OA\Property(property="attendance_type", type="enum", example="online , offnline , mix"),
+     *             @OA\Property(property="level_id", type="integer", example="integer"),
+     *             @OA\Property(property="active", type="boolen", example="integer"),
+     *             @OA\Property(property="student_id", type="boolen", example="id"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function update(Request $request, Student $student)
     {
             //Validated
@@ -81,6 +173,7 @@ class StudentController extends Controller
                 'email' => 'required|string|email|max:255|unique:students,email,'.$student->id,
                 'phone' => 'required|string|max:255|unique:students,phone,'.$student->id,
                 'level_id' => 'required|exists:level,id',
+                'attendance_type' => 'required|in:online,offnline,mix',
                 'active' => 'required|in:1,0',
             ]);
 
@@ -113,6 +206,25 @@ class StudentController extends Controller
 
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/students/{student_id}",
+     *      tags={"Students"},
+     *     summary="Delete Student",
+     *     @OA\Parameter(
+     *         name="student_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function destroy(Student $student)
     {
             $student->delete();

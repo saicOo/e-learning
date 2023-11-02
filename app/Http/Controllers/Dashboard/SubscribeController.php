@@ -13,6 +13,22 @@ use Illuminate\Support\Facades\Validator;
 class SubscribeController extends Controller
 {
 
+    /**
+     * @OA\Post(
+     *     path="/api/subscriptions",
+     *      tags={"Subscriptions"},
+     *     summary="Automatically subscribe or update students' subscription to courses for a month",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="student_id", type="integer", example="1"),
+     *             @OA\Property(property="course_id", type="integer", example="1"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function subscrip(Request $request)
     {
         //Validated

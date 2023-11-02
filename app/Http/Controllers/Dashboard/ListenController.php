@@ -9,7 +9,37 @@ use Illuminate\Support\Facades\Validator;
 
 class ListenController extends Controller
 {
-
+/**
+     * @OA\Get(
+     *     path="/api/listens",
+     *      tags={"Listens"},
+     *     summary="get all listens",
+     *   @OA\Parameter(
+     *         name="course_id",
+     *         in="query",
+     *         description="filter listens with course",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="null",
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="filter search name or description",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="keyword",
+     *             type="string",
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function index(Request $request)
     {
         $listens = Listen::when($request->course_id,function ($query) use ($request){ // if course_id
@@ -26,6 +56,24 @@ class ListenController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/listenes",
+     *      tags={"Listenes"},
+     *     summary="Add New Listenes",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="string"),
+     *             @OA\Property(property="description", type="string", example="string"),
+     *             @OA\Property(property="video", type="string", example="path or url"),
+     *             @OA\Property(property="course_id", type="integer", example="integer"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function store(Request $request)
     {
         //Validated
@@ -59,6 +107,25 @@ class ListenController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/listenes/{listene_id}",
+     *      tags={"Listenes"},
+     *     summary="show listene",
+     *     @OA\Parameter(
+     *         name="listene_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function show(Listen $listen)
     {
         return response()->json([
@@ -69,6 +136,24 @@ class ListenController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/listenes/{listene_id}",
+     *      tags={"Listenes"},
+     *     summary="Updated Listene",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="string"),
+     *             @OA\Property(property="description", type="string", example="string"),
+     *             @OA\Property(property="video", type="string", example="path or url"),
+     *             @OA\Property(property="course_id", type="integer", example="integer"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function update(Request $request, Listen $listen)
     {
         //Validated
@@ -103,6 +188,25 @@ class ListenController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/listenes/{listene_id}",
+     *      tags={"Listenes"},
+     *     summary="Delete Listene",
+     *     @OA\Parameter(
+     *         name="listene_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function destroy(Listen $listen)
     {
         $listen->delete();
@@ -112,6 +216,25 @@ class ListenController extends Controller
             ], 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/listenes/{listene_id}/approve",
+     *      tags={"Listenes"},
+     *     summary="Approve Listene",
+     *     @OA\Parameter(
+     *         name="listene_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function approve(Listen $listen)
     {
         $listen->update([

@@ -10,7 +10,60 @@ use Illuminate\Support\Facades\Validator;
 
 class CourseController extends Controller
 {
-
+    /**
+     * @OA\Get(
+     *     path="/api/courses",
+     *      tags={"Courses"},
+     *     summary="get all courses",
+     *     operationId="index",
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="query",
+     *         description="filter courses with user",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="null",
+     *             type="integer",
+     *         ),
+     *     ),
+     *   @OA\Parameter(
+     *         name="level_id",
+     *         in="query",
+     *         description="filter courses with level",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="null",
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="semester",
+     *         in="query",
+     *         description="filter courses with semester (first semester , second semester , full semester)",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="null",
+     *             type="string",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="filter search name or description courses",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="keyword",
+     *             type="string",
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function index(Request $request)
     {
         //Validated
@@ -40,6 +93,26 @@ class CourseController extends Controller
             ], 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/courses",
+     *      tags={"Courses"},
+     *     summary="Add New Courses",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="string"),
+     *             @OA\Property(property="price", type="double", example="double"),
+     *             @OA\Property(property="description", type="string", example="string"),
+     *             @OA\Property(property="semester", type="enum", example="string"),
+     *             @OA\Property(property="user_id", type="integer", example="integer"),
+     *             @OA\Property(property="level_id", type="integer", example="integer"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function store(Request $request)
     {
          //Validated
@@ -79,6 +152,25 @@ class CourseController extends Controller
          ], 200);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/courses/{course_id}",
+     *      tags={"Courses"},
+     *     summary="show course",
+     *     @OA\Parameter(
+     *         name="course_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function show(Course $course)
     {
         return response()->json([
@@ -89,6 +181,26 @@ class CourseController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/courses/{course_id}",
+     *      tags={"Courses"},
+     *     summary="Updated Course",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="string"),
+     *             @OA\Property(property="price", type="double", example="double"),
+     *             @OA\Property(property="description", type="string", example="string"),
+     *             @OA\Property(property="semester", type="enum", example="string"),
+     *             @OA\Property(property="user_id", type="integer", example="integer"),
+     *             @OA\Property(property="level_id", type="integer", example="integer"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function update(Request $request, Course $course)
     {
         //Validated
@@ -130,6 +242,25 @@ class CourseController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/courses/{course_id}",
+     *      tags={"Courses"},
+     *     summary="Delete Course",
+     *     @OA\Parameter(
+     *         name="course_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function destroy(Course $course)
     {
         $course->delete();
@@ -139,6 +270,25 @@ class CourseController extends Controller
             ], 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/courses/{course_id}/approve",
+     *      tags={"Courses"},
+     *     summary="Approve Course",
+     *     @OA\Parameter(
+     *         name="course_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="1",
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *    )
+     */
     public function approve(Course $course)
     {
         $course->update([
