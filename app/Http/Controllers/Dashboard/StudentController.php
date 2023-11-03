@@ -45,7 +45,8 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-            $students = Student::with(['courses','level'])->when($request->level_id,function ($query) use ($request){ // if level_id
+            $students = Student::with(['subscriptions','level'])
+            ->when($request->level_id,function ($query) use ($request){ // if level_id
                 return $query->where('level_id',$request->level_id);
             })->when($request->search,function ($query) use ($request){ // if search
                 return $query->where('name','Like','%'.$request->search.'%')

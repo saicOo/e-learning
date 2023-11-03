@@ -3,13 +3,6 @@
     "info": {
         "title": "E-Learning Rest API DOCUMENTATION",
         "description": "L5 Swagger OpenApi description",
-        "contact": {
-            "email": "sayed.ahmed.elbadry@gmail.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
-        },
         "version": "1.0.0"
     },
     "paths": {
@@ -744,12 +737,51 @@
             }
         },
         "/api/subscriptions": {
+            "get": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "get all subscriptions",
+                "operationId": "59e09c4a98ef46fb1e6d6efc5c941e69",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "query",
+                        "description": "filter subscriptions with student",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "null"
+                        }
+                    },
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "description": "filter subscriptions with course",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "null"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Subscriptions"
                 ],
-                "summary": "Automatically subscribe or update students' subscription to courses for a month",
-                "operationId": "90898e0006b2363f78fc1f2ddabd99c9",
+                "summary": "Automatically subscribe students' to courses for a month",
+                "operationId": "6ed1e4df073ca32e9d798cd09fc6cd67",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -769,6 +801,64 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/subscriptions/{subscription_id}": {
+            "get": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "show subscription",
+                "operationId": "5bc2f18da8d6d6f1291409fa8181ef5c",
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/subscription/{subscription_id}": {
+            "delete": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Delete Subscription",
+                "operationId": "2fa356ef30a1ff909e955eb54512a745",
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"

@@ -40,11 +40,11 @@ class Student extends Authenticatable
 
     public function level()
     {
-        return $this->belongsTo(Level::class, 'user_id', 'id');
+        return $this->belongsTo(Level::class);
     }
 
-    public function courses()
+    public function subscriptions()
     {
-        return $this->belongsToMany(Course::class)->withPivot(['enrollment_date','completion_date']);
+        return $this->hasMany(Subscription::class);
     }
 }

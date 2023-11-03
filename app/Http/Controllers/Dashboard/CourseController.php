@@ -66,16 +66,17 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        //Validated
-        $validate = Validator::make($request->all(),
-        [
-            'name' => 'nullable|string|max:255',
-            'semester' => 'nullable|in:first semester,second semester,full semester',
-            'user_id'=> ['nullable',Rule::exists('users','id')->where('role','teacher')],
-            'level_id'=> 'nullable|exists:level,id'
-        ]);
+        // //Validated
+        // $validate = Validator::make($request->all(),
+        // [
+        //     'search' => 'nullable|string|max:255',
+        //     'semester' => 'nullable|in:first semester,second semester,full semester',
+        //     'user_id'=> ['nullable',Rule::exists('users','id')->where('role','teacher')],
+        //     'level_id'=> 'nullable|exists:level,id'
+        // ]);
 
-        $courses = Course::with(['user','level','students'])->when($request->user_id,function ($query) use ($request){ // if user_id
+        $courses = Course::with(['user','level','subscriptions'])
+        ->when($request->user_id,function ($query) use ($request){ // if user_id
             return $query->where('user_id',$request->user_id);
         })->when($request->level_id,function ($query) use ($request){ // if level_id
             return $query->where('level_id',$request->level_id);
