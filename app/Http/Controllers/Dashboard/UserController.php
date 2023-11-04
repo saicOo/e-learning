@@ -12,8 +12,8 @@ class UserController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/users",
-     *      tags={"Users"},
+     *     path="/api/dashboard/users",
+     *      tags={"Dashboard Api Users"},
      *     summary="get all users",
      *   @OA\Parameter(
      *         name="role",
@@ -24,6 +24,17 @@ class UserController extends Controller
      *         @OA\Schema(
      *             default="manger , teacher , assistant",
      *             type="integer",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="active",
+     *         in="query",
+     *         description="filter users with active (active = 1 , not active = 0)",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="0 , 1",
+     *             type="string",
      *         ),
      *     ),
      * @OA\Parameter(
@@ -45,6 +56,8 @@ class UserController extends Controller
     {
         $users = User::when($request->role,function ($query) use ($request){ // if role
             return $query->where('role',$request->role);
+        })->when($request->active,function ($query) use ($request){ // if active
+            return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')
             ->OrWhere('email','Like','%'.$request->search.'%')
@@ -61,8 +74,8 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/users",
-     *      tags={"Users"},
+     *     path="/api/dashboard/users",
+     *      tags={"Dashboard Api Users"},
      *     summary="Add New User",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -125,8 +138,8 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/users/{user_id}",
-     *      tags={"Users"},
+     *     path="/api/dashboard/users/{user_id}",
+     *      tags={"Dashboard Api Users"},
      *     summary="show user",
      *     @OA\Parameter(
      *         name="user_id",
@@ -154,8 +167,8 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/users/{user_id}",
-     *      tags={"Users"},
+     *     path="/api/dashboard/users/{user_id}",
+     *      tags={"Dashboard Api Users"},
      *     summary="update user",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -206,8 +219,8 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/users/{user_id}",
-     *      tags={"Users"},
+     *     path="/api/dashboard/users/{user_id}",
+     *      tags={"Dashboard Api Users"},
      *     summary="Delete User",
      *     @OA\Parameter(
      *         name="user_id",

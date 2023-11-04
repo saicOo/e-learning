@@ -9,10 +9,10 @@
         "/api/login": {
             "post": {
                 "tags": [
-                    "Auth User"
+                    "Dashboard Api Auth Student"
                 ],
-                "summary": "Login User in Dashboard",
-                "operationId": "ae57828047478c9006ddf44336313723",
+                "summary": "Login Student in Dashboard",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -42,10 +42,10 @@
         "/api/logout": {
             "post": {
                 "tags": [
-                    "Auth User"
+                    "Dashboard Api Auth User"
                 ],
                 "summary": "Auth Logout",
-                "operationId": "d66ecc0b487d2fe47fedc84cca5df9cc",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -56,10 +56,60 @@
                 }
             }
         },
-        "/api/courses": {
+        "/api/dashboard/login": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Auth User"
+                ],
+                "summary": "Login User in Dashboard",
+                "operationId": "0e1e7b42e02f29692cac70e118354571",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "manger@app.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/logout": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Auth User"
+                ],
+                "summary": "Auth Logout",
+                "operationId": "d6f680d7d577dd7b278a44570b76d707",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses": {
             "get": {
                 "tags": [
-                    "Courses"
+                    "Dashboard Api Courses"
                 ],
                 "summary": "get all courses",
                 "operationId": "index",
@@ -94,7 +144,18 @@
                         "explode": true,
                         "schema": {
                             "type": "string",
-                            "default": "null"
+                            "default": "first semester , second semester , full semester"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "filter courses with active (active = 1 , not active = 0)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "0 , 1"
                         }
                     },
                     {
@@ -120,10 +181,10 @@
             },
             "post": {
                 "tags": [
-                    "Courses"
+                    "Dashboard Api Courses"
                 ],
                 "summary": "Add New Courses",
-                "operationId": "e26a1105e727a2d36a47d274d542a97a",
+                "operationId": "6ab3b76891e2537266d9d2e900e74b65",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -170,13 +231,13 @@
                 }
             }
         },
-        "/api/courses/{course_id}": {
+        "/api/dashboard/courses/{course_id}": {
             "get": {
                 "tags": [
-                    "Courses"
+                    "Dashboard Api Courses"
                 ],
                 "summary": "show course",
-                "operationId": "7e53a1f683f93995a29926e0dce581e3",
+                "operationId": "a2891fdfb2611c6eadab3683615dca21",
                 "parameters": [
                     {
                         "name": "course_id",
@@ -200,10 +261,10 @@
             },
             "put": {
                 "tags": [
-                    "Courses"
+                    "Dashboard Api Courses"
                 ],
                 "summary": "Updated Course",
-                "operationId": "ae5df289d770a66a086e102d7e0dfa84",
+                "operationId": "1823ce2d20b273b6a015845a9068d3e3",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -251,10 +312,10 @@
             },
             "delete": {
                 "tags": [
-                    "Courses"
+                    "Dashboard Api Courses"
                 ],
                 "summary": "Delete Course",
-                "operationId": "63baa8143c8060da523fe208a51a7c21",
+                "operationId": "741f48e3ac415c5a8b85e1649aa6306c",
                 "parameters": [
                     {
                         "name": "course_id",
@@ -277,13 +338,13 @@
                 }
             }
         },
-        "/api/courses/{course_id}/approve": {
+        "/api/dashboard/courses/{course_id}/approve": {
             "put": {
                 "tags": [
-                    "Courses"
+                    "Dashboard Api Courses"
                 ],
                 "summary": "Approve Course",
-                "operationId": "69d2785ac21fa7e0bef8da2d72e93d1d",
+                "operationId": "01956be6f79e06e1231912ff9e550bb0",
                 "parameters": [
                     {
                         "name": "course_id",
@@ -306,13 +367,13 @@
                 }
             }
         },
-        "/api/levels": {
+        "/api/dashboard/levels": {
             "get": {
                 "tags": [
-                    "Levels"
+                    "Dashboard Api Levels"
                 ],
                 "summary": "Get All Levels",
-                "operationId": "53b78c7678b742a32e730c2cb077efe0",
+                "operationId": "74a30dac217a8e9e7c641cde17da58b3",
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -323,13 +384,13 @@
                 }
             }
         },
-        "/api/listens": {
+        "/api/dashboard/listens": {
             "get": {
                 "tags": [
-                    "Listens"
+                    "Dashboard Api Listenes"
                 ],
                 "summary": "get all listens",
-                "operationId": "92aa77d4fe9c55baa455432c891031d5",
+                "operationId": "9186539c2dd6db2326f32d5518f1009d",
                 "parameters": [
                     {
                         "name": "course_id",
@@ -340,6 +401,17 @@
                         "schema": {
                             "type": "integer",
                             "default": "null"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "filter listens with active (active = 1 , not active = 0)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "0 , 1"
                         }
                     },
                     {
@@ -364,13 +436,13 @@
                 }
             }
         },
-        "/api/listenes": {
+        "/api/dashboard/listenes": {
             "post": {
                 "tags": [
-                    "Listenes"
+                    "Dashboard Api Listenes"
                 ],
                 "summary": "Add New Listenes",
-                "operationId": "2f3f7fb13ffbabafda0a587b45a3e2a8",
+                "operationId": "e97745827a012981f5cf28ef2cc7d304",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -408,13 +480,13 @@
                 }
             }
         },
-        "/api/listenes/{listene_id}": {
+        "/api/dashboard/listenes/{listene_id}": {
             "get": {
                 "tags": [
-                    "Listenes"
+                    "Dashboard Api Listenes"
                 ],
                 "summary": "show listene",
-                "operationId": "22f7a2468124c4339481c42c76979903",
+                "operationId": "d6fd870ce20586a104e956c59e0555dd",
                 "parameters": [
                     {
                         "name": "listene_id",
@@ -438,10 +510,10 @@
             },
             "put": {
                 "tags": [
-                    "Listenes"
+                    "Dashboard Api Listenes"
                 ],
                 "summary": "Updated Listene",
-                "operationId": "e6debd5ad47a5f2d06764ab13c3c00ff",
+                "operationId": "baddc22ec460b8fda59d7d600fec10e0",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -480,10 +552,10 @@
             },
             "delete": {
                 "tags": [
-                    "Listenes"
+                    "Dashboard Api Listenes"
                 ],
                 "summary": "Delete Listene",
-                "operationId": "16f8c479c2c3a1d152a0f12f296242cf",
+                "operationId": "05f826df1644d3463474a974f1992522",
                 "parameters": [
                     {
                         "name": "listene_id",
@@ -506,13 +578,13 @@
                 }
             }
         },
-        "/api/listenes/{listene_id}/approve": {
+        "/api/dashboard/listenes/{listene_id}/approve": {
             "put": {
                 "tags": [
-                    "Listenes"
+                    "Dashboard Api Listenes"
                 ],
                 "summary": "Approve Listene",
-                "operationId": "2a9fa5a42f1afc9b668d6e34f65a79a9",
+                "operationId": "3f658aa20994614003225512499d3d2f",
                 "parameters": [
                     {
                         "name": "listene_id",
@@ -535,13 +607,13 @@
                 }
             }
         },
-        "/api/students": {
+        "/api/dashboard/students": {
             "get": {
                 "tags": [
-                    "Students"
+                    "Dashboard Api Students"
                 ],
                 "summary": "get all students",
-                "operationId": "835fccdfb6bf2f4ebc39f5d825888163",
+                "operationId": "359e9e7951c9acd498620fc0ebde7614",
                 "parameters": [
                     {
                         "name": "level_id",
@@ -552,6 +624,17 @@
                         "schema": {
                             "type": "integer",
                             "default": "null"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "filter students with active (active = 1 , not active = 0)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "0 , 1"
                         }
                     },
                     {
@@ -577,10 +660,10 @@
             },
             "post": {
                 "tags": [
-                    "Students"
+                    "Dashboard Api Students"
                 ],
                 "summary": "Add New Student",
-                "operationId": "ed6b27c4b15cea8ec6470b6c1feb5b47",
+                "operationId": "f74080828d5ca634e2f56082f4748b2c",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -626,13 +709,13 @@
                 }
             }
         },
-        "/api/students/{student_id}": {
+        "/api/dashboard/students/{student_id}": {
             "get": {
                 "tags": [
-                    "Students"
+                    "Dashboard Api Students"
                 ],
                 "summary": "show student",
-                "operationId": "2f1624be6be667e3f7f90e2aa7ea86fb",
+                "operationId": "93a3135975f47e8e6b961fa1b4c2d871",
                 "parameters": [
                     {
                         "name": "student_id",
@@ -656,10 +739,10 @@
             },
             "put": {
                 "tags": [
-                    "Students"
+                    "Dashboard Api Students"
                 ],
                 "summary": "update student",
-                "operationId": "f6eeceed87735676215bc01a3d38c21b",
+                "operationId": "1e7744ccb0c663971403d0bbcc06eb05",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -710,10 +793,10 @@
             },
             "delete": {
                 "tags": [
-                    "Students"
+                    "Dashboard Api Students"
                 ],
                 "summary": "Delete Student",
-                "operationId": "09d1019e83202b60687e36820e22d8ad",
+                "operationId": "0a8cb805064ed43783ae70206714fa3c",
                 "parameters": [
                     {
                         "name": "student_id",
@@ -736,13 +819,13 @@
                 }
             }
         },
-        "/api/subscriptions": {
+        "/api/dashboard/subscriptions": {
             "get": {
                 "tags": [
-                    "Subscriptions"
+                    "Dashboard Api Subscriptions"
                 ],
                 "summary": "get all subscriptions",
-                "operationId": "59e09c4a98ef46fb1e6d6efc5c941e69",
+                "operationId": "e9a5ca4981bb9d815e49022ccf0795ed",
                 "parameters": [
                     {
                         "name": "student_id",
@@ -778,10 +861,10 @@
             },
             "post": {
                 "tags": [
-                    "Subscriptions"
+                    "Dashboard Api Subscriptions"
                 ],
                 "summary": "Automatically subscribe students' to courses for a month",
-                "operationId": "6ed1e4df073ca32e9d798cd09fc6cd67",
+                "operationId": "f1afcc51349f49530b208869cc2d51ed",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -811,13 +894,13 @@
                 }
             }
         },
-        "/api/subscriptions/{subscription_id}": {
+        "/api/dashboard/subscriptions/{subscription_id}": {
             "get": {
                 "tags": [
-                    "Subscriptions"
+                    "Dashboard Api Subscriptions"
                 ],
                 "summary": "show subscription",
-                "operationId": "5bc2f18da8d6d6f1291409fa8181ef5c",
+                "operationId": "01984d3b02e82bcf916009628966b20b",
                 "parameters": [
                     {
                         "name": "subscription_id",
@@ -840,13 +923,13 @@
                 }
             }
         },
-        "/api/subscription/{subscription_id}": {
+        "/api/dashboard/subscription/{subscription_id}": {
             "delete": {
                 "tags": [
-                    "Subscriptions"
+                    "Dashboard Api Subscriptions"
                 ],
                 "summary": "Delete Subscription",
-                "operationId": "2fa356ef30a1ff909e955eb54512a745",
+                "operationId": "1fc08c991b558f34d0de36c201e0f849",
                 "parameters": [
                     {
                         "name": "subscription_id",
@@ -869,13 +952,13 @@
                 }
             }
         },
-        "/api/users": {
+        "/api/dashboard/users": {
             "get": {
                 "tags": [
-                    "Users"
+                    "Dashboard Api Users"
                 ],
                 "summary": "get all users",
-                "operationId": "9beefef928ee7b4f0399c08577677589",
+                "operationId": "38b3ee451ceefc3922b4e52c444f31c5",
                 "parameters": [
                     {
                         "name": "role",
@@ -886,6 +969,17 @@
                         "schema": {
                             "type": "integer",
                             "default": "manger , teacher , assistant"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "filter users with active (active = 1 , not active = 0)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "0 , 1"
                         }
                     },
                     {
@@ -911,10 +1005,10 @@
             },
             "post": {
                 "tags": [
-                    "Users"
+                    "Dashboard Api Users"
                 ],
                 "summary": "Add New User",
-                "operationId": "8060e81db3ff08afa475943f2367de87",
+                "operationId": "a59d25ee02552bf4ed5c21808841336b",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -960,13 +1054,13 @@
                 }
             }
         },
-        "/api/users/{user_id}": {
+        "/api/dashboard/users/{user_id}": {
             "get": {
                 "tags": [
-                    "Users"
+                    "Dashboard Api Users"
                 ],
                 "summary": "show user",
-                "operationId": "01804835aa6e25085cc648d3f51608ae",
+                "operationId": "f874086dcc044c104145830328e3081c",
                 "parameters": [
                     {
                         "name": "user_id",
@@ -990,10 +1084,10 @@
             },
             "put": {
                 "tags": [
-                    "Users"
+                    "Dashboard Api Users"
                 ],
                 "summary": "update user",
-                "operationId": "309d88d92456c850688469a544a37af1",
+                "operationId": "df2564e86835933c6f30f943d5bfc573",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1032,10 +1126,10 @@
             },
             "delete": {
                 "tags": [
-                    "Users"
+                    "Dashboard Api Users"
                 ],
                 "summary": "Delete User",
-                "operationId": "3e2070b1ff629faaa1c563e77fb956f3",
+                "operationId": "4a0919d48edfdfaa7dd122f182160fe6",
                 "parameters": [
                     {
                         "name": "user_id",

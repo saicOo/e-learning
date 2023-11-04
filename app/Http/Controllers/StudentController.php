@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
-    
-    public function index()
+
+    public function profile()
     {
             $student = Auth::user();
             return response()->json([

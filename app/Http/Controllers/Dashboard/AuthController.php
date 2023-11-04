@@ -14,8 +14,8 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/login",
-     *      tags={"Auth User"},
+     *     path="/api/dashboard/login",
+     *      tags={"Dashboard Api Auth User"},
      *     summary="Login User in Dashboard",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -68,8 +68,8 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/logout",
-     *     tags={"Auth User"},
+     *     path="/api/dashboard/logout",
+     *     tags={"Dashboard Api Auth User"},
      *     summary="Auth Logout",
      *     @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),

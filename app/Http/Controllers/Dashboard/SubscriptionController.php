@@ -16,8 +16,8 @@ class SubscriptionController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/subscriptions",
-     *      tags={"Subscriptions"},
+     *     path="/api/dashboard/subscriptions",
+     *      tags={"Dashboard Api Subscriptions"},
      *     summary="get all subscriptions",
      *     @OA\Parameter(
      *         name="student_id",
@@ -64,8 +64,8 @@ class SubscriptionController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/subscriptions",
-     *      tags={"Subscriptions"},
+     *     path="/api/dashboard/subscriptions",
+     *      tags={"Dashboard Api Subscriptions"},
      *     summary="Automatically subscribe students' to courses for a month",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -114,8 +114,8 @@ class SubscriptionController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/subscriptions/{subscription_id}",
-     *      tags={"Subscriptions"},
+     *     path="/api/dashboard/subscriptions/{subscription_id}",
+     *      tags={"Dashboard Api Subscriptions"},
      *     summary="show subscription",
      *     @OA\Parameter(
      *         name="subscription_id",
@@ -144,8 +144,8 @@ class SubscriptionController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/subscription/{subscription_id}",
-     *      tags={"Subscriptions"},
+     *     path="/api/dashboard/subscription/{subscription_id}",
+     *      tags={"Dashboard Api Subscriptions"},
      *     summary="Delete Subscription",
      *     @OA\Parameter(
      *         name="subscription_id",

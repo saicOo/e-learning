@@ -10,13 +10,27 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
-        try {
-            //Validated
+    /**
+     * @OA\Post(
+     *     path="/api/login",
+     *      tags={"Front Api Auth Student"},
+     *     summary="Login Student in Front",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="email", type="string", example="manger@app.com"),
+     *             @OA\Property(property="password", type="string", example="1234"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     * )
+     */
+    public function login(Request $request){
+
+           try {
             $validate = Validator::make($request->all(),
             [
-                'name' => 'required',
-                'email' => 'required|email|unique:students,email',
+                'email' => 'required|email',
                 'password' => 'required'
             ]);
 
@@ -25,42 +39,6 @@ class AuthController extends Controller
                     'status' => false,
                     'message' => 'validation error',
                     'errors' => $validate->errors()
-                ], 401);
-            }
-
-            $student = Student::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
-            ]);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Student Created Successfully',
-            ], 200);
-
-        } catch (Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
-
-    public function login(Request $request){
-
-           try {
-            $validateUser = Validator::make($request->all(),
-            [
-                'email' => 'required|email',
-                'password' => 'required'
-            ]);
-
-            if($validateUser->fails()){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
                 ], 401);
             }
 
@@ -86,6 +64,15 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/logout",
+     *     tags={"Front Api Auth Student"},
+     *     summary="Auth Logout",
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     * )
+     */
     public function logout(Request $request)
     {
         try {

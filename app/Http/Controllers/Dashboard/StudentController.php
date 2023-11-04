@@ -14,8 +14,8 @@ class StudentController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/students",
-     *      tags={"Students"},
+     *     path="/api/dashboard/students",
+     *      tags={"Dashboard Api Students"},
      *     summary="get all students",
      *   @OA\Parameter(
      *         name="level_id",
@@ -26,6 +26,17 @@ class StudentController extends Controller
      *         @OA\Schema(
      *             default="null",
      *             type="integer",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="active",
+     *         in="query",
+     *         description="filter students with active (active = 1 , not active = 0)",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="0 , 1",
+     *             type="string",
      *         ),
      *     ),
      * @OA\Parameter(
@@ -48,6 +59,8 @@ class StudentController extends Controller
             $students = Student::with(['subscriptions','level'])
             ->when($request->level_id,function ($query) use ($request){ // if level_id
                 return $query->where('level_id',$request->level_id);
+            })->when($request->active,function ($query) use ($request){ // if active
+                return $query->where('active',$request->active);
             })->when($request->search,function ($query) use ($request){ // if search
                 return $query->where('name','Like','%'.$request->search.'%')
                 ->OrWhere('email','Like','%'.$request->search.'%')
@@ -62,8 +75,8 @@ class StudentController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/students",
-     *      tags={"Students"},
+     *     path="/api/dashboard/students",
+     *      tags={"Dashboard Api Students"},
      *     summary="Add New Student",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -119,8 +132,8 @@ class StudentController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/students/{student_id}",
-     *      tags={"Students"},
+     *     path="/api/dashboard/students/{student_id}",
+     *      tags={"Dashboard Api Students"},
      *     summary="show student",
      *     @OA\Parameter(
      *         name="student_id",
@@ -146,8 +159,8 @@ class StudentController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/students/{student_id}",
-     *      tags={"Students"},
+     *     path="/api/dashboard/students/{student_id}",
+     *      tags={"Dashboard Api Students"},
      *     summary="update student",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -209,8 +222,8 @@ class StudentController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/students/{student_id}",
-     *      tags={"Students"},
+     *     path="/api/dashboard/students/{student_id}",
+     *      tags={"Dashboard Api Students"},
      *     summary="Delete Student",
      *     @OA\Parameter(
      *         name="student_id",

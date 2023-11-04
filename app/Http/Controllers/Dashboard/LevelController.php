@@ -11,8 +11,8 @@ class LevelController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/levels",
-     *      tags={"Levels"},
+     *     path="/api/dashboard/levels",
+     *      tags={"Dashboard Api Levels"},
      *     summary="Get All Levels",
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),

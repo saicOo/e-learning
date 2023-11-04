@@ -11,8 +11,8 @@ class ListenController extends Controller
 {
 /**
      * @OA\Get(
-     *     path="/api/listens",
-     *      tags={"Listens"},
+     *     path="/api/dashboard/listens",
+     *      tags={"Dashboard Api Listenes"},
      *     summary="get all listens",
      *   @OA\Parameter(
      *         name="course_id",
@@ -23,6 +23,17 @@ class ListenController extends Controller
      *         @OA\Schema(
      *             default="null",
      *             type="integer",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="active",
+     *         in="query",
+     *         description="filter listens with active (active = 1 , not active = 0)",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="0 , 1",
+     *             type="string",
      *         ),
      *     ),
      * @OA\Parameter(
@@ -44,6 +55,8 @@ class ListenController extends Controller
     {
         $listens = Listen::when($request->course_id,function ($query) use ($request){ // if course_id
             return $query->where('course_id',$request->course_id);
+        })->when($request->active,function ($query) use ($request){ // if active
+            return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->get();
@@ -58,8 +71,8 @@ class ListenController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/listenes",
-     *      tags={"Listenes"},
+     *     path="/api/dashboard/listenes",
+     *      tags={"Dashboard Api Listenes"},
      *     summary="Add New Listenes",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -109,8 +122,8 @@ class ListenController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/listenes/{listene_id}",
-     *      tags={"Listenes"},
+     *     path="/api/dashboard/listenes/{listene_id}",
+     *      tags={"Dashboard Api Listenes"},
      *     summary="show listene",
      *     @OA\Parameter(
      *         name="listene_id",
@@ -138,8 +151,8 @@ class ListenController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/listenes/{listene_id}",
-     *      tags={"Listenes"},
+     *     path="/api/dashboard/listenes/{listene_id}",
+     *      tags={"Dashboard Api Listenes"},
      *     summary="Updated Listene",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -190,8 +203,8 @@ class ListenController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/listenes/{listene_id}",
-     *      tags={"Listenes"},
+     *     path="/api/dashboard/listenes/{listene_id}",
+     *      tags={"Dashboard Api Listenes"},
      *     summary="Delete Listene",
      *     @OA\Parameter(
      *         name="listene_id",
@@ -218,8 +231,8 @@ class ListenController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/listenes/{listene_id}/approve",
-     *      tags={"Listenes"},
+     *     path="/api/dashboard/listenes/{listene_id}/approve",
+     *      tags={"Dashboard Api Listenes"},
      *     summary="Approve Listene",
      *     @OA\Parameter(
      *         name="listene_id",

@@ -15,9 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
-    Route::get('/students','StudentController@index');
+    Route::get('/profile','StudentController@profile');
     Route::post('/logout', 'AuthController@logout');
-
 });
-Route::post('/register','AuthController@register');
+
 Route::post('/login','AuthController@login');

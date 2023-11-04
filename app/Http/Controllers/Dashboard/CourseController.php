@@ -12,8 +12,8 @@ class CourseController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/courses",
-     *      tags={"Courses"},
+     *     path="/api/dashboard/courses",
+     *      tags={"Dashboard Api Courses"},
      *     summary="get all courses",
      *     operationId="index",
      *     @OA\Parameter(
@@ -45,7 +45,18 @@ class CourseController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="null",
+     *             default="first semester , second semester , full semester",
+     *             type="string",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="active",
+     *         in="query",
+     *         description="filter courses with active (active = 1 , not active = 0)",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             default="0 , 1",
      *             type="string",
      *         ),
      *     ),
@@ -82,6 +93,8 @@ class CourseController extends Controller
             return $query->where('level_id',$request->level_id);
         })->when($request->semester,function ($query) use ($request){ // if semester
             return $query->where('semester',$request->semester);
+        })->when($request->active,function ($query) use ($request){ // if active
+            return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->get();
@@ -96,8 +109,8 @@ class CourseController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/courses",
-     *      tags={"Courses"},
+     *     path="/api/dashboard/courses",
+     *      tags={"Dashboard Api Courses"},
      *     summary="Add New Courses",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -155,8 +168,8 @@ class CourseController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/courses/{course_id}",
-     *      tags={"Courses"},
+     *     path="/api/dashboard/courses/{course_id}",
+     *      tags={"Dashboard Api Courses"},
      *     summary="show course",
      *     @OA\Parameter(
      *         name="course_id",
@@ -184,8 +197,8 @@ class CourseController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/courses/{course_id}",
-     *      tags={"Courses"},
+     *     path="/api/dashboard/courses/{course_id}",
+     *      tags={"Dashboard Api Courses"},
      *     summary="Updated Course",
      * @OA\RequestBody(
      *         @OA\JsonContent(
@@ -245,8 +258,8 @@ class CourseController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/courses/{course_id}",
-     *      tags={"Courses"},
+     *     path="/api/dashboard/courses/{course_id}",
+     *      tags={"Dashboard Api Courses"},
      *     summary="Delete Course",
      *     @OA\Parameter(
      *         name="course_id",
@@ -273,8 +286,8 @@ class CourseController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/courses/{course_id}/approve",
-     *      tags={"Courses"},
+     *     path="/api/dashboard/courses/{course_id}/approve",
+     *      tags={"Dashboard Api Courses"},
      *     summary="Approve Course",
      *     @OA\Parameter(
      *         name="course_id",
