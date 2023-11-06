@@ -23,7 +23,6 @@ class CourseController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="null",
      *             type="integer",
      *         ),
      *     ),
@@ -34,7 +33,6 @@ class CourseController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="null",
      *             type="integer",
      *         ),
      *     ),
@@ -45,7 +43,6 @@ class CourseController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="first semester , second semester , full semester",
      *             type="string",
      *         ),
      *     ),
@@ -56,7 +53,6 @@ class CourseController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="0 , 1",
      *             type="string",
      *         ),
      *     ),
@@ -67,7 +63,6 @@ class CourseController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="keyword",
      *             type="string",
      *         ),
      *     ),
@@ -119,6 +114,7 @@ class CourseController extends Controller
      *             @OA\Property(property="price", type="double", example="double"),
      *             @OA\Property(property="description", type="string", example="string"),
      *             @OA\Property(property="semester", type="enum", example="string"),
+     *             @OA\Property(property="image", type="string", example="https://www.techsmith.com/blog/wp-content/uploads/2022/03/resize-image.png"),
      *             @OA\Property(property="user_id", type="integer", example="integer"),
      *             @OA\Property(property="level_id", type="integer", example="integer"),
      *         ),
@@ -169,6 +165,7 @@ class CourseController extends Controller
     /**
      * @OA\Get(
      *     path="/api/dashboard/courses/{course_id}",
+     *      operationId="getCourseById",
      *      tags={"Dashboard Api Courses"},
      *     summary="show course",
      *     @OA\Parameter(
@@ -177,12 +174,12 @@ class CourseController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *       @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function show(Course $course)
@@ -200,6 +197,14 @@ class CourseController extends Controller
      *     path="/api/dashboard/courses/{course_id}",
      *      tags={"Dashboard Api Courses"},
      *     summary="Updated Course",
+     * @OA\Parameter(
+     *          name="course_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
@@ -207,6 +212,7 @@ class CourseController extends Controller
      *             @OA\Property(property="price", type="double", example="double"),
      *             @OA\Property(property="description", type="string", example="string"),
      *             @OA\Property(property="semester", type="enum", example="string"),
+     *             @OA\Property(property="image", type="string", example="https://www.techsmith.com/blog/wp-content/uploads/2022/03/resize-image.png"),
      *             @OA\Property(property="user_id", type="integer", example="integer"),
      *             @OA\Property(property="level_id", type="integer", example="integer"),
      *         ),
@@ -267,12 +273,12 @@ class CourseController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function destroy(Course $course)
@@ -295,12 +301,12 @@ class CourseController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function approve(Course $course)

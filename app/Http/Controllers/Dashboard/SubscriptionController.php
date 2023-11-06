@@ -26,7 +26,6 @@ class SubscriptionController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="null",
      *             type="integer",
      *         ),
      *     ),
@@ -37,7 +36,6 @@ class SubscriptionController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="null",
      *             type="integer",
      *         ),
      *     ),
@@ -123,12 +121,12 @@ class SubscriptionController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function show(Subscription $subscription)
@@ -153,12 +151,12 @@ class SubscriptionController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function destroy(Subscription $subscription)

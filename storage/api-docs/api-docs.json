@@ -9,9 +9,9 @@
         "/api/login": {
             "post": {
                 "tags": [
-                    "Dashboard Api Auth Student"
+                    "Front Api Auth Student"
                 ],
-                "summary": "Login Student in Dashboard",
+                "summary": "Login Student in Front",
                 "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
                 "requestBody": {
                     "content": {
@@ -42,7 +42,7 @@
         "/api/logout": {
             "post": {
                 "tags": [
-                    "Dashboard Api Auth User"
+                    "Front Api Auth Student"
                 ],
                 "summary": "Auth Logout",
                 "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
@@ -62,14 +62,18 @@
                     "Dashboard Api Auth User"
                 ],
                 "summary": "Login User in Dashboard",
-                "operationId": "0e1e7b42e02f29692cac70e118354571",
+                "operationId": "authLogin",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
                                 "properties": {
                                     "email": {
-                                        "type": "string",
+                                        "type": "email",
                                         "example": "manger@app.com"
                                     },
                                     "password": {
@@ -121,8 +125,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "null"
+                            "type": "integer"
                         }
                     },
                     {
@@ -132,8 +135,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "null"
+                            "type": "integer"
                         }
                     },
                     {
@@ -143,8 +145,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "first semester , second semester , full semester"
+                            "type": "string"
                         }
                     },
                     {
@@ -154,8 +155,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "0 , 1"
+                            "type": "string"
                         }
                     },
                     {
@@ -165,8 +165,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "keyword"
+                            "type": "string"
                         }
                     }
                 ],
@@ -207,6 +206,10 @@
                                         "type": "enum",
                                         "example": "string"
                                     },
+                                    "image": {
+                                        "type": "string",
+                                        "example": "https://www.techsmith.com/blog/wp-content/uploads/2022/03/resize-image.png"
+                                    },
                                     "user_id": {
                                         "type": "integer",
                                         "example": "integer"
@@ -237,7 +240,7 @@
                     "Dashboard Api Courses"
                 ],
                 "summary": "show course",
-                "operationId": "a2891fdfb2611c6eadab3683615dca21",
+                "operationId": "getCourseById",
                 "parameters": [
                     {
                         "name": "course_id",
@@ -245,8 +248,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -256,6 +258,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             },
@@ -265,6 +270,16 @@
                 ],
                 "summary": "Updated Course",
                 "operationId": "1823ce2d20b273b6a015845a9068d3e3",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -286,6 +301,10 @@
                                     "semester": {
                                         "type": "enum",
                                         "example": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "example": "https://www.techsmith.com/blog/wp-content/uploads/2022/03/resize-image.png"
                                     },
                                     "user_id": {
                                         "type": "integer",
@@ -323,8 +342,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -334,6 +352,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             }
@@ -352,8 +373,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -363,6 +383,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             }
@@ -399,8 +422,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "null"
+                            "type": "integer"
                         }
                     },
                     {
@@ -410,8 +432,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "0 , 1"
+                            "type": "string"
                         }
                     },
                     {
@@ -421,8 +442,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "keyword"
+                            "type": "string"
                         }
                     }
                 ],
@@ -494,8 +514,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -505,6 +524,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             },
@@ -514,6 +536,16 @@
                 ],
                 "summary": "Updated Listene",
                 "operationId": "baddc22ec460b8fda59d7d600fec10e0",
+                "parameters": [
+                    {
+                        "name": "listene_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -547,6 +579,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             },
@@ -563,8 +598,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -574,6 +608,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             }
@@ -592,8 +629,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -603,6 +639,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             }
@@ -622,8 +661,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "null"
+                            "type": "integer"
                         }
                     },
                     {
@@ -633,8 +671,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "0 , 1"
+                            "type": "string"
                         }
                     },
                     {
@@ -644,8 +681,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "keyword"
+                            "type": "string"
                         }
                     }
                 ],
@@ -723,8 +759,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -734,6 +769,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             },
@@ -743,6 +781,16 @@
                 ],
                 "summary": "update student",
                 "operationId": "1e7744ccb0c663971403d0bbcc06eb05",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -788,6 +836,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             },
@@ -804,8 +855,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -815,6 +865,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             }
@@ -834,8 +887,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "null"
+                            "type": "integer"
                         }
                     },
                     {
@@ -845,8 +897,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "null"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -908,8 +959,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -919,6 +969,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             }
@@ -937,8 +990,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -948,6 +1000,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             }
@@ -963,12 +1018,11 @@
                     {
                         "name": "role",
                         "in": "query",
-                        "description": "filter users with role",
+                        "description": "filter users with role (manger , teacher , assistant)",
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "manger , teacher , assistant"
+                            "type": "integer"
                         }
                     },
                     {
@@ -978,8 +1032,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "0 , 1"
+                            "type": "string"
                         }
                     },
                     {
@@ -989,8 +1042,7 @@
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "string",
-                            "default": "keyword"
+                            "type": "string"
                         }
                     }
                 ],
@@ -1068,8 +1120,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -1079,6 +1130,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             },
@@ -1088,6 +1142,16 @@
                 ],
                 "summary": "update user",
                 "operationId": "df2564e86835933c6f30f943d5bfc573",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1121,6 +1185,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             },
@@ -1137,8 +1204,7 @@
                         "required": true,
                         "explode": true,
                         "schema": {
-                            "type": "integer",
-                            "default": "1"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -1148,6 +1214,9 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             }

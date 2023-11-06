@@ -29,9 +29,9 @@ class AppServiceProvider extends ServiceProvider
         // if (env('APP_ENV') == 'production') {
         //     $url->forceScheme('https');
         // }
-        if($this->app->environment('production')) {
-            URL::forceScheme('https');
-        }
+        // if($this->app->environment('production')) {
+        //     URL::forceScheme('https');
+        // }
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 }

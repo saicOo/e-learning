@@ -15,12 +15,14 @@ class AuthController extends Controller
     /**
      * @OA\Post(
      *     path="/api/dashboard/login",
+     *      operationId="authLogin",
      *      tags={"Dashboard Api Auth User"},
      *     summary="Login User in Dashboard",
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="email", type="string", example="manger@app.com"),
+     *              required={"email", "password"},
+     *             @OA\Property(property="email", type="email", example="manger@app.com"),
      *             @OA\Property(property="password", type="string", example="1234"),
      *         ),
      *     ),

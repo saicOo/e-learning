@@ -18,11 +18,10 @@ class UserController extends Controller
      *   @OA\Parameter(
      *         name="role",
      *         in="query",
-     *         description="filter users with role",
+     *         description="filter users with role (manger , teacher , assistant)",
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="manger , teacher , assistant",
      *             type="integer",
      *         ),
      *     ),
@@ -33,7 +32,6 @@ class UserController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="0 , 1",
      *             type="string",
      *         ),
      *     ),
@@ -44,7 +42,6 @@ class UserController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="keyword",
      *             type="string",
      *         ),
      *     ),
@@ -147,12 +144,12 @@ class UserController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function show(User $user)
@@ -170,6 +167,14 @@ class UserController extends Controller
      *     path="/api/dashboard/users/{user_id}",
      *      tags={"Dashboard Api Users"},
      *     summary="update user",
+     * @OA\Parameter(
+     *          name="user_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
@@ -181,6 +186,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
     public function update(Request $request, User $user)
@@ -228,12 +234,12 @@ class UserController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function destroy(User $user)

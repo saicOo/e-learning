@@ -21,7 +21,6 @@ class ListenController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="null",
      *             type="integer",
      *         ),
      *     ),
@@ -32,7 +31,6 @@ class ListenController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="0 , 1",
      *             type="string",
      *         ),
      *     ),
@@ -43,7 +41,6 @@ class ListenController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="keyword",
      *             type="string",
      *         ),
      *     ),
@@ -131,12 +128,12 @@ class ListenController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function show(Listen $listen)
@@ -154,6 +151,14 @@ class ListenController extends Controller
      *     path="/api/dashboard/listenes/{listene_id}",
      *      tags={"Dashboard Api Listenes"},
      *     summary="Updated Listene",
+     * @OA\Parameter(
+     *          name="listene_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
@@ -165,6 +170,7 @@ class ListenController extends Controller
      *     ),
      *     @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
     public function update(Request $request, Listen $listen)
@@ -212,12 +218,12 @@ class ListenController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function destroy(Listen $listen)
@@ -240,12 +246,12 @@ class ListenController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function approve(Listen $listen)

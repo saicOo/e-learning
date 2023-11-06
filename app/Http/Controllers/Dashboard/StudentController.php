@@ -24,7 +24,6 @@ class StudentController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="null",
      *             type="integer",
      *         ),
      *     ),
@@ -35,7 +34,6 @@ class StudentController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="0 , 1",
      *             type="string",
      *         ),
      *     ),
@@ -46,7 +44,6 @@ class StudentController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             default="keyword",
      *             type="string",
      *         ),
      *     ),
@@ -141,12 +138,12 @@ class StudentController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function show(Student $student)
@@ -162,6 +159,14 @@ class StudentController extends Controller
      *     path="/api/dashboard/students/{student_id}",
      *      tags={"Dashboard Api Students"},
      *     summary="update student",
+     * @OA\Parameter(
+     *          name="student_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
@@ -176,6 +181,7 @@ class StudentController extends Controller
      *     ),
      *     @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
     public function update(Request $request, Student $student)
@@ -231,12 +237,12 @@ class StudentController extends Controller
      *         required=true,
      *         explode=true,
      *         @OA\Schema(
-     *             default="1",
      *             type="integer",
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
     public function destroy(Student $student)
