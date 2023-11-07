@@ -81,6 +81,7 @@ class UserController extends Controller
      *             @OA\Property(property="email", type="string", example="string"),
      *             @OA\Property(property="phone", type="string", example="string"),
      *             @OA\Property(property="password", type="string", example="string"),
+     *             @OA\Property(property="password_confirmation", type="string", example="string"),
      *             @OA\Property(property="role", type="enum", example="manger , teacher , assistant"),
      *             @OA\Property(property="user_id", type="integer", example="Sets the teacher assistant's ID"),
      *         ),
@@ -222,6 +223,67 @@ class UserController extends Controller
 
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/dashboard/users/{user_id}/change-password",
+     *      tags={"Dashboard Api Users"},
+     *     summary="change password user",
+     * @OA\Parameter(
+     *          name="user_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="old_password", type="string", example="string"),
+     *             @OA\Property(property="new_password", type="string", example="string"),
+     *             @OA\Property(property="new_password_confirmation", type="string", example="string"),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     * )
+     */
+    public function changePassword(Request $request, User $user)
+    {
+            //Validated
+        $validate = Validator::make($request->all(),
+        [
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
+        ]);
+
+
+        #Match The Old Password
+        if(!Hash::check($request->old_password, $user->password)){
+            $validate->after(function($validate) {
+                $validate->errors()->add('old_password', "Old Password Doesn't match!");
+              });
+        }
+
+        if($validate->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validate->errors()
+            ], 401);
+        }
+
+        #Update the new Password
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Password changed successfully!',
+        ], 200);
+    }
 
     /**
      * @OA\Delete(
