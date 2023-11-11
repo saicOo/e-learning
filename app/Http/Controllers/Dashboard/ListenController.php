@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\Listen;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ListenController extends Controller
@@ -12,7 +13,7 @@ class ListenController extends Controller
 /**
      * @OA\Get(
      *     path="/api/dashboard/listens",
-     *      tags={"Dashboard Api Listenes"},
+     *      tags={"Dashboard Api Listens"},
      *     summary="get all listens",
      *   @OA\Parameter(
      *         name="course_id",
@@ -68,9 +69,9 @@ class ListenController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/dashboard/listenes",
-     *      tags={"Dashboard Api Listenes"},
-     *     summary="Add New Listenes",
+     *     path="/api/dashboard/listens",
+     *      tags={"Dashboard Api Listens"},
+     *     summary="Add New Listens",
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
@@ -91,7 +92,7 @@ class ListenController extends Controller
         [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'video' => 'required|string|max:255',
+            'video' => 'required|mimes:mp4|max:8192',
             'course_id'=> 'required|exists:courses,id'
         ]);
 
@@ -103,11 +104,11 @@ class ListenController extends Controller
                 'errors' => $validate->errors()
             ], 401);
         }
-
+        $path_video = $request->file('video')->store('apifile',['disk' => 'public']);
         $listen = Listen::create([
            'name'=>$request->name,
            'description'=>$request->description,
-           'video'=>$request->video,
+           'video'=>$path_video,
            'course_id'=>$request->course_id,
         ]);
 
@@ -119,11 +120,11 @@ class ListenController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/dashboard/listenes/{listene_id}",
-     *      tags={"Dashboard Api Listenes"},
-     *     summary="show listene",
+     *     path="/api/dashboard/listens/{listen_id}",
+     *      tags={"Dashboard Api Listens"},
+     *     summary="show listen",
      *     @OA\Parameter(
-     *         name="listene_id",
+     *         name="listen_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -148,11 +149,11 @@ class ListenController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/dashboard/listenes/{listene_id}",
-     *      tags={"Dashboard Api Listenes"},
-     *     summary="Updated Listene",
+     *     path="/api/dashboard/listens/{listen_id}",
+     *      tags={"Dashboard Api Listens"},
+     *     summary="Updated Listen",
      * @OA\Parameter(
-     *          name="listene_id",
+     *          name="listen_id",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
@@ -164,7 +165,6 @@ class ListenController extends Controller
      *             type="object",
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="description", type="string", example="string"),
-     *             @OA\Property(property="video", type="string", example="path or url"),
      *             @OA\Property(property="course_id", type="integer", example="integer"),
      *         ),
      *     ),
@@ -180,7 +180,7 @@ class ListenController extends Controller
         [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'video' => 'required|string|max:255',
+            // 'video' => 'required|mimes:mp4|max:8192',
             'course_id'=> 'required|exists:courses,id',
             // 'active' => 'required|in:1,0',
         ]);
@@ -196,7 +196,7 @@ class ListenController extends Controller
         $listen->update([
             'name'=>$request->name,
             'description'=>$request->description,
-            'video'=>$request->video,
+            // 'video'=>$path_video,
             'course_id'=>$request->course_id,
             'active'=> 0,
         ]);
@@ -209,11 +209,11 @@ class ListenController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/dashboard/listenes/{listene_id}",
-     *      tags={"Dashboard Api Listenes"},
-     *     summary="Delete Listene",
+     *     path="/api/dashboard/listens/{listen_id}",
+     *      tags={"Dashboard Api Listens"},
+     *     summary="Delete Listen",
      *     @OA\Parameter(
-     *         name="listene_id",
+     *         name="listen_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -228,6 +228,7 @@ class ListenController extends Controller
      */
     public function destroy(Listen $listen)
     {
+        Storage::disk('public')->delete($listen->video);
         $listen->delete();
             return response()->json([
                 'status' => true,
@@ -237,11 +238,11 @@ class ListenController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/dashboard/listenes/{listene_id}/approve",
-     *      tags={"Dashboard Api Listenes"},
-     *     summary="Approve Listene",
+     *     path="/api/dashboard/listens/{listene_id}/approve",
+     *      tags={"Dashboard Api Listens"},
+     *     summary="Approve Listen",
      *     @OA\Parameter(
-     *         name="listene_id",
+     *         name="listen_id",
      *         in="path",
      *         required=true,
      *         explode=true,

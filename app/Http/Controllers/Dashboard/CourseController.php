@@ -81,7 +81,7 @@ class CourseController extends Controller
         //     'level_id'=> 'nullable|exists:level,id'
         // ]);
 
-        $courses = Course::with(['user','level','subscriptions'])
+        $courses = Course::with(['user:id,name,email','level:id,name'])
         ->when($request->user_id,function ($query) use ($request){ // if user_id
             return $query->where('user_id',$request->user_id);
         })->when($request->level_id,function ($query) use ($request){ // if level_id

@@ -22,8 +22,16 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name'=>'teacher',
-            'email'=>'teacher@app.com',
+            'name'=>'teacher1',
+            'email'=>'teacher1@app.com',
+            'phone'=>'01241545',
+            'password'=>bcrypt('1234'),
+            'role'=>'teacher',
+        ]);
+
+        User::create([
+            'name'=>'teacher2',
+            'email'=>'teacher2@app.com',
             'phone'=>'01291545',
             'password'=>bcrypt('1234'),
             'role'=>'teacher',

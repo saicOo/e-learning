@@ -6,56 +6,6 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/login": {
-            "post": {
-                "tags": [
-                    "Front Api Auth Student"
-                ],
-                "summary": "Login Student in Front",
-                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "manger@app.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "1234"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/logout": {
-            "post": {
-                "tags": [
-                    "Front Api Auth Student"
-                ],
-                "summary": "Auth Logout",
-                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    }
-                }
-            }
-        },
         "/api/dashboard/login": {
             "post": {
                 "tags": [
@@ -410,7 +360,7 @@
         "/api/dashboard/listens": {
             "get": {
                 "tags": [
-                    "Dashboard Api Listenes"
+                    "Dashboard Api Listens"
                 ],
                 "summary": "get all listens",
                 "operationId": "9186539c2dd6db2326f32d5518f1009d",
@@ -454,15 +404,13 @@
                         "description": "Unauthenticated"
                     }
                 }
-            }
-        },
-        "/api/dashboard/listenes": {
+            },
             "post": {
                 "tags": [
-                    "Dashboard Api Listenes"
+                    "Dashboard Api Listens"
                 ],
-                "summary": "Add New Listenes",
-                "operationId": "e97745827a012981f5cf28ef2cc7d304",
+                "summary": "Add New Listens",
+                "operationId": "ac59d07cb8176fe5f4aad0309ec68c73",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -500,16 +448,16 @@
                 }
             }
         },
-        "/api/dashboard/listenes/{listene_id}": {
+        "/api/dashboard/listens/{listen_id}": {
             "get": {
                 "tags": [
-                    "Dashboard Api Listenes"
+                    "Dashboard Api Listens"
                 ],
-                "summary": "show listene",
-                "operationId": "d6fd870ce20586a104e956c59e0555dd",
+                "summary": "show listen",
+                "operationId": "4ed995bd8d72ee8c4de434b323eae8f4",
                 "parameters": [
                     {
-                        "name": "listene_id",
+                        "name": "listen_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -532,13 +480,13 @@
             },
             "put": {
                 "tags": [
-                    "Dashboard Api Listenes"
+                    "Dashboard Api Listens"
                 ],
-                "summary": "Updated Listene",
-                "operationId": "baddc22ec460b8fda59d7d600fec10e0",
+                "summary": "Updated Listen",
+                "operationId": "53fc9a20843b74dd1c8cf10a1c5ca2e6",
                 "parameters": [
                     {
-                        "name": "listene_id",
+                        "name": "listen_id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -558,10 +506,6 @@
                                     "description": {
                                         "type": "string",
                                         "example": "string"
-                                    },
-                                    "video": {
-                                        "type": "string",
-                                        "example": "path or url"
                                     },
                                     "course_id": {
                                         "type": "integer",
@@ -587,13 +531,13 @@
             },
             "delete": {
                 "tags": [
-                    "Dashboard Api Listenes"
+                    "Dashboard Api Listens"
                 ],
-                "summary": "Delete Listene",
-                "operationId": "05f826df1644d3463474a974f1992522",
+                "summary": "Delete Listen",
+                "operationId": "05263c6567288aa7dcf1d368fc2290a8",
                 "parameters": [
                     {
-                        "name": "listene_id",
+                        "name": "listen_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -615,16 +559,16 @@
                 }
             }
         },
-        "/api/dashboard/listenes/{listene_id}/approve": {
+        "/api/dashboard/listens/{listene_id}/approve": {
             "put": {
                 "tags": [
-                    "Dashboard Api Listenes"
+                    "Dashboard Api Listens"
                 ],
-                "summary": "Approve Listene",
-                "operationId": "3f658aa20994614003225512499d3d2f",
+                "summary": "Approve Listen",
+                "operationId": "29e0377dfe38640c3ca23e8767ad8dc3",
                 "parameters": [
                     {
-                        "name": "listene_id",
+                        "name": "listen_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
