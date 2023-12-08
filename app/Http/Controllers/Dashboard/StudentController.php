@@ -6,6 +6,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -101,15 +102,16 @@ class StudentController extends Controller
                 'phone' => 'required|string|max:255|unique:users,phone',
                 'password' => 'required|string|max:255|confirmed',
                 'attendance_type' => 'required|in:online,offnline,mix',
-                'level_id' => 'required|exists:level,id',
+                'level_id' => 'required|exists:levels,id',
             ]);
 
             if($validate->fails()){
                 return response()->json([
-                    'status' => false,
+                    'success' => false,
+                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'message' => 'validation error',
                     'errors' => $validate->errors()
-                ], 401);
+                ], 200);
             }
 
             $student = Student::create([
@@ -177,7 +179,6 @@ class StudentController extends Controller
      *             @OA\Property(property="attendance_type", type="enum", example="online , offnline , mix"),
      *             @OA\Property(property="level_id", type="integer", example="integer"),
      *             @OA\Property(property="active", type="boolen", example="integer"),
-     *             @OA\Property(property="student_id", type="boolen", example="id"),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -193,17 +194,18 @@ class StudentController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:students,email,'.$student->id,
                 'phone' => 'required|string|max:255|unique:students,phone,'.$student->id,
-                'level_id' => 'required|exists:level,id',
+                'level_id' => 'required|exists:levels,id',
                 'attendance_type' => 'required|in:online,offnline,mix',
                 'active' => 'required|in:1,0',
             ]);
 
             if($validate->fails()){
                 return response()->json([
-                    'status' => false,
+                    'success' => false,
+                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'message' => 'validation error',
                     'errors' => $validate->errors()
-                ], 401);
+                ], 200);
             }
 
             $student->update([
@@ -221,7 +223,7 @@ class StudentController extends Controller
             ], 200);
 
             // return response()->json([
-            //     'status' => false,
+            //     'success' => false,
             //     'message' => $th->getMessage()
             // ], 500);
 
@@ -272,10 +274,11 @@ class StudentController extends Controller
 
         if($validate->fails()){
             return response()->json([
-                'status' => false,
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'validation error',
                 'errors' => $validate->errors()
-            ], 401);
+            ], 200);
         }
 
         #Update the new Password

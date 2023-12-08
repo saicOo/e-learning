@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -131,7 +132,7 @@ class CourseController extends Controller
              'name' => 'required|string|max:255',
             'price' => 'required',
              'description' => 'required|string|max:255',
-             'image' => 'required|string|max:255',
+             'image' => 'required|url|max:255',
              'semester' => 'required|in:first semester,second semester,full semester',
              'user_id' => ['required',Rule::exists('users','id')->where('role','teacher')],
              'level_id'=> 'required|exists:levels,id'
@@ -140,10 +141,11 @@ class CourseController extends Controller
 
          if($validate->fails()){
              return response()->json([
-                 'status' => false,
+                 'success' => false,
+                 'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                  'message' => 'validation error',
                  'errors' => $validate->errors()
-             ], 401);
+             ], 200);
          }
 
          $course = Course::create([
@@ -229,7 +231,7 @@ class CourseController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required',
             'description' => 'required|string|max:255',
-            'image' => 'required|string|max:255',
+            'image' => 'required|url|max:255',
             'semester' => 'required|in:first semester,second semester,full semester',
             'user_id' => ['required',Rule::exists('users','id')->where('role','teacher')],
             'level_id'=> 'required|exists:levels,id',
@@ -239,10 +241,11 @@ class CourseController extends Controller
 
         if($validate->fails()){
             return response()->json([
-                'status' => false,
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'validation error',
                 'errors' => $validate->errors()
-            ], 401);
+            ], 200);
         }
 
         $course->update([

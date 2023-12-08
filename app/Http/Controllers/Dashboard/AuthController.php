@@ -40,17 +40,19 @@ class AuthController extends Controller
 
             if($validateUser->fails()){
                 return response()->json([
-                    'status' => false,
+                    'success' => false,
+                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors()
-                ], 401);
+                ], 200);
             }
 
             if(!Auth::attempt($request->only(['email','password']))){
                 return response()->json([
-                    'status' => false,
+                    'success' => false,
+                    'status_code' => Response::HTTP_UNAUTHORIZED,
                     'message' => 'Email & Password does not match with our record.',
-                ], Response::HTTP_UNAUTHORIZED);
+                ], 200);
             }
 
             $user = Auth::user();
@@ -62,7 +64,7 @@ class AuthController extends Controller
 
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => $th->getMessage()
             ], 500);
         }
@@ -88,7 +90,7 @@ class AuthController extends Controller
         ]);
     } catch (\Throwable $th) {
         return response()->json([
-            'status' => false,
+            'success' => false,
             'message' => $th->getMessage()
         ], 500);
     }

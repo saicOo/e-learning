@@ -20,7 +20,7 @@ class ListenSeeder extends Seeder
             Listen::create([
                 'name'=>$faker->sentence(2),
                 'description'=>$faker->sentence(20),
-                'video'=>'apifile/hJ5QAtJJzxQobvBNhsaRWC4UHaWn4TXdemj55OX3.mp4',
+                'video'=>'apifile/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4',
                 'course_id'=>Course::inRandomOrder()->first()->id,
                 'active'=>1
              ]);

@@ -6,6 +6,7 @@ use App\Models\Listen;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 class ListenController extends Controller
@@ -99,10 +100,11 @@ class ListenController extends Controller
 
         if($validate->fails()){
             return response()->json([
-                'status' => false,
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'validation error',
                 'errors' => $validate->errors()
-            ], 401);
+            ], 200);
         }
         $path_video = $request->file('video')->store('apifile',['disk' => 'public']);
         $listen = Listen::create([
@@ -187,10 +189,11 @@ class ListenController extends Controller
 
         if($validate->fails()){
             return response()->json([
-                'status' => false,
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'validation error',
                 'errors' => $validate->errors()
-            ], 401);
+            ], 200);
         }
 
         $listen->update([

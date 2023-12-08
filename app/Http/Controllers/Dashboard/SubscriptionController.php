@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use App\Rules\ValidSubscription;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -45,7 +46,7 @@ class SubscriptionController extends Controller
      */
     public function index(Request $request)
     {
-        $subscriptions = Subscription::with(['student:id,email,level_id','student.level:id,name','course:id,name'])
+        $subscriptions = Subscription::with(['student:id,name,email,level_id','student.level:id,name','course:id,name'])
         ->when($request->student_id,function ($query) use ($request){ // if student_id
             return $query->where('student_id',$request->student_id);
         })->when($request->course_id,function ($query) use ($request){ // if course_id
@@ -87,10 +88,11 @@ class SubscriptionController extends Controller
 
         if($validate->fails()){
             return response()->json([
-                'status' => false,
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'validation error',
                 'errors' => $validate->errors()
-            ], 401);
+            ], 200);
         }
 
         $current = Carbon::now();

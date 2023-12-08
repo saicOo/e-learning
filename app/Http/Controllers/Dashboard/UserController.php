@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -22,7 +23,7 @@ class UserController extends Controller
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
-     *             type="integer",
+     *             type="string",
      *         ),
      *     ),
      * @OA\Parameter(
@@ -119,10 +120,11 @@ class UserController extends Controller
 
         if($validate->fails()){
             return response()->json([
-                'status' => false,
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'validation error',
                 'errors' => $validate->errors()
-            ], 401);
+            ], 200);
         }
 
         $request_data['password'] = Hash::make($request->password);
@@ -159,6 +161,8 @@ class UserController extends Controller
             'status' => true,
             'data' => [
                 'user' => $user,
+                'teacher' => $user->teacher,
+                'assistants' => $user->assistants,
             ]
         ], 200);
     }
@@ -203,10 +207,11 @@ class UserController extends Controller
 
         if($validate->fails()){
             return response()->json([
-                'status' => false,
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'validation error',
                 'errors' => $validate->errors()
-            ], 401);
+            ], 200);
         }
 
         $user->update([
@@ -268,10 +273,11 @@ class UserController extends Controller
 
         if($validate->fails()){
             return response()->json([
-                'status' => false,
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'validation error',
                 'errors' => $validate->errors()
-            ], 401);
+            ], 200);
         }
 
         #Update the new Password

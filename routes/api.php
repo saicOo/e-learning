@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
+// Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
     Route::get('/profile','StudentController@profile');
     Route::post('/logout', 'AuthController@logout');
-});
+// });
 
 Route::post('/login','AuthController@login');
+

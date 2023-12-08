@@ -6,6 +6,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -36,17 +37,19 @@ class AuthController extends Controller
 
             if($validate->fails()){
                 return response()->json([
-                    'status' => false,
+                    'success' => false,
+                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'message' => 'validation error',
                     'errors' => $validate->errors()
-                ], 401);
+                ], 200);
             }
 
             if(!Auth::guard('student')->attempt($request->only(['email', 'password']))){
                 return response()->json([
-                    'status' => false,
+                    'success' => false,
+                    'status_code' => Response::HTTP_UNAUTHORIZED,
                     'message' => 'Email & Password does not match with our record.',
-                ], 401);
+                ], 200);
             }
 
             $student = Auth::guard('student')->user();
@@ -58,7 +61,7 @@ class AuthController extends Controller
 
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => $th->getMessage()
             ], 500);
         }
@@ -84,7 +87,7 @@ class AuthController extends Controller
         ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => $th->getMessage()
             ], 500);
         }

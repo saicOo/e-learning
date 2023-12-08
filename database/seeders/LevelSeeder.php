@@ -13,10 +13,13 @@ class LevelSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=1; $i <= 6; $i++) {
+        $levels = ['الصف الاول الاعدادي','الصف الثاني الاعدادي','الصف الثالث الاعدادي','الصف الاول الثانوي','الصف الثاني الثانوي','الصف الثالث الثانوي'];
+        foreach ($levels as $level) {
+            # code...
             Level::create([
-                'name' => 'Level '.$i,
+                'name' => $level,
             ]);
         }
+
     }
 }

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
+// Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     // routes users
     Route::apiResource('users', 'UserController')->except(['edit','create']);
     Route::put('users/{user}/change-password', 'UserController@changePassword');
@@ -34,7 +34,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     Route::get('/levels','LevelController@index');
 
     Route::post('/logout', 'AuthController@logout');
-});
+// });
 
 // Route::post('/register','AuthController@register');
 Route::post('/login','AuthController@login');
