@@ -25,7 +25,7 @@ class CourseSeeder extends Seeder
                 'price'=>rand(50,800),
                 'semester'=>$semester[rand(0,2)],
                 'image'=>'https://www.goethe.de/prj/dlp/assets/images/default.png',
-                'user_id'=>User::where('role','teacher')->inRandomOrder()->first()->id,
+                'user_id'=>User::whereRoleIs('teacher')->inRandomOrder()->first()->id,
                 'level_id'=>Level::inRandomOrder()->first()->id,
                 'active'=>1
              ]);

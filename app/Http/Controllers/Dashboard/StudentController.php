@@ -18,16 +18,6 @@ class StudentController extends Controller
      *     path="/api/dashboard/students",
      *      tags={"Dashboard Api Students"},
      *     summary="get all students",
-     *   @OA\Parameter(
-     *         name="level_id",
-     *         in="query",
-     *         description="filter students with level",
-     *         required=false,
-     *         explode=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *     ),
      * @OA\Parameter(
      *         name="active",
      *         in="query",
@@ -54,10 +44,7 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-            $students = Student::with(['level:id,name'])
-            ->when($request->level_id,function ($query) use ($request){ // if level_id
-                return $query->where('level_id',$request->level_id);
-            })->when($request->active,function ($query) use ($request){ // if active
+            $students = Student::when($request->active,function ($query) use ($request){ // if active
                 return $query->where('active',$request->active);
             })->when($request->search,function ($query) use ($request){ // if search
                 return $query->where('name','Like','%'.$request->search.'%')
@@ -85,7 +72,6 @@ class StudentController extends Controller
      *             @OA\Property(property="password", type="string", example="string"),
      *             @OA\Property(property="password_confirmation", type="string", example="string"),
      *             @OA\Property(property="attendance_type", type="enum", example="online , offnline , mix"),
-     *             @OA\Property(property="level_id", type="integer", example="integer"),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -102,7 +88,6 @@ class StudentController extends Controller
                 'phone' => 'required|string|max:255|unique:users,phone',
                 'password' => 'required|string|max:255|confirmed',
                 'attendance_type' => 'required|in:online,offnline,mix',
-                'level_id' => 'required|exists:levels,id',
             ]);
 
             if($validate->fails()){
@@ -119,7 +104,6 @@ class StudentController extends Controller
                 'email' => $request->email,
                 'attendance_type' => $request->attendance_type,
                 'phone' => $request->phone,
-                'level_id' => $request->level_id,
                 'password' => Hash::make($request->password)
             ]);
 
@@ -177,7 +161,6 @@ class StudentController extends Controller
      *             @OA\Property(property="email", type="string", example="string"),
      *             @OA\Property(property="phone", type="string", example="string"),
      *             @OA\Property(property="attendance_type", type="enum", example="online , offnline , mix"),
-     *             @OA\Property(property="level_id", type="integer", example="integer"),
      *             @OA\Property(property="active", type="boolen", example="integer"),
      *         ),
      *     ),
@@ -194,7 +177,6 @@ class StudentController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:students,email,'.$student->id,
                 'phone' => 'required|string|max:255|unique:students,phone,'.$student->id,
-                'level_id' => 'required|exists:levels,id',
                 'attendance_type' => 'required|in:online,offnline,mix',
                 'active' => 'required|in:1,0',
             ]);
@@ -212,7 +194,6 @@ class StudentController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'level_id' => $request->level_id,
                 'attendance_type' => $request->attendance_type,
                 'active' => $request->active,
             ]);

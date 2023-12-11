@@ -1,7 +1,6 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\Level;
 use App\Models\Student;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +21,6 @@ class StudentSeeder extends Seeder
                 'email' => $i.'st@app.com',
                 'attendance_type' => $attendance_type[rand(0,2)],
                 'phone' => '01157656'.$i,
-                'level_id' => Level::inRandomOrder()->first()->id,
                 'password' => Hash::make('1234')
             ]);
         }

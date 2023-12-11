@@ -38,15 +38,11 @@ class Student extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function level()
-    {
-        return $this->belongsTo(Level::class);
-    }
 
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
     }
 
-    
+
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
+Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     // routes users
     Route::apiResource('users', 'UserController')->except(['edit','create']);
     Route::put('users/{user}/change-password', 'UserController@changePassword');
@@ -33,8 +35,25 @@ use Illuminate\Support\Facades\Route;
     // routes levels
     Route::get('/levels','LevelController@index');
 
+
     Route::post('/logout', 'AuthController@logout');
-// });
+});
 
 // Route::post('/register','AuthController@register');
 Route::post('/login','AuthController@login');
+Route::get('/roles',function () {
+    return response()->json([
+        'status' => true,
+        'data' => [
+            'roles' => Role::all(),
+        ]
+    ], 200);
+});
+Route::get('/permissions',function () {
+    return response()->json([
+        'status' => true,
+        'data' => [
+            'permissions' => Permission::all(),
+        ]
+    ], 200);
+});

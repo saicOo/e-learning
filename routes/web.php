@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/forbidden', function () {
+    return response()->json([
+        'status_code' => 403,
+        'success' => false,
+        'message' => 'Not authorized.'
+      ], 200);
+});
 
 Route::get('/clear', function() {
 
@@ -27,5 +34,5 @@ Route::get('/clear', function() {
     return "Cleared!";
 
  });
- 
+
  Route::get('/run-seeder',function(){ Artisan::call('migrate:refresh',['--seed' => ' ']);Artisan::output();return 'Refresh Database Success'; });

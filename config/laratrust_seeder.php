@@ -10,7 +10,7 @@ return [
      */
     'truncate_tables' => true,
 
-    'role_structure' => [
+    'roles_structure' => [
         'manger' => [
             'users' => 'c,r,u,d',
             'students' => 'c,r,u,d',
@@ -32,5 +32,5 @@ return [
     //         'profile' => 'c,r,u'
     //     ],
     // ],
-    
+
 ];

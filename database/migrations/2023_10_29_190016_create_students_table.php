@@ -22,8 +22,6 @@ class CreateStudentsTable extends Migration
             $table->string('password');
             $table->enum('attendance_type',['online','offline','mix']);
             $table->boolean('active')->default(1)->comment('0=>not active ,1=>active');
-            $table->unsignedBigInteger('level_id');
-            $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

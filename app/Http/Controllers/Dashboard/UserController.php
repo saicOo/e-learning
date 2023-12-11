@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:users_read'])->only('index');
+    }
     /**
      * @OA\Get(
      *     path="/api/dashboard/users",
@@ -52,8 +56,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::when($request->role,function ($query) use ($request){ // if role
-            return $query->where('role',$request->role);
+        $users = User::with('roles','permissions')->when($request->role,function ($query) use ($request){ // if role
+            return $query->whereRoleIs($request->role);
         })->when($request->active,function ($query) use ($request){ // if active
             return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
@@ -101,14 +105,15 @@ class UserController extends Controller
             'password' => 'required|string|max:255|confirmed',
             'phone' => 'required|string|max:255|unique:users,phone',
             'role' => 'required|in:manger,teacher,assistant',
-            'user_id'=> 'nullable|exists:users,id'
+            'permissions' => 'required|min:1',
+            'user_id'=> 'nullable|exists:users,id',
         ]);
 
-        $request_data = $request->only(['name','email','phone','role']);
+        $request_data = $request->only(['name','email','phone']);
 
         if($request->role == 'assistant'){
 
-            $check_teacher = User::where('role','teacher')->where('id', $request->user_id)->first();
+            $check_teacher = User::whereRoleIs('teacher')->where('id', $request->user_id)->first();
             if(!$check_teacher){
                 $validate->after(function($validate) {
                     $validate->errors()->add('user_id', 'You have chosen the wrong reference teacher');
@@ -129,7 +134,8 @@ class UserController extends Controller
 
         $request_data['password'] = Hash::make($request->password);
         $user = User::create($request_data);
-
+        $user->attachRole($request->role);
+        $user->syncPermissions($request->permissions);
         return response()->json([
             'status' => true,
             'message' => 'User Created Successfully',
@@ -220,7 +226,12 @@ class UserController extends Controller
             'phone' => $request->phone,
             'active' => $request->active,
         ]);
-
+        if ($request->role) {
+            $user->syncRoles([$request->role]);
+        }
+        if ($request->permissions) {
+            $user->syncPermissions($request->permissions);
+        }
         return response()->json([
             'status' => true,
             'message' => 'User Updated Successfully',

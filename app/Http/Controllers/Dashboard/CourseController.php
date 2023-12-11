@@ -78,7 +78,7 @@ class CourseController extends Controller
         // [
         //     'search' => 'nullable|string|max:255',
         //     'semester' => 'nullable|in:first semester,second semester,full semester',
-        //     'user_id'=> ['nullable',Rule::exists('users','id')->where('role','teacher')],
+        //     'user_id'=> ['nullable',Rule::exists('users','id')->whereRoleIs('teacher')],
         //     'level_id'=> 'nullable|exists:level,id'
         // ]);
 
@@ -134,7 +134,7 @@ class CourseController extends Controller
              'description' => 'required|string|max:255',
              'image' => 'required|url|max:255',
              'semester' => 'required|in:first semester,second semester,full semester',
-             'user_id' => ['required',Rule::exists('users','id')->where('role','teacher')],
+             'user_id' => ['required',Rule::exists('users','id')->whereRoleIs('teacher')],
              'level_id'=> 'required|exists:levels,id'
          ]);
 
@@ -233,7 +233,7 @@ class CourseController extends Controller
             'description' => 'required|string|max:255',
             'image' => 'required|url|max:255',
             'semester' => 'required|in:first semester,second semester,full semester',
-            'user_id' => ['required',Rule::exists('users','id')->where('role','teacher')],
+            'user_id' => ['required',Rule::exists('users','id')->whereRoleIs('teacher')],
             'level_id'=> 'required|exists:levels,id',
             // 'active' => 'required|in:1,0',
         ]);

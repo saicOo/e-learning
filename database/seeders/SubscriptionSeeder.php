@@ -20,7 +20,7 @@ class SubscriptionSeeder extends Seeder
 
 
             $student = Student::where('attendance_type','online')->inRandomOrder()->first();
-            $course = Course::where('level_id',$student->level_id)->inRandomOrder()->first();
+            $course = Course::inRandomOrder()->first();
             $current = Carbon::today()->subDays(rand(0, 365));
             // $addMonth = $current;
 
