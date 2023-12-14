@@ -4,14 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
 
-    public function profile()
+    /**
+     * @OA\Get(
+     *     path="/api/profile",
+     *      tags={"Front Api Profile Student"},
+     *     summary="Show Data Student",
+     *       @OA\Response(response=200, description="OK"),
+     *    )
+     */
+    public function profile(Request $request)
     {
-            $student = Auth::user();
+            $student = $request->user();
             return response()->json([
                 'status' => true,
                 'data' => $student,

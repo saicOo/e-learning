@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['permission:users_read'])->only('index');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(['permission:users_read'])->only('index');
+    // }
     /**
      * @OA\Get(
      *     path="/api/dashboard/users",
@@ -87,7 +87,12 @@ class UserController extends Controller
      *             @OA\Property(property="phone", type="string", example="string"),
      *             @OA\Property(property="password", type="string", example="string"),
      *             @OA\Property(property="password_confirmation", type="string", example="string"),
-     *             @OA\Property(property="role", type="enum", example="manger , teacher , assistant"),
+     *             @OA\Property(property="role", type="array", @OA\Items(
+     *               type="string",example="manger , teacher, assistant",
+     *              ),),
+     *             @OA\Property(property="permissions", type="array", @OA\Items(
+     *               type="string",example="user_create",
+     *              ),),
      *             @OA\Property(property="user_id", type="integer", example="Sets the teacher assistant's ID"),
      *         ),
      *     ),
@@ -103,7 +108,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email|unique:users,email',
             'password' => 'required|string|max:255|confirmed',
-            'phone' => 'required|string|max:255|unique:users,phone',
+            'phone' => 'required|numeric|digits:11|unique:users,phone',
             'role' => 'required|in:manger,teacher,assistant',
             'permissions' => 'required|min:1',
             'user_id'=> 'nullable|exists:users,id',
@@ -193,6 +198,9 @@ class UserController extends Controller
      *             @OA\Property(property="email", type="string", example="string"),
      *             @OA\Property(property="phone", type="string", example="string"),
      *             @OA\Property(property="active", type="boolen", example="integer"),
+     *             @OA\Property(property="permissions", type="array", @OA\Items(
+     *               type="string",example="user_create",
+     *              ),),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -207,7 +215,7 @@ class UserController extends Controller
         [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
-            'phone' => 'required|string|max:255|unique:users,phone,'.$user->id,
+            'phone' => 'required|numeric|digits:11|unique:users,phone,'.$user->id,
             'active' => 'required|in:1,0',
         ]);
 
@@ -220,15 +228,10 @@ class UserController extends Controller
             ], 200);
         }
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'active' => $request->active,
-        ]);
-        if ($request->role) {
-            $user->syncRoles([$request->role]);
-        }
+        $user->update($validate->validated());
+        // if ($request->role) {
+        //     $user->syncRoles([$request->role]);
+        // }
         if ($request->permissions) {
             $user->syncPermissions($request->permissions);
         }

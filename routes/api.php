@@ -15,10 +15,15 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-// Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
+Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
     Route::get('/profile','StudentController@profile');
     Route::post('/logout', 'AuthController@logout');
-// });
+});
+Route::apiResource('courses', 'CourseController')->only(['index','show']);
+Route::apiResource('listens', 'ListenController')->only(['index','show']);
+Route::get('/categories','CategoryController@index');
+Route::get('/levels','LevelController@index');
+Route::post('/contacts','ContactController@store');
 
 Route::post('/login','AuthController@login');
 

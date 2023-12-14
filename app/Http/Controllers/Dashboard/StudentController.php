@@ -85,7 +85,7 @@ class StudentController extends Controller
             [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:students,email',
-                'phone' => 'required|string|max:255|unique:users,phone',
+                'phone' => 'required|numeric|digits:11|unique:users,phone',
                 'password' => 'required|string|max:255|confirmed',
                 'attendance_type' => 'required|in:online,offnline,mix',
             ]);
@@ -176,7 +176,7 @@ class StudentController extends Controller
             [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:students,email,'.$student->id,
-                'phone' => 'required|string|max:255|unique:students,phone,'.$student->id,
+                'phone' => 'required|numeric|digits:11|unique:students,phone,'.$student->id,
                 'attendance_type' => 'required|in:online,offnline,mix',
                 'active' => 'required|in:1,0',
             ]);
@@ -190,13 +190,7 @@ class StudentController extends Controller
                 ], 200);
             }
 
-            $student->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'attendance_type' => $request->attendance_type,
-                'active' => $request->active,
-            ]);
+            $student->update($validate->validated());
 
             return response()->json([
                 'status' => true,

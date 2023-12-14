@@ -19,7 +19,7 @@ class AuthController extends Controller
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="email", type="string", example="manger@app.com"),
+     *             @OA\Property(property="email", type="string", example="1st@app.com"),
      *             @OA\Property(property="password", type="string", example="1234"),
      *         ),
      *     ),
@@ -44,20 +44,43 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            if(!Auth::guard('student')->attempt($request->only(['email', 'password']))){
+            // if(!Auth::guard('student')->attempt($request->only(['email', 'password']))){
+            //     return response()->json([
+            //         'success' => false,
+            //         'status_code' => Response::HTTP_UNAUTHORIZED,
+            //         'message' => 'Email & Password does not match with our record.',
+            //     ], 200);
+            // }
+
+            // $student = Auth::guard('student')->user();
+            // return response()->json([
+            //     'status' => true,
+            //     'message' => 'Student Logged In Successfully',
+            //     'token' => $student->createToken("token",['student'])->plainTextToken
+            // ], 200);
+            $student = Student::where('email', $request->email)->first();
+
+            if (!$student || !Hash::check($request->password, $student->password)) {
                 return response()->json([
                     'success' => false,
                     'status_code' => Response::HTTP_UNAUTHORIZED,
-                    'message' => 'Email & Password does not match with our record.',
+                    'message' => 'Email or password is incorrect!'
                 ], 200);
             }
 
-            $student = Auth::guard('student')->user();
+            $token = $student->createToken('token_student',['student'])->plainTextToken;
+
+            // $cookie = cookie('token_student', $token, 60 * 24); // 1 day
+            // $cookie = cookie('token_student', $token, 1)->withSameSite('None'); // 1 minute
+            $cookie = cookie('token_student', $token, 1); // 1 minute
+
             return response()->json([
                 'status' => true,
                 'message' => 'Student Logged In Successfully',
-                'token' => $student->createToken("token",['student'])->plainTextToken
-            ], 200);
+                'data' => [
+                    'student' => $student,
+                ]
+                ],200)->withCookie($cookie);
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -78,18 +101,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        try {
-            $request->user()->tokens->each(function ($token, $key) {
-                $token->delete();
-            });
+        $request->user()->currentAccessToken()->delete();
+
+        $cookie = cookie()->forget('token_student');
+
         return response()->json([
-        'message' => 'Successfully logged out'
-        ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
+            'message' => 'Logged out successfully!'
+        ])->withCookie($cookie);
+
+
     }
 }

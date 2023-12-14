@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 use Faker\Factory;
 use App\Models\User;
-use App\Models\Course;
 use App\Models\Level;
+use App\Models\Course;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class CourseSeeder extends Seeder
@@ -27,6 +28,7 @@ class CourseSeeder extends Seeder
                 'image'=>'https://www.goethe.de/prj/dlp/assets/images/default.png',
                 'user_id'=>User::whereRoleIs('teacher')->inRandomOrder()->first()->id,
                 'level_id'=>Level::inRandomOrder()->first()->id,
+                'category_id'=>Category::inRandomOrder()->first()->id,
                 'active'=>1
              ]);
         }

@@ -10,10 +10,20 @@ class Course extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $appends = ['listens_count'];
+
+    public function getListensCountAttribute(){
+        return $this->listens->count();
+    }
 
     public function level()
     {
         return $this->belongsTo(Level::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function user()

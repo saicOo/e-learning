@@ -20,7 +20,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "manger@app.com"
+                                        "example": "1st@app.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -52,6 +52,168 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Front Api Categories"
+                ],
+                "summary": "Get All Categories",
+                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/contacts": {
+            "post": {
+                "tags": [
+                    "Front Api Contact"
+                ],
+                "summary": "Add New Contact",
+                "operationId": "a3b0baf957a16c1ed505f2e8985c254c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/courses": {
+            "get": {
+                "tags": [
+                    "Front Api Courses"
+                ],
+                "summary": "get all courses",
+                "operationId": "02eeda67042dba2d22a517f26fb8eaf1",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "filter courses with user",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "level_id",
+                        "in": "query",
+                        "description": "filter courses with level",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "filter courses with category",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "semester",
+                        "in": "query",
+                        "description": "filter courses with semester (first semester , second semester , full semester)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "filter courses with active (active = 1 , not active = 0)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description courses",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Courses"
+                ],
+                "summary": "show course",
+                "operationId": "f507f69de30e73b038b9d68c035cbc4f",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
                     }
                 }
             }
@@ -110,6 +272,196 @@
                 }
             }
         },
+        "/api/dashboard/categories": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Categories"
+                ],
+                "summary": "get all Category",
+                "operationId": "91df637024d05c8e9272f2e3f329f0cb",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name categories",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Categories"
+                ],
+                "summary": "Add New Category",
+                "operationId": "95a1bdb853b7d982e7f3f6ce945dc8b2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/categories/{category_id}": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Categories"
+                ],
+                "summary": "Updated Category",
+                "operationId": "66da321d6325e139f82cbe8c9a4d22b9",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Categories"
+                ],
+                "summary": "Delete Category",
+                "operationId": "815787fb8dac8e80b1e5185c50f71972",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/contacts": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Contacts"
+                ],
+                "summary": "get all Contacts",
+                "operationId": "c7441b4d84640ab3ccd5837b47a06e14",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or email or phone contacts",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/contacts/{contact_id}": {
+            "delete": {
+                "tags": [
+                    "Dashboard Api Contacts"
+                ],
+                "summary": "Delete Contact",
+                "operationId": "d74931572318860392d74f4c28646220",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/dashboard/courses": {
             "get": {
                 "tags": [
@@ -132,6 +484,16 @@
                         "name": "level_id",
                         "in": "query",
                         "description": "filter courses with level",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "filter courses with category",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -215,6 +577,10 @@
                                         "example": "integer"
                                     },
                                     "level_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "category_id": {
                                         "type": "integer",
                                         "example": "integer"
                                     }
@@ -311,6 +677,10 @@
                                         "example": "integer"
                                     },
                                     "level_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "category_id": {
                                         "type": "integer",
                                         "example": "integer"
                                     }
@@ -649,16 +1019,6 @@
                 "operationId": "359e9e7951c9acd498620fc0ebde7614",
                 "parameters": [
                     {
-                        "name": "level_id",
-                        "in": "query",
-                        "description": "filter students with level",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
                         "name": "active",
                         "in": "query",
                         "description": "filter students with active (active = 1 , not active = 0)",
@@ -722,10 +1082,6 @@
                                     "attendance_type": {
                                         "type": "enum",
                                         "example": "online , offnline , mix"
-                                    },
-                                    "level_id": {
-                                        "type": "integer",
-                                        "example": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -809,10 +1165,6 @@
                                     "attendance_type": {
                                         "type": "enum",
                                         "example": "online , offnline , mix"
-                                    },
-                                    "level_id": {
-                                        "type": "integer",
-                                        "example": "integer"
                                     },
                                     "active": {
                                         "type": "boolen",
@@ -1134,8 +1486,18 @@
                                         "example": "string"
                                     },
                                     "role": {
-                                        "type": "enum",
-                                        "example": "manger , teacher , assistant"
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "manger , teacher, assistant"
+                                        }
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "user_create"
+                                        }
                                     },
                                     "user_id": {
                                         "type": "integer",
@@ -1223,6 +1585,13 @@
                                     "active": {
                                         "type": "boolen",
                                         "example": "integer"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "user_create"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -1321,6 +1690,114 @@
                     },
                     "404": {
                         "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/levels": {
+            "get": {
+                "tags": [
+                    "Front Api Levels"
+                ],
+                "summary": "Get All Levels",
+                "operationId": "b21200cd0ebde08419a3347af27dcad7",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/listens": {
+            "get": {
+                "tags": [
+                    "Front Api Listens"
+                ],
+                "summary": "get all listens",
+                "operationId": "350e367a850e0664520a236e74523330",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "description": "filter listens with course",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "filter listens with active (active = 1 , not active = 0)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/listens/{listen_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Listens"
+                ],
+                "summary": "show listen",
+                "operationId": "e7ccd2b92f25dc4860b5278a95ab39a3",
+                "parameters": [
+                    {
+                        "name": "listen_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "Front Api Profile Student"
+                ],
+                "summary": "Show Data Student",
+                "operationId": "c87b04fe75716f8b673881188698c08b",
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }

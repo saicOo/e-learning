@@ -31,7 +31,7 @@ class AuthController extends Controller
      */
     public function login(Request $request){
 
-           try {
+        try {
             $validateUser = Validator::make($request->all(),
             [
                 'email' => 'required|email|string|max:255',
@@ -47,20 +47,29 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            if(!Auth::attempt($request->only(['email','password']))){
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user || !Hash::check($request->password, $user->password)) {
                 return response()->json([
                     'success' => false,
                     'status_code' => Response::HTTP_UNAUTHORIZED,
-                    'message' => 'Email & Password does not match with our record.',
+                    'message' => 'Email or password is incorrect!'
                 ], 200);
             }
 
-            $user = Auth::user();
+            $token = $user->createToken('token',['user'])->plainTextToken;
+
+            // $cookie = cookie('token', $token, 60 * 24); // 1 day
+            // $cookie = cookie('token', $token, 3)->withSameSite('None'); // 1 minute
+            $cookie = cookie('token', $token, 3); // 1 minute
+
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
-                'token' => $user->createToken("token",['user'])->plainTextToken
-            ], 200);
+                'data' => [
+                    'user' => $user,
+                ]
+                ],200)->withCookie($cookie);
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -81,18 +90,12 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        try {
-            $request->user()->tokens->each(function ($token, $key) {
-                $token->delete();
-            });
+        $request->user()->currentAccessToken()->delete();
+
+        $cookie = cookie()->forget('token');
+
         return response()->json([
-        'message' => 'Successfully logged out'
-        ]);
-    } catch (\Throwable $th) {
-        return response()->json([
-            'success' => false,
-            'message' => $th->getMessage()
-        ], 500);
-    }
+            'message' => 'Logged out successfully!'
+        ])->withCookie($cookie);
     }
 }
