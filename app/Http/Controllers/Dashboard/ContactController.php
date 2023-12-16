@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:contacts_read'])->only('index');
+        $this->middleware(['permission:contacts_delete'])->only('destroy');
+    }
     /**
      * @OA\Get(
      *     path="/api/dashboard/contacts",

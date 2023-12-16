@@ -3,14 +3,25 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Course;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class CourseController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:courses_read'])->only(['index','show']);
+        $this->middleware(['permission:courses_create'])->only('store');
+        $this->middleware(['permission:courses_update'])->only('update');
+        $this->middleware(['permission:courses_delete'])->only('destroy');
+        $this->middleware(['permission:courses_approve'])->only('approve');
+    }
     /**
      * @OA\Get(
      *     path="/api/dashboard/courses",
@@ -134,9 +145,9 @@ class CourseController extends Controller
          $validate = Validator::make($request->all(),
          [
              'name' => 'required|string|max:255',
-            'price' => 'required',
+            'price' => 'required|integer|max:999999',
              'description' => 'required|string|max:255',
-             'image' => 'required|url|max:255',
+             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
              'semester' => 'required|in:first semester,second semester,full semester',
              'user_id'=> 'required|exists:users,id',
              'level_id'=> 'required|exists:levels,id',
@@ -152,8 +163,15 @@ class CourseController extends Controller
                  'errors' => $validate->errors()
              ], 200);
          }
-
-         $course = Course::create($validate->validated());
+         $request_data = $validate->validated();
+         if($request->image){
+            $imageName = Str::random(20) . uniqid()  . '.webp';
+                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    })->save( Storage::disk('public')->path('courses/'.$imageName));
+            $request_data['image']  = 'courses/'.$imageName;
+        }
+         $course = Course::create($request_data);
 
          return response()->json([
              'status' => true,
@@ -226,15 +244,14 @@ class CourseController extends Controller
         //Validated
         $validate = Validator::make($request->all(),
         [
-            'name' => 'required|string|max:255',
-            'price' => 'required',
-            'description' => 'required|string|max:255',
-            'image' => 'required|url|max:255',
-            'semester' => 'required|in:first semester,second semester,full semester',
-            'user_id'=> 'required|exists:users,id',
-            'level_id'=> 'required|exists:levels,id',
-            'category_id'=> 'required|exists:categories,id',
-            // 'active' => 'required|in:1,0',
+            'name' => 'nullable|string|max:255',
+            'price' => 'nullable|integer|max:999999',
+            'description' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
+            'semester' => 'nullable|in:first semester,second semester,full semester',
+            'user_id'=> 'nullable|exists:users,id',
+            'level_id'=> 'nullable|exists:levels,id',
+            'category_id'=> 'nullable|exists:categories,id',
         ]);
 
 
@@ -246,18 +263,19 @@ class CourseController extends Controller
                 'errors' => $validate->errors()
             ], 200);
         }
-
-        $course->update([
-            'name'=>$request->name,
-            'description'=>$request->description,
-            'price'=>$request->price,
-            'semester'=>$request->semester,
-            'image'=>$request->image,
-            'user_id'=>$request->user_id,
-            'level_id'=>$request->level_id,
-            'category_id'=>$request->category_id,
-            'active'=> 0,
-        ]);
+        $request_data = $validate->validated();
+        if($request->image){
+            if($course->image != 'courses/default.webp'){
+                Storage::disk('public')->delete($course->image);
+            }
+            $imageName = Str::random(20) . uniqid()  . '.webp';
+                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    })->save( Storage::disk('public')->path('courses/'.$imageName));
+            $request_data['image']  = 'courses/'.$imageName;
+        }
+        $request_data['active'] = 0;
+        $course->update($request_data);
 
         return response()->json([
             'status' => true,
@@ -286,6 +304,9 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
+        if($course->image != 'courses/default.webp'){
+            Storage::disk('public')->delete($course->image);
+        }
         $course->delete();
             return response()->json([
                 'status' => true,

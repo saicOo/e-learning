@@ -2,20 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
-    protected $appends = ['listens_count'];
-
+    protected $appends = ['listens_count','image_url'];
+    protected $hidden = [
+        'image',
+    ];
     public function getListensCountAttribute(){
         return $this->listens->count();
     }
-
+    public function getImageUrlAttribute(){
+        return Storage::disk('public')->url($this->image);
+    }
     public function level()
     {
         return $this->belongsTo(Level::class);

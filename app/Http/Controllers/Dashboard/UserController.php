@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\User;
+use App\Traits\PermissionsUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -11,10 +12,14 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware(['permission:users_read'])->only('index');
-    // }
+    public function __construct()
+    {
+        $this->middleware(['permission:users_read'])->only(['index','show']);
+        $this->middleware(['permission:users_create'])->only('store');
+        $this->middleware(['permission:users_update'])->only('update');
+        $this->middleware(['permission:users_delete'])->only('destroy');
+    }
+    use PermissionsUser;
     /**
      * @OA\Get(
      *     path="/api/dashboard/users",
@@ -56,7 +61,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::with('roles','permissions')->when($request->role,function ($query) use ($request){ // if role
+        $users = User::with('roles:id,name,display_name','permissions:id,name,display_name')->when($request->role,function ($query) use ($request){ // if role
             return $query->whereRoleIs($request->role);
         })->when($request->active,function ($query) use ($request){ // if active
             return $query->where('active',$request->active);
@@ -109,9 +114,10 @@ class UserController extends Controller
             'email' => 'required|string|max:255|email|unique:users,email',
             'password' => 'required|string|max:255|confirmed',
             'phone' => 'required|numeric|digits:11|unique:users,phone',
-            'role' => 'required|in:manger,teacher,assistant',
-            'permissions' => 'required|min:1',
+            'role' => 'required|exists:roles,name',
             'user_id'=> 'nullable|exists:users,id',
+            // 'permissions' => 'required|min:1',
+            // 'permissions.*' => 'required|exists:permissions,name',
         ]);
 
         $request_data = $request->only(['name','email','phone']);
@@ -140,7 +146,8 @@ class UserController extends Controller
         $request_data['password'] = Hash::make($request->password);
         $user = User::create($request_data);
         $user->attachRole($request->role);
-        $user->syncPermissions($request->permissions);
+        $user->syncPermissions($this->createPermissionsUser($user, $request->role));
+        // $user->syncPermissions($request->permissions);
         return response()->json([
             'status' => true,
             'message' => 'User Created Successfully',
@@ -332,4 +339,5 @@ class UserController extends Controller
                 'message' => 'Deleted Data Successfully',
             ], 200);
     }
+
 }

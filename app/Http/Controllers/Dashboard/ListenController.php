@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Validator;
 
 class ListenController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:listens_read'])->only(['index','show']);
+        $this->middleware(['permission:listens_create'])->only('store');
+        $this->middleware(['permission:listens_update'])->only('update');
+        $this->middleware(['permission:listens_delete'])->only('destroy');
+        $this->middleware(['permission:listens_approve'])->only('approve');
+    }
 /**
      * @OA\Get(
      *     path="/api/dashboard/listens",
@@ -78,7 +86,8 @@ class ListenController extends Controller
      *             type="object",
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="description", type="string", example="string"),
-     *             @OA\Property(property="video", type="string", example="path or url"),
+     *             @OA\Property(property="video", type="file", example="string"),
+     *             @OA\Property(property="attached", type="file", example="string"),
      *             @OA\Property(property="course_id", type="integer", example="integer"),
      *         ),
      *     ),
@@ -93,9 +102,11 @@ class ListenController extends Controller
         [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
+            'video_type' => 'required|in:file,url',
             'video' => 'required|mimes:mp4|max:8192',
+            'attached' => 'nullable|mimes:pdf|max:8192',
             'course_id'=> 'required|exists:courses,id'
-        ]);
+        ]); // notes validate video_type
 
 
         if($validate->fails()){
@@ -106,13 +117,18 @@ class ListenController extends Controller
                 'errors' => $validate->errors()
             ], 200);
         }
-        $path_video = $request->file('video')->store('apifile',['disk' => 'public']);
-        $listen = Listen::create([
-           'name'=>$request->name,
-           'description'=>$request->description,
-           'video'=>$path_video,
-           'course_id'=>$request->course_id,
-        ]);
+
+        $request_data = $validate->validated();
+
+        $path_video = $request->file('video')->store('video',['disk' => 'public']);
+        $request_data['video'] = $path_video;
+
+        if($request->attached){
+            $path_attached = $request->file('attached')->store('attached',['disk' => 'public']);
+            $request_data['attached'] = $path_attached;
+        }
+
+        $listen = Listen::create($request_data);
 
         return response()->json([
             'status' => true,
@@ -167,6 +183,8 @@ class ListenController extends Controller
      *             type="object",
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="description", type="string", example="string"),
+     *             @OA\Property(property="video", type="file", example="path file"),
+     *             @OA\Property(property="attached", type="file", example="path file"),
      *             @OA\Property(property="course_id", type="integer", example="integer"),
      *         ),
      *     ),
@@ -180,11 +198,11 @@ class ListenController extends Controller
         //Validated
         $validate = Validator::make($request->all(),
         [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            // 'video' => 'required|mimes:mp4|max:8192',
-            'course_id'=> 'required|exists:courses,id',
-            // 'active' => 'required|in:1,0',
+            'name' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'video' => 'nullable|mimes:mp4|max:8192',
+            'attached' => 'nullable|mimes:pdf|max:8192',
+            'course_id'=> 'nullable|exists:courses,id',
         ]);
 
         if($validate->fails()){
@@ -196,13 +214,26 @@ class ListenController extends Controller
             ], 200);
         }
 
-        $listen->update([
-            'name'=>$request->name,
-            'description'=>$request->description,
-            // 'video'=>$path_video,
-            'course_id'=>$request->course_id,
-            'active'=> 0,
-        ]);
+        $request_data = $validate->validated();
+
+        if($request->video){
+            if($listen->video != 'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4'){
+                Storage::disk('public')->delete($listen->video);
+            }
+            $path_video = $request->file('video')->store('video',['disk' => 'public']);
+            $request_data['video'] = $path_video;
+        }
+
+        if($request->attached){
+            if($listen->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf'){
+                Storage::disk('public')->delete($listen->attached);
+            }
+            $path_attached = $request->file('attached')->store('attached',['disk' => 'public']);
+            $request_data['attached'] = $path_attached;
+        }
+
+        $request_data['active'] = 0;
+        $listen->update($request_data);
 
         return response()->json([
             'status' => true,
@@ -231,7 +262,12 @@ class ListenController extends Controller
      */
     public function destroy(Listen $listen)
     {
-        Storage::disk('public')->delete($listen->video);
+        if($listen->video != 'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4'){
+            Storage::disk('public')->delete($listen->video);
+        }
+        if($listen->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf'){
+            Storage::disk('public')->delete($listen->attached);
+        }
         $listen->delete();
             return response()->json([
                 'status' => true,

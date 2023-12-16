@@ -20,7 +20,8 @@ class CreateStudentsTable extends Migration
             $table->string('phone')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('attendance_type',['online','offline','mix']);
+            $table->enum('attendance_type',['online','offline']);
+            $table->text('image')->default('students/default.png');
             $table->boolean('active')->default(1)->comment('0=>not active ,1=>active');
             $table->rememberToken();
             $table->timestamps();

@@ -12,7 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware(['permission:students_read'])->only(['index','show']);
+        $this->middleware(['permission:students_create'])->only('store');
+        $this->middleware(['permission:students_update'])->only('update');
+        $this->middleware(['permission:students_delete'])->only('destroy');
+    }
     /**
      * @OA\Get(
      *     path="/api/dashboard/students",
@@ -71,7 +77,7 @@ class StudentController extends Controller
      *             @OA\Property(property="phone", type="string", example="string"),
      *             @OA\Property(property="password", type="string", example="string"),
      *             @OA\Property(property="password_confirmation", type="string", example="string"),
-     *             @OA\Property(property="attendance_type", type="enum", example="online , offnline , mix"),
+     *             @OA\Property(property="attendance_type", type="enum", example="online , offnline"),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -87,7 +93,7 @@ class StudentController extends Controller
                 'email' => 'required|string|email|max:255|unique:students,email',
                 'phone' => 'required|numeric|digits:11|unique:users,phone',
                 'password' => 'required|string|max:255|confirmed',
-                'attendance_type' => 'required|in:online,offnline,mix',
+                'attendance_type' => 'required|in:online,offnline',
             ]);
 
             if($validate->fails()){
@@ -160,7 +166,7 @@ class StudentController extends Controller
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="email", type="string", example="string"),
      *             @OA\Property(property="phone", type="string", example="string"),
-     *             @OA\Property(property="attendance_type", type="enum", example="online , offnline , mix"),
+     *             @OA\Property(property="attendance_type", type="enum", example="online , offnline"),
      *             @OA\Property(property="active", type="boolen", example="integer"),
      *         ),
      *     ),
@@ -177,7 +183,7 @@ class StudentController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:students,email,'.$student->id,
                 'phone' => 'required|numeric|digits:11|unique:students,phone,'.$student->id,
-                'attendance_type' => 'required|in:online,offnline,mix',
+                'attendance_type' => 'required|in:online,offnline',
                 'active' => 'required|in:1,0',
             ]);
 

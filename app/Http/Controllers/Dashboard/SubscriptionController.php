@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Validator;
 class SubscriptionController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['permission:subscriptions_read'])->only(['index','show']);
+        $this->middleware(['permission:subscriptions_create'])->only('store');
+        $this->middleware(['permission:subscriptions_delete'])->only('destroy');
+    }
     /**
      * @OA\Get(
      *     path="/api/dashboard/subscriptions",

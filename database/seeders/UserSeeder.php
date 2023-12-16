@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 use App\Models\User;
+use App\Traits\PermissionsUser;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
+    use PermissionsUser;
     /**
      * Run the database seeds.
      *
@@ -20,6 +22,7 @@ class UserSeeder extends Seeder
             'password'=>bcrypt('1234'),
         ]);
         $manger->attachRole('manger');
+
         $teacher1 = User::create([
             'name'=>'teacher1',
             'email'=>'teacher1@app.com',
@@ -27,6 +30,8 @@ class UserSeeder extends Seeder
             'password'=>bcrypt('1234'),
         ]);
         $teacher1->attachRole('teacher');
+        $teacher1->syncPermissions($this->createPermissionsUser($teacher1, 'teacher'));
+
         $teacher2 = User::create([
             'name'=>'teacher2',
             'email'=>'teacher2@app.com',
@@ -34,6 +39,8 @@ class UserSeeder extends Seeder
             'password'=>bcrypt('1234'),
         ]);
         $teacher2->attachRole('teacher');
+        $teacher2->syncPermissions($this->createPermissionsUser($teacher2, 'teacher'));
+
         $assistant1 = User::create([
             'name'=>'assistant1',
             'email'=>'assistant1@app.com',
@@ -42,6 +49,8 @@ class UserSeeder extends Seeder
             'user_id'=>2,
         ]);
         $assistant1->attachRole('assistant');
+        $assistant1->syncPermissions($this->createPermissionsUser($assistant1, 'assistant'));
+
         $assistant2 = User::create([
             'name'=>'assistant2',
             'email'=>'assistant2@app.com',
@@ -50,5 +59,9 @@ class UserSeeder extends Seeder
             'user_id'=>2,
         ]);
         $assistant2->attachRole('assistant');
+        $assistant2->syncPermissions($this->createPermissionsUser($assistant2, 'assistant'));
+
     }
+
+
 }

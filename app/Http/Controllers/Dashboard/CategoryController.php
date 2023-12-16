@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:categories_read'])->only('index');
+        $this->middleware(['permission:categories_create'])->only('store');
+        $this->middleware(['permission:categories_update'])->only('update');
+        $this->middleware(['permission:categories_delete'])->only('destroy');
+    }
     /**
      * @OA\Get(
      *     path="/api/dashboard/categories",

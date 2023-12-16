@@ -845,8 +845,12 @@
                                         "example": "string"
                                     },
                                     "video": {
-                                        "type": "string",
-                                        "example": "path or url"
+                                        "type": "file",
+                                        "example": "string"
+                                    },
+                                    "attached": {
+                                        "type": "file",
+                                        "example": "string"
                                     },
                                     "course_id": {
                                         "type": "integer",
@@ -926,6 +930,14 @@
                                     "description": {
                                         "type": "string",
                                         "example": "string"
+                                    },
+                                    "video": {
+                                        "type": "file",
+                                        "example": "path file"
+                                    },
+                                    "attached": {
+                                        "type": "file",
+                                        "example": "path file"
                                     },
                                     "course_id": {
                                         "type": "integer",
@@ -1081,7 +1093,7 @@
                                     },
                                     "attendance_type": {
                                         "type": "enum",
-                                        "example": "online , offnline , mix"
+                                        "example": "online , offnline"
                                     }
                                 },
                                 "type": "object"
@@ -1164,7 +1176,7 @@
                                     },
                                     "attendance_type": {
                                         "type": "enum",
-                                        "example": "online , offnline , mix"
+                                        "example": "online , offnline"
                                     },
                                     "active": {
                                         "type": "boolen",

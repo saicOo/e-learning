@@ -25,7 +25,6 @@ class CourseSeeder extends Seeder
                 'description'=>$faker->sentence(20),
                 'price'=>rand(50,800),
                 'semester'=>$semester[rand(0,2)],
-                'image'=>'https://www.goethe.de/prj/dlp/assets/images/default.png',
                 'user_id'=>User::whereRoleIs('teacher')->inRandomOrder()->first()->id,
                 'level_id'=>Level::inRandomOrder()->first()->id,
                 'category_id'=>Category::inRandomOrder()->first()->id,

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use Carbon\Carbon;
 use App\Models\User;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Response;
+
 class AuthController extends Controller
 {
 
@@ -47,7 +49,7 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            $user = User::where('email', $request->email)->first();
+            $user = User::with('roles:id,name,display_name','permissions:id,name,display_name')->where('email', $request->email)->first();
 
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return response()->json([
@@ -58,16 +60,18 @@ class AuthController extends Controller
             }
 
             $token = $user->createToken('token',['user'])->plainTextToken;
-
+            $expiry_minutes = 10;
             // $cookie = cookie('token', $token, 60 * 24); // 1 day
-            // $cookie = cookie('token', $token, 3)->withSameSite('None'); // 1 minute
-            $cookie = cookie('token', $token, 3); // 1 minute
-
+            // $cookie = cookie('token', $token, $expiry_minutes); // 1 minute
+            $cookie = cookie('token', $token, $expiry_minutes)->withSameSite('None'); // 1 minute
+            $expiry_date = Carbon::now();
+            $expiry_date = $expiry_date->addMinutes($expiry_minutes);
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
                 'data' => [
                     'user' => $user,
+                    'expiry_token' => $expiry_date,
                 ]
                 ],200)->withCookie($cookie);
 

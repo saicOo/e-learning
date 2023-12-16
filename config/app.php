@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Intervention\Image\ImageServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
         L5Swagger\L5SwaggerServiceProvider::class,
         /*
@@ -230,7 +231,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Laratrust'   => Laratrust\LaratrustFacade::class
+        'Laratrust'   => Laratrust\LaratrustFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class
+
     ],
 
 ];

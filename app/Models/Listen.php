@@ -12,15 +12,21 @@ class Listen extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['video_url'];
+    protected $appends = ['video_url','attached_url'];
 
     protected $hidden = [
         'video',
-        'course_id'
+        'attached',
     ];
 
     public function getVideoUrlAttribute(){
         return Storage::disk('public')->url($this->video);
+    }
+    public function getAttachedUrlAttribute(){
+        if($this->attached){
+            return Storage::disk('public')->url($this->attached);
+        }
+        return null;
     }
 
     public function course()

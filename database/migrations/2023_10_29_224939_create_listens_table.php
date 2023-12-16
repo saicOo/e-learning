@@ -16,7 +16,9 @@ class CreateListensTable extends Migration
         Schema::create('listens', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('video');
+            $table->enum('video_type',['file','url']);
+            $table->text('video')->nullable();
+            $table->text('attached')->nullable();
             $table->text('description');
             $table->boolean('active')->default(0)->comment('0=>not active ,1=>active');
             $table->unsignedBigInteger('course_id');
