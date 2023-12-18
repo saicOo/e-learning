@@ -107,7 +107,7 @@ class CourseController extends Controller
             return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
-        })->get();
+        })->withCount('listens')->get();
 
             return response()->json([
                 'status' => true,
@@ -265,7 +265,7 @@ class CourseController extends Controller
         }
         $request_data = $validate->validated();
         if($request->image){
-            if($course->image != 'courses/default.webp'){
+            if($course->image != 'courses/default.webp' || $course->image){
                 Storage::disk('public')->delete($course->image);
             }
             $imageName = Str::random(20) . uniqid()  . '.webp';
@@ -304,7 +304,7 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        if($course->image != 'courses/default.webp'){
+        if($course->image != 'courses/default.webp' ||  $course->image){
             Storage::disk('public')->delete($course->image);
         }
         $course->delete();
@@ -328,15 +328,36 @@ class CourseController extends Controller
      *             type="integer",
      *         ),
      *     ),
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="active", type="boolen", example="1 or 0"),
+     *         ),
+     *     ),
      *       @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function approve(Course $course)
+    public function approve(Request $request, Course $course)
     {
+        //Validated
+        $validate = Validator::make($request->all(),
+        [
+            'active' => 'required|in:1,0',
+        ]);
+
+        if($validate->fails()){
+            return response()->json([
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'validation error',
+                'errors' => $validate->errors()
+            ], 200);
+        }
+
         $course->update([
-            'active'=> 1,
+            'active'=> $request->active,
         ]);
 
         return response()->json([

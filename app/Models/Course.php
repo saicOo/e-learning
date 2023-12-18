@@ -11,15 +11,16 @@ class Course extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $appends = ['listens_count','image_url'];
+    protected $appends = ['image_url'];
     protected $hidden = [
         'image',
     ];
-    public function getListensCountAttribute(){
-        return $this->listens->count();
-    }
+
     public function getImageUrlAttribute(){
-        return Storage::disk('public')->url($this->image);
+        if($this->image){
+            return Storage::disk('public')->url($this->image);
+        }
+        return null;
     }
     public function level()
     {
@@ -38,6 +39,11 @@ class Course extends Model
 
     public function listens(){
         return $this->hasMany(Listen::class);
+    }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
     }
 
     public function subscriptions()

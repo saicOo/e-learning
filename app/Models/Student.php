@@ -26,6 +26,7 @@ class Student extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'image',
         'remember_token',
     ];
 
@@ -37,7 +38,15 @@ class Student extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    protected $appends = ['image_url'];
 
+    public function getImageUrlAttribute(){
+        if($this->image){
+            return Storage::disk('public')->url($this->image);
+        }
+        return null;
+    }
 
     public function subscriptions()
     {

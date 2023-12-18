@@ -21,11 +21,11 @@ class ContactController extends Controller
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="email", type="string", example="string"),
      *             @OA\Property(property="phone", type="string", example="string"),
+     *             @OA\Property(property="subject", type="string", example="string"),
      *             @OA\Property(property="message", type="string", example="string"),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
-     *       @OA\Response(response=401, description="Unauthenticated"),
      * )
      */
     public function store(Request $request)
@@ -36,6 +36,7 @@ class ContactController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email',
             'phone' => 'required|numeric|digits:11',
+            'subject' => 'required|string|max:255',
             'message' => 'required|string|max:500',
          ]);
 

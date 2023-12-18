@@ -17,7 +17,8 @@ class CreateCoursesTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->text('image')->default('courses/default.webp');
+            $table->text('image')->nullable();
+            // $table->text('image')->default('courses/default.webp');
             $table->double('price',10, 2);
             $table->enum('semester',['first semester','second semester','full semester']);
             $table->boolean('active')->default(0)->comment('0=>not active ,1=>active');

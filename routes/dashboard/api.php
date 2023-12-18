@@ -4,6 +4,7 @@ use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\QuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,16 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     // routes listens
     Route::apiResource('listens', 'ListenController')->except(['edit','create']);
     Route::put('/listens/{listen}/approve','ListenController@approve');
+    Route::post('/listens/{listen}/upload-video','ListenController@uploadVideo');
+    Route::post('/listens/{listen}/upload-file','ListenController@uploadFile');
+    // routes questions
+    Route::apiResource('questions', 'QuestionController')->except(['edit','create']);
+    Route::controller(QuestionController::class)->group(function () {
+        Route::get('courses/{course}/questions', 'index');
+        Route::post('courses/{course}/questions', 'store');
+        Route::put('questions/{question}', 'update');
+        Route::delete('questions/{question}', 'destroy');
+    });
     // routes category
     Route::apiResource('categories', 'CategoryController')->only(['index','store','update','delete']);
     // routes subscriptions

@@ -94,6 +94,10 @@
                                         "type": "string",
                                         "example": "string"
                                     },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
                                     "message": {
                                         "type": "string",
                                         "example": "string"
@@ -107,9 +111,6 @@
                 "responses": {
                     "200": {
                         "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
                     }
                 }
             }
@@ -156,16 +157,6 @@
                         "name": "semester",
                         "in": "query",
                         "description": "filter courses with semester (first semester , second semester , full semester)",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "active",
-                        "in": "query",
-                        "description": "filter courses with active (active = 1 , not active = 0)",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -747,6 +738,21 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "active": {
+                                        "type": "boolen",
+                                        "example": "1 or 0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -842,14 +848,6 @@
                                     },
                                     "description": {
                                         "type": "string",
-                                        "example": "string"
-                                    },
-                                    "video": {
-                                        "type": "file",
-                                        "example": "string"
-                                    },
-                                    "attached": {
-                                        "type": "file",
                                         "example": "string"
                                     },
                                     "course_id": {
@@ -991,6 +989,98 @@
                 }
             }
         },
+        "/api/dashboard/listens/{listene_id}/upload-video": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Listens"
+                ],
+                "summary": "upload video Listen",
+                "operationId": "a5f398d7b3d36475182810a8ac99d97c",
+                "parameters": [
+                    {
+                        "name": "listen_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "video": {
+                                        "type": "file",
+                                        "example": "path file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/listens/{listene_id}/upload-file": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Listens"
+                ],
+                "summary": "upload file Listen",
+                "operationId": "fea4d78d92eb61cb55727f35f1282ddd",
+                "parameters": [
+                    {
+                        "name": "listen_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "type": "file",
+                                        "example": "path file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/dashboard/listens/{listene_id}/approve": {
             "put": {
                 "tags": [
@@ -1009,6 +1099,21 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "active": {
+                                        "type": "boolen",
+                                        "example": "1 or 0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -1736,16 +1841,6 @@
                         "explode": true,
                         "schema": {
                             "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "active",
-                        "in": "query",
-                        "description": "filter listens with active (active = 1 , not active = 0)",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "string"
                         }
                     },
                     {

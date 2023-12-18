@@ -116,11 +116,9 @@ class UserController extends Controller
             'phone' => 'required|numeric|digits:11|unique:users,phone',
             'role' => 'required|exists:roles,name',
             'user_id'=> 'nullable|exists:users,id',
-            // 'permissions' => 'required|min:1',
-            // 'permissions.*' => 'required|exists:permissions,name',
         ]);
 
-        $request_data = $request->only(['name','email','phone']);
+        $request_data = $validate->validated();
 
         if($request->role == 'assistant'){
 
@@ -142,12 +140,17 @@ class UserController extends Controller
                 'errors' => $validate->errors()
             ], 200);
         }
-
+        if($request->image){
+            $imageName = Str::random(20) . uniqid()  . '.webp';
+                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    })->save( Storage::disk('public')->path('users/'.$imageName));
+            $request_data['image']  = 'users/'.$imageName;
+        }
         $request_data['password'] = Hash::make($request->password);
         $user = User::create($request_data);
         $user->attachRole($request->role);
         $user->syncPermissions($this->createPermissionsUser($user, $request->role));
-        // $user->syncPermissions($request->permissions);
         return response()->json([
             'status' => true,
             'message' => 'User Created Successfully',
@@ -220,10 +223,13 @@ class UserController extends Controller
         //Validated
         $validate = Validator::make($request->all(),
         [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
-            'phone' => 'required|numeric|digits:11|unique:users,phone,'.$user->id,
-            'active' => 'required|in:1,0',
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:users,email,'.$user->id,
+            'phone' => 'nullable|numeric|digits:11|unique:users,phone,'.$user->id,
+            'active' => 'nullable|in:1,0',
+            'user_id'=> 'nullable|exists:users,id',
+            'permissions' => 'nullable|array|min:1',
+            'permissions.*' => 'nullable|exists:permissions,name',
         ]);
 
         if($validate->fails()){
@@ -234,11 +240,19 @@ class UserController extends Controller
                 'errors' => $validate->errors()
             ], 200);
         }
-
+        $request_data = $validate->validated();
+        if($request->image){
+            if($user->image != 'users/default.webp' || $user->image){
+                Storage::disk('public')->delete($user->image);
+            }
+            $imageName = Str::random(20) . uniqid()  . '.webp';
+                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    })->save( Storage::disk('public')->path('users/'.$imageName));
+            $request_data['image']  = 'users/'.$imageName;
+        }
         $user->update($validate->validated());
-        // if ($request->role) {
-        //     $user->syncRoles([$request->role]);
-        // }
+
         if ($request->permissions) {
             $user->syncPermissions($request->permissions);
         }
@@ -333,6 +347,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if($user->image != 'users/default.webp' ||  $user->image){
+            Storage::disk('public')->delete($user->image);
+        }
         $user->delete();
             return response()->json([
                 'status' => true,

@@ -20,7 +20,14 @@ class Listen extends Model
     ];
 
     public function getVideoUrlAttribute(){
-        return Storage::disk('public')->url($this->video);
+        if ($this->video) {
+            if ($this->video_type == 'file') {
+                return Storage::disk('public')->url($this->video);
+            } else {
+                return $this->video;
+            }
+        }
+        return null;
     }
     public function getAttachedUrlAttribute(){
         if($this->attached){

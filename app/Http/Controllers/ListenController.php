@@ -23,16 +23,6 @@ class ListenController extends Controller
      *         ),
      *     ),
      * @OA\Parameter(
-     *         name="active",
-     *         in="query",
-     *         description="filter listens with active (active = 1 , not active = 0)",
-     *         required=false,
-     *         explode=true,
-     *         @OA\Schema(
-     *             type="string",
-     *         ),
-     *     ),
-     * @OA\Parameter(
      *         name="search",
      *         in="query",
      *         description="filter search name or description",
@@ -48,10 +38,8 @@ class ListenController extends Controller
      */
     public function index(Request $request)
     {
-        $listens = Listen::when($request->course_id,function ($query) use ($request){ // if course_id
+        $listens = Listen::where('active',1)->when($request->course_id,function ($query) use ($request){ // if course_id
             return $query->where('course_id',$request->course_id);
-        })->when($request->active,function ($query) use ($request){ // if active
-            return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->get();
@@ -85,6 +73,14 @@ class ListenController extends Controller
      */
     public function show(Listen $listen)
     {
+        if ($listen->active != 1) {
+            return response()->json(
+                [
+                    'status_code'=>404,
+                    'success' => false,
+                    'message' => 'Record not found.'
+                ], 200);
+        }
         return response()->json([
             'status' => true,
             'data' => [

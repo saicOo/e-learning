@@ -294,6 +294,9 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
+        if($student->image != 'students/default.webp' ||  $student->image){
+            Storage::disk('public')->delete($student->image);
+        }
             $student->delete();
             return response()->json([
                 'status' => true,

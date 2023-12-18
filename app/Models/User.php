@@ -18,13 +18,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone',
-        'user_id',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -34,6 +28,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'image',
     ];
 
     /**
@@ -45,6 +40,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute(){
+        if($this->image){
+            return Storage::disk('public')->url($this->image);
+        }
+        return null;
+    }
 
     public function teacher()
     {

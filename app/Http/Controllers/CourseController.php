@@ -53,16 +53,6 @@ class CourseController extends Controller
      *         ),
      *     ),
      * @OA\Parameter(
-     *         name="active",
-     *         in="query",
-     *         description="filter courses with active (active = 1 , not active = 0)",
-     *         required=false,
-     *         explode=true,
-     *         @OA\Schema(
-     *             type="string",
-     *         ),
-     *     ),
-     * @OA\Parameter(
      *         name="search",
      *         in="query",
      *         description="filter search name or description courses",
@@ -77,7 +67,7 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $courses = Course::with(['user:id,name,email','level:id,name','category:id,name'])
+        $courses = Course::where('active',1)->with(['user:id,name,email','level:id,name','category:id,name'])
         ->when($request->user_id,function ($query) use ($request){ // if user_id
             return $query->where('user_id',$request->user_id);
         })->when($request->level_id,function ($query) use ($request){ // if level_id
@@ -86,11 +76,9 @@ class CourseController extends Controller
             return $query->where('category_id',$request->category_id);
         })->when($request->semester,function ($query) use ($request){ // if semester
             return $query->where('semester',$request->semester);
-        })->when($request->active,function ($query) use ($request){ // if active
-            return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
-        })->get();
+        })->withCount('listens')->get();
 
             return response()->json([
                 'status' => true,
@@ -120,6 +108,15 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
+        if ($course->active != 1) {
+            return response()->json(
+                [
+                    'status_code'=>404,
+                    'success' => false,
+                    'message' => 'Record not found.'
+                ], 200);
+        }
+        
         return response()->json([
             'status' => true,
             'data' => [
