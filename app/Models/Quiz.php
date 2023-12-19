@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Option extends Model
+class Quiz extends Model
 {
     use HasFactory;
-
     protected $guarded = [];
 
-    public function question()
+    public function questions()
     {
-        return $this->belongsTo(Question::class);
-    }//end of Question
+        return $this->hasMany(Question::class);
+    }
 }

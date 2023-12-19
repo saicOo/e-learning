@@ -5,14 +5,29 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\Course;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 
 class QuestionController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $questions = Question::when($request->course_id,function ($query) use ($request){ // if course_id
+            return $query->where('course_id',$request->course_id);
+        })->when($request->listen_id,function ($query) use ($request){ // if listen_id
+            return $query->where('listen_id',$request->listen_id);
+        })->when($request->search,function ($query) use ($request){ // if search
+            return $query->where('title','Like','%'.$request->search.'%');
+        })->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'questions' => $questions,
+            ]
+        ], 200);
     }
 
     public function store(Request $request, Course $course)
@@ -21,11 +36,11 @@ class QuestionController extends Controller
         $validate = Validator::make($request->all(),
         [
             'title' => 'required|string|max:1000',
-            'name' => 'required|string|max:500',
-            'option' => 'required|array|min:1',
-            'option.*' => 'required|string|max:1000',
-            'marks' => 'required|integer|max:100',
-            'type' => 'required|in:1,2,3',
+            'options' => 'required|array|min:1',
+            'options.*' => 'required|string|max:1000',
+            'grade' => 'required|integer|max:100',
+            'correct_option' => 'required|in:1,2,3,4',
+            'type' => 'required|in:1,2,3,4',
             'listen_id' => 'required|exists:listens,id',
         ]);
 
@@ -41,41 +56,26 @@ class QuestionController extends Controller
 
         $question = $course->questions()->create([
             "title" => $request->title,
-            "marks" => $request->marks,
+            "grade" => $request->grade,
             "type" => $request->type,
-            "answer_option" => $request->answer_option,
+            "correct_option" => $request->correct_option,
+            "options" => $request->options,
             "listen_id" => $request->listen_id,
         ]);
 
 
-            foreach ($request->options as $index => $name) {
-                $question->options()->create([
-                    'name' => $name,
-                    'option_num' => $index + 1,
-                ]);
-            }
-
             return response()->json([
                 'status' => true,
-                'message' => 'Listen Created Successfully',
-                'data' => [
-                    'listen' => $listen,
-                ]
+                'message' => 'Question Created Successfully',
             ], 200);
-    }
-
-    public function show(Question $question)
-    {
-        //
-    }
-
-    public function update(Request $request, Question $question)
-    {
-        //
     }
 
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Deleted Data Successfully',
+            ], 200);
     }
 }

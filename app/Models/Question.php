@@ -11,6 +11,10 @@ class Question extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'options' => 'array',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);
@@ -21,10 +25,6 @@ class Question extends Model
         return $this->belongsTo(Listen::class);
     }//end of listen
 
-    public function options()
-    {
-        return $this->hasMany(Option::class);
-    }//end of Options
 
     // public function option()
     // {
@@ -33,6 +33,6 @@ class Question extends Model
 
     // public function quizzes()
     // {
-    //     return $this->belongsToMany(Quiz::class, 'grades')->withPivot(['marks','answer']);
+    //     return $this->belongsToMany(Quiz::class, 'grades')->withPivot(['score','answer']);
     // }//end of quizzes
 }

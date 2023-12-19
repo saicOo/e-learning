@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Artisan;
 */
 
 Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
-    Route::get('/profile','StudentController@profile');
+    Route::get('/profile','AuthController@profile');
     Route::post('/logout', 'AuthController@logout');
+    Route::post('/quizez/{quiz}', 'QuizController@submitQuiz');
 });
 Route::apiResource('courses', 'CourseController')->only(['index','show']);
 Route::apiResource('listens', 'ListenController')->only(['index','show']);

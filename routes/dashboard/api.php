@@ -4,7 +4,6 @@ use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Dashboard\QuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,13 +32,19 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     Route::post('/listens/{listen}/upload-video','ListenController@uploadVideo');
     Route::post('/listens/{listen}/upload-file','ListenController@uploadFile');
     // routes questions
-    Route::apiResource('questions', 'QuestionController')->except(['edit','create']);
+    // Route::apiResource('questions', 'QuestionController')->except(['edit','create']);
     Route::controller(QuestionController::class)->group(function () {
-        Route::get('courses/{course}/questions', 'index');
-        Route::post('courses/{course}/questions', 'store');
-        Route::put('questions/{question}', 'update');
+        Route::get('/questions', 'index');
+        Route::post('/courses/{course}/questions', 'store');
         Route::delete('questions/{question}', 'destroy');
     });
+    Route::controller(QuizController::class)->group(function () {
+        Route::get('/quizzes', 'index');
+        Route::post('/courses/{course}/quizzes', 'store');
+        Route::delete('quizzes/{quiz}', 'destroy');
+    });
+    // routes contacts
+Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
     // routes category
     Route::apiResource('categories', 'CategoryController')->only(['index','store','update','delete']);
     // routes subscriptions

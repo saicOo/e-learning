@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\User;
-use App\Traits\PermissionsUser;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Traits\PermissionsUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -115,6 +118,7 @@ class UserController extends Controller
             'password' => 'required|string|max:255|confirmed',
             'phone' => 'required|numeric|digits:11|unique:users,phone',
             'role' => 'required|exists:roles,name',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
             'user_id'=> 'nullable|exists:users,id',
         ]);
 
@@ -228,6 +232,7 @@ class UserController extends Controller
             'phone' => 'nullable|numeric|digits:11|unique:users,phone,'.$user->id,
             'active' => 'nullable|in:1,0',
             'user_id'=> 'nullable|exists:users,id',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
             'permissions' => 'nullable|array|min:1',
             'permissions.*' => 'nullable|exists:permissions,name',
         ]);

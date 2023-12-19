@@ -56,6 +56,20 @@
                 }
             }
         },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "Front Api Profile Student"
+                ],
+                "summary": "Show Data Student",
+                "operationId": "d32e56b6274eb68e980da6d91fbe9fd8",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/categories": {
             "get": {
                 "tags": [
@@ -1891,20 +1905,6 @@
                     },
                     "404": {
                         "description": "Resource Not Found"
-                    }
-                }
-            }
-        },
-        "/api/profile": {
-            "get": {
-                "tags": [
-                    "Front Api Profile Student"
-                ],
-                "summary": "Show Data Student",
-                "operationId": "c87b04fe75716f8b673881188698c08b",
-                "responses": {
-                    "200": {
-                        "description": "OK"
                     }
                 }
             }
