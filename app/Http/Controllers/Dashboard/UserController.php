@@ -371,7 +371,7 @@ class UserController extends Controller
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="file", type="file", example="path image"),
+     *             @OA\Property(property="image", type="file", example="path image"),
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),

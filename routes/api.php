@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
     Route::get('/profile','AuthController@profile');
+    Route::post('/student/upload-image','AuthController@uploadImage');
     Route::post('/logout', 'AuthController@logout');
     Route::post('/quizez/{quiz}', 'QuizController@submitQuiz');
 });

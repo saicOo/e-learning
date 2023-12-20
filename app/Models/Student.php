@@ -53,9 +53,8 @@ class Student extends Authenticatable
         return $this->hasMany(Subscription::class);
     }
 
-    public function quizAttempt()
+    public function attempts()
     {
         return $this->hasMany(QuizAttempt::class);
     }
-
 }

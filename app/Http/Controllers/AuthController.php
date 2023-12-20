@@ -9,6 +9,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -104,7 +107,7 @@ class AuthController extends Controller
     /**
      * @OA\Get(
      *     path="/api/profile",
-     *      tags={"Front Api Profile Student"},
+     *      tags={"Front Api Auth Student"},
      *     summary="Show Data Student",
      *       @OA\Response(response=200, description="OK"),
      *    )
@@ -116,5 +119,58 @@ class AuthController extends Controller
                 'status' => true,
                 'data' => $student,
             ], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/student/upload-image",
+     *      tags={"Front Api Auth Student"},
+     *     summary="upload image Student",
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="image", type="file", example="path image"),
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     *    )
+     */
+    public function uploadImage(Request $request)
+    {
+        //Validated
+        $validate = Validator::make($request->all(),
+        [
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg',
+        ]);
+
+        if($validate->fails()){
+            return response()->json([
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'validation error',
+                'errors' => $validate->errors()
+            ], 200);
+        }
+        $student = $request->user();
+        $request_data = $validate->validate();
+        if($request->image){
+            if($student->image != 'students/default.webp' || $student->image){
+                Storage::disk('public')->delete($student->image);
+            }
+            $imageName = Str::random(20) . uniqid()  . '.webp';
+                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    })->save( Storage::disk('public')->path('students/'.$imageName));
+            $request_data['image']  = 'students/'.$imageName;
+        }
+
+        $student->update($request_data);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'The Image has been uploaded successfully',
+        ], 200);
     }
 }

@@ -11,6 +11,36 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/quizzes/{quiz_id}",
+     *      tags={"Dashboard Api Quizzes"},
+     *     summary="show quiz",
+     *     @OA\Parameter(
+     *         name="quiz_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *       @OA\Response(response=404, description="Resource Not Found")
+     *    )
+     */
+    public function show(Quiz $quiz)
+    {
+        $quiz->questions;
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'quiz' => $quiz,
+            ]
+        ], 200);
+    }
+
     public function submitQuiz(Request $request, Quiz $quiz)
     {
         //Validated
@@ -29,7 +59,7 @@ class QuizController extends Controller
             ], 200);
         }
         // Save quiz data to the database
-        $attempt = $quiz->attempt()->create([
+        $attempt = $quiz->attempts()->create([
             'student_id' => auth()->user()->id,
         ]);
         $answers = $request->input('answers');
@@ -37,6 +67,8 @@ class QuizController extends Controller
         // Example: Assign grades based on correct answers
         $responses = [];
         $maxGrade = 0;
+        $grade = 0;
+        $answer = "";
         foreach ($answers as $questionId => $studentAnswer) {
             // Replace this logic with your grading criteria
             $dataQuestion = $this->getCorrectAnswerForQuestion($questionId); // Replace with your actual logic
@@ -63,8 +95,7 @@ class QuizController extends Controller
 
         $attempt->update(['score'=>$score]);
 
-        $quiz->attempt;
-        // $quiz->attempt->answer;
+        $quiz->attempts;
         return response()->json([
             'status' => true,
             'message' => 'Quiz Created Successfully',
@@ -72,7 +103,6 @@ class QuizController extends Controller
                 'quiz' => $quiz,
             ]
         ], 200);
-        // return redirect()->route('quiz.result', ['quizId' => $quiz->id]);
     }
 
     // Add helper methods as needed
