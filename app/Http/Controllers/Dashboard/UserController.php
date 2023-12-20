@@ -123,7 +123,7 @@ class UserController extends Controller
         ]);
 
         $request_data = $validate->validated();
-
+        unset($request_data['role']);
         if($request->role == 'assistant'){
 
             $check_teacher = User::whereRoleIs('teacher')->where('id', $request->user_id)->first();
@@ -182,12 +182,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $user->teacher;
+        $user->assistants;
         return response()->json([
             'status' => true,
             'data' => [
                 'user' => $user,
-                'teacher' => $user->teacher,
-                'assistants' => $user->assistants,
             ]
         ], 200);
     }
@@ -224,6 +224,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        return $request->all();
         //Validated
         $validate = Validator::make($request->all(),
         [
@@ -232,7 +233,6 @@ class UserController extends Controller
             'phone' => 'nullable|numeric|digits:11|unique:users,phone,'.$user->id,
             'active' => 'nullable|in:1,0',
             'user_id'=> 'nullable|exists:users,id',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
             'permissions' => 'nullable|array|min:1',
             'permissions.*' => 'nullable|exists:permissions,name',
         ]);
@@ -246,16 +246,8 @@ class UserController extends Controller
             ], 200);
         }
         $request_data = $validate->validated();
-        if($request->image){
-            if($user->image != 'users/default.webp' || $user->image){
-                Storage::disk('public')->delete($user->image);
-            }
-            $imageName = Str::random(20) . uniqid()  . '.webp';
-                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    })->save( Storage::disk('public')->path('users/'.$imageName));
-            $request_data['image']  = 'users/'.$imageName;
-        }
+        unset($request_data['permissions']);
+
         $user->update($validate->validated());
 
         if ($request->permissions) {
@@ -360,6 +352,67 @@ class UserController extends Controller
                 'status' => true,
                 'message' => 'Deleted Data Successfully',
             ], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/dashboard/users/{user_id}/upload-image",
+     *      tags={"Dashboard Api Users"},
+     *     summary="upload file User",
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="file", type="file", example="path image"),
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     *    )
+     */
+    public function uploadImage(Request $request, User $user)
+    {
+        //Validated
+        $validate = Validator::make($request->all(),
+        [
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg',
+        ]);
+
+        if($validate->fails()){
+            return response()->json([
+                'success' => false,
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'validation error',
+                'errors' => $validate->errors()
+            ], 200);
+        }
+        $request_data = $validate->$validate();
+        if($request->image){
+            if($user->image != 'users/default.webp' || $user->image){
+                Storage::disk('public')->delete($user->image);
+            }
+            $imageName = Str::random(20) . uniqid()  . '.webp';
+                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    })->save( Storage::disk('public')->path('users/'.$imageName));
+            $request_data['image']  = 'users/'.$imageName;
+        }
+
+        $user->update($request_data);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'The Image has been uploaded successfully',
+        ], 200);
     }
 
 }

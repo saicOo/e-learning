@@ -46,6 +46,12 @@ class Course extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
+    
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);

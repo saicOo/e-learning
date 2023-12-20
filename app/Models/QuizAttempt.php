@@ -5,13 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class QuizResult extends Model
+class QuizAttempt extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
-    protected $casts = [
-        'response' => 'array',
-    ];
 
     public function student()
     {
@@ -21,5 +19,10 @@ class QuizResult extends Model
     public function quiz()
     {
         return $this->belongsTo(Quiz::class);
+    }
+
+    public function answer()
+    {
+        return $this->hasMany(StudentAnswer::class);
     }
 }

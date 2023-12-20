@@ -1,0 +1,1591 @@
+{
+	"info": {
+		"_postman_id": "474c36fe-7412-4d2e-93b9-0cb55c377510",
+		"name": "e-learning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "19017192"
+	},
+	"item": [
+		{
+			"name": "client site",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token_student}}"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "http://127.0.0.1:8000/api/profile"
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "1st@app.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "1234",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/login"
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "9|oROdtywbXMnyuE3rXMapGAlYyPBUGL0mfvEHLF6W"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "admin",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "admin@app.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "1234",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/logout"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "students",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "http://127.0.0.1:8000/api/students/1/show"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "quizez",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/courses/"
+							},
+							"response": []
+						},
+						{
+							"name": "store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"answers\": {\r\n        \"5\": 2,\r\n        \"29\": 1\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseurl}}/api/quizez/3"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/courses/2"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "dashboard",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "logout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "10|dketHj6XYczm3KQ5IMJPFQi1qRUsB6CAvM25NE0c"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/logout?",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"logout"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "manger@app.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "1234",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/login",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"login"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "students",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|t6tLDx1I8FEXxi0Qyp7B02ll4ZfRXl2wNqq0enoG"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/students/"
+							},
+							"response": []
+						},
+						{
+							"name": "store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "omar",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "omar@app.com",
+											"type": "text"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "1234",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "1234",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "05499778",
+											"type": "text"
+										},
+										{
+											"key": "attendance_type",
+											"value": "online",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{baseurl}}/api/dashboard/students/"
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "12|R22KBgJwBFgjr2KkctxIgl3sn7rCg6SIABfQg4UR"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "saico update",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{baseurl}}/api/dashboard/students/1"
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "12|R22KBgJwBFgjr2KkctxIgl3sn7rCg6SIABfQg4UR"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/students/3"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "levels",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|qNKrZaymFjynFy3Nsphl1LSXmpwnG09Ar3f9NaX3"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/levels/"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/users/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"users",
+										""
+									],
+									"query": [
+										{
+											"key": "role",
+											"value": "assistant",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"test\",\r\n  \"email\": \"test@app.com\",\r\n  \"phone\": \"0115767\",\r\n  \"password\": \"123456\",\r\n  \"password_confirmation\": \"123456\",\r\n  \"role\": \"teacher\",\r\n\"permissions\":[\r\n\"courses-read\",\r\n\"courses-create\"\r\n]\r\n}"
+								},
+								"url": "{{baseurl}}/api/dashboard/users/"
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+										"key": "Content-Type",
+										"value": "application/octet-stream",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/Saico/Downloads/360_F_536466456_ROneSNBzDA10yJfMQkLFsq9412N8yCiG.jpg"
+										}
+									]
+								},
+								"url": "{{baseurl}}/api/dashboard/users/3"
+							},
+							"response": []
+						},
+						{
+							"name": "change",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|qcKyOP1hVwe7B7Ls4SFER0Zt9nd6K50arhaIFv7n"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "old_password",
+											"value": "12345",
+											"type": "text"
+										},
+										{
+											"key": "new_password",
+											"value": "1234",
+											"type": "text"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "654",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{baseurl}}/api/dashboard/users/1/change-password"
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|qcKyOP1hVwe7B7Ls4SFER0Zt9nd6K50arhaIFv7n"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/users/3"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|qcKyOP1hVwe7B7Ls4SFER0Zt9nd6K50arhaIFv7n"
+									}
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/users/7"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "courses",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/courses/"
+							},
+							"response": []
+						},
+						{
+							"name": "store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "grwgwr",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "safefqfrq",
+											"type": "text"
+										},
+										{
+											"key": "semester",
+											"value": "first semester",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"value": "dafefqafe",
+											"type": "text"
+										},
+										{
+											"key": "user_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "level_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "65",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{baseurl}}/api/dashboard/courses/"
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "saincs",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "adfefqfeq",
+											"type": "text"
+										},
+										{
+											"key": "semester",
+											"value": "first semester",
+											"type": "text"
+										},
+										{
+											"key": "user_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "level_id",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"value": "15qwfewef",
+											"type": "text"
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/courses/1?",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										"1"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/courses/1"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/courses/2"
+							},
+							"response": []
+						},
+						{
+							"name": "approve",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/courses/1/approve"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "listens",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/listens/"
+							},
+							"response": []
+						},
+						{
+							"name": "store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "math",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "safefqfrq",
+											"type": "text"
+										},
+										{
+											"key": "video",
+											"type": "file",
+											"src": "/C:/Users/Saico/Downloads/٢٠٢٣٠٥٠٧_٠٩٤٦٥٤.mp4"
+										},
+										{
+											"key": "attached",
+											"type": "file",
+											"src": "/C:/Users/Saico/Downloads/ملاحظات دراسات محاسبية.pdf"
+										},
+										{
+											"key": "course_id",
+											"value": "10",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{baseurl}}/api/dashboard/listens/"
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "saincs",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "adfefqfeq",
+											"type": "text"
+										},
+										{
+											"key": "video",
+											"value": "first semester",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/listens/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"listens",
+										"1"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "feqy updated",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "efeeefeqfgday updated",
+											"disabled": true
+										},
+										{
+											"key": "video",
+											"value": "r33qr updated",
+											"disabled": true
+										},
+										{
+											"key": "course_id",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/listens/1"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/listens/1"
+							},
+							"response": []
+						},
+						{
+							"name": "approve",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/listens/1/approve"
+							},
+							"response": []
+						},
+						{
+							"name": "upload video",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "video_type",
+											"value": "file",
+											"type": "text"
+										},
+										{
+											"key": "video",
+											"type": "file",
+											"src": "postman-cloud:///1ee9ba77-2358-4d60-9550-dcd52e8e37bd"
+										}
+									]
+								},
+								"url": "{{baseurl}}/api/dashboard/listens/1/upload-file"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "subscriptions",
+					"item": [
+						{
+							"name": "store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "student_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "completion_date",
+											"value": "2023-11-12  17:40:00",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": "{{baseurl}}/api/dashboard/subscriptions/"
+							},
+							"response": []
+						},
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/subscriptions/"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "questions",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/questions/?course_id=2",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"questions",
+										""
+									],
+									"query": [
+										{
+											"key": "course_id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n    \"title\" : \"test exam ?\",\r\n    \"marks\" : 50,\r\n    \"correct_option\" : 1,\r\n    \"type\" : 2,\r\n    \"grade\" : 5,\r\n    \"listen_id\" : 1,\r\n    \"options\":  [\r\n        \"2eefeae\",\r\n        \"1ffaeaeaf\"\r\n    ]\r\n   \r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseurl}}/api/dashboard/courses/1/questions"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/questions/1"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "quizez",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/quizzes/3"
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{baseurl}}/api/dashboard/quizzes/3"
+							},
+							"response": []
+						},
+						{
+							"name": "store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\" : \"test exam\", \r\n    \"type\" : \"listen\", \r\n    \"questions_count\" : 2, \r\n    \"listen_id\" : 1, \r\n    \"questions\" : [\r\n        2,1\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseurl}}/api/dashboard/courses/1/quizzes/"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
+									}
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "http://127.0.0.1:8000/api/dashboard/quizzes/2"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseurl",
+			"value": "http://127.0.0.1:8000"
+		},
+		{
+			"key": "token",
+			"value": "11%7CARAo9M6gwUcbsDBaHJh8GnrdgOjgk222PWWcNWBa"
+		},
+		{
+			"key": "token_student",
+			"value": "1%7CAl6FNxYxVYw9jfMT6iTJECHJqdqG9Le89cJol4v8",
+			"type": "string"
+		}
+	]
+}

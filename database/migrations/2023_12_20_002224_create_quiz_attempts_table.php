@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuizResultsTable extends Migration
+class CreateQuizAttemptsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateQuizResultsTable extends Migration
      */
     public function up()
     {
-        Schema::create('quiz_results', function (Blueprint $table) {
+        Schema::create('quiz_attempts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained();
             $table->foreignId('quiz_id')->constrained();
-            $table->json('response');
-            $table->integer('score')->nullable();
+            $table->float('score',8,2)->nullable();
+            $table->enum('status',['failed','successful'])->default('failed');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateQuizResultsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quiz_results');
+        Schema::dropIfExists('quiz_attempts');
     }
 }

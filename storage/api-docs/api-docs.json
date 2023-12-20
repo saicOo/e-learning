@@ -1050,12 +1050,12 @@
             }
         },
         "/api/dashboard/listens/{listene_id}/upload-file": {
-            "put": {
+            "post": {
                 "tags": [
                     "Dashboard Api Listens"
                 ],
                 "summary": "upload file Listen",
-                "operationId": "fea4d78d92eb61cb55727f35f1282ddd",
+                "operationId": "5ef9377da6ce4a1684c30ec9d80f7724",
                 "parameters": [
                     {
                         "name": "listen_id",
@@ -1128,6 +1128,285 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/questions": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Questions"
+                ],
+                "summary": "get all questions",
+                "operationId": "6a822bfe34890f3708b6e3677e06a84d",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "description": "filter questions with course",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "listen_id",
+                        "in": "query",
+                        "description": "filter questions with listen",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses/{course_id}/questions": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Questions"
+                ],
+                "summary": "Add New Question",
+                "operationId": "18cfad33ba39c83d5e62be2a13dc555f",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "grade": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "correct_option": {
+                                        "type": "integer",
+                                        "example": "index option : 0, 1, 2, 3"
+                                    },
+                                    "type": {
+                                        "type": "integer",
+                                        "example": "1=>TrueFalse, 2=>Choice,3 =>Article'"
+                                    },
+                                    "listen_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/questions/{question_id}": {
+            "delete": {
+                "tags": [
+                    "Dashboard Api Questions"
+                ],
+                "summary": "Delete Question",
+                "operationId": "064eaf0fff88eb395573d1fd02f02862",
+                "parameters": [
+                    {
+                        "name": "question_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses/{course_id}/quizzes": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "get all quizzes",
+                "operationId": "17c7b59180a6759be324996fd58f57e9",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "listen_id",
+                        "in": "query",
+                        "description": "filter quizzes with listen",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "Add New Quizzes",
+                "operationId": "0a274e1c3c8bdafd65b712ff3ccf46d0",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "grade": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "questions_count": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "type": {
+                                        "type": "integer",
+                                        "example": "course, listen"
+                                    },
+                                    "listen_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "integer": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/quizzes/{quiz_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "show quiz",
+                "operationId": "47d35e04b0492ccd0e5a713a1a116670",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -1805,6 +2084,52 @@
                                     "new_password_confirmation": {
                                         "type": "string",
                                         "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/users/{user_id}/upload-image": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Users"
+                ],
+                "summary": "upload file User",
+                "operationId": "68b0c97f4764019d7b978255b6c2703d",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "type": "file",
+                                        "example": "path image"
                                     }
                                 },
                                 "type": "object"

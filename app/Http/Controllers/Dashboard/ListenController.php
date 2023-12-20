@@ -316,7 +316,7 @@ class ListenController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/dashboard/listens/{listene_id}/upload-file",
      *      tags={"Dashboard Api Listens"},
      *     summary="upload file Listen",

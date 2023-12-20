@@ -20,6 +20,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     // routes users
     Route::apiResource('users', 'UserController')->except(['edit','create']);
     Route::put('users/{user}/change-password', 'UserController@changePassword');
+    Route::post('users/{user}/upload-image', 'UserController@uploadImage');
     // routes students
     Route::apiResource('students', 'StudentController')->except(['edit','create']);
     Route::put('students/{student}/change-password', 'StudentController@changePassword');
@@ -39,8 +40,9 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
         Route::delete('questions/{question}', 'destroy');
     });
     Route::controller(QuizController::class)->group(function () {
-        Route::get('/quizzes', 'index');
+        Route::get('/courses/{course}/quizzes', 'index');
         Route::post('/courses/{course}/quizzes', 'store');
+        Route::get('quizzes/{quiz}', 'show');
         Route::delete('quizzes/{quiz}', 'destroy');
     });
     // routes contacts
