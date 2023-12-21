@@ -10,8 +10,9 @@ class StudentAnswer extends Model
     use HasFactory;
 
     protected $guarded = [];
+    
     public function attempt()
     {
-        return $this->hasMany(Question::class);
+        return $this->belongsTo(Question::class);
     }
 }

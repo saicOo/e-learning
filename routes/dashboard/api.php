@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
+    // routes teacher
+    Route::apiResource('teacher', 'TeacherController')->except(['edit','create']);
     // routes users
     Route::apiResource('users', 'UserController')->except(['edit','create']);
     Route::put('users/{user}/change-password', 'UserController@changePassword');

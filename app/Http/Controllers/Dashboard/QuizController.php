@@ -92,6 +92,9 @@ class QuizController extends Controller
      *             @OA\Property(property="type", type="integer", example="course, listen"),
      *             @OA\Property(property="listen_id", type="integer", example="integer"),
      *             @OA\Property(property="integer", type="integer", example="integer"),
+     *             @OA\Property(property="questions", type="array", @OA\Items(
+     *               type="integer",example="1",
+     *              ),),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),

@@ -98,9 +98,7 @@ class UserController extends Controller
      *             @OA\Property(property="role", type="array", @OA\Items(
      *               type="string",example="manger , teacher, assistant",
      *              ),),
-     *             @OA\Property(property="permissions", type="array", @OA\Items(
-     *               type="string",example="user_create",
-     *              ),),
+     *             @OA\Property(property="image", type="file", example="path image"),
      *             @OA\Property(property="user_id", type="integer", example="Sets the teacher assistant's ID"),
      *         ),
      *     ),
@@ -395,7 +393,7 @@ class UserController extends Controller
                 'errors' => $validate->errors()
             ], 200);
         }
-        $request_data = $validate->$validate();
+        $request_data = $validate->validate();
         if($request->image){
             if($user->image != 'users/default.webp' || $user->image){
                 Storage::disk('public')->delete($user->image);

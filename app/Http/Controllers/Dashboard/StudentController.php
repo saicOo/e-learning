@@ -77,7 +77,7 @@ class StudentController extends Controller
      *             @OA\Property(property="phone", type="string", example="string"),
      *             @OA\Property(property="password", type="string", example="string"),
      *             @OA\Property(property="password_confirmation", type="string", example="string"),
-     *             @OA\Property(property="attendance_type", type="enum", example="online , offnline"),
+     *             @OA\Property(property="attendance_type", type="enum", example="online , offline"),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -93,7 +93,7 @@ class StudentController extends Controller
                 'email' => 'required|string|email|max:255|unique:students,email',
                 'phone' => 'required|numeric|digits:11|unique:users,phone',
                 'password' => 'required|string|max:255|confirmed',
-                'attendance_type' => 'required|in:online,offnline',
+                'attendance_type' => 'required|in:online,offline',
             ]);
 
             if($validate->fails()){
@@ -166,7 +166,7 @@ class StudentController extends Controller
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="email", type="string", example="string"),
      *             @OA\Property(property="phone", type="string", example="string"),
-     *             @OA\Property(property="attendance_type", type="enum", example="online , offnline"),
+     *             @OA\Property(property="attendance_type", type="enum", example="online , offline"),
      *             @OA\Property(property="active", type="boolen", example="integer"),
      *         ),
      *     ),
@@ -180,11 +180,11 @@ class StudentController extends Controller
             //Validated
             $validate = Validator::make($request->all(),
             [
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:students,email,'.$student->id,
-                'phone' => 'required|numeric|digits:11|unique:students,phone,'.$student->id,
-                'attendance_type' => 'required|in:online,offnline',
-                'active' => 'required|in:1,0',
+                'name' => 'nullable|string|max:255',
+                'email' => 'nullable|string|email|max:255|unique:students,email,'.$student->id,
+                'phone' => 'nullable|numeric|digits:11|unique:students,phone,'.$student->id,
+                'attendance_type' => 'nullable|in:online,offline',
+                'active' => 'nullable|in:1,0',
             ]);
 
             if($validate->fails()){

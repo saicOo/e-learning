@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "474c36fe-7412-4d2e-93b9-0cb55c377510",
 		"name": "e-learning",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "19017192"
 	},
 	"item": [
@@ -17,9 +17,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "{{token_student}}"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_student}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -29,7 +33,21 @@
 										"type": "text"
 									}
 								],
-								"url": "http://127.0.0.1:8000/api/profile"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/profile",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"profile"
+									]
+								}
 							},
 							"response": []
 						},
@@ -59,7 +77,21 @@
 										}
 									]
 								},
-								"url": "http://127.0.0.1:8000/api/login"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"login"
+									]
+								}
 							},
 							"response": []
 						},
@@ -68,9 +100,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "9|oROdtywbXMnyuE3rXMapGAlYyPBUGL0mfvEHLF6W"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "9|oROdtywbXMnyuE3rXMapGAlYyPBUGL0mfvEHLF6W",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -100,7 +136,21 @@
 										}
 									]
 								},
-								"url": "http://127.0.0.1:8000/api/logout"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/logout",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"logout"
+									]
+								}
 							},
 							"response": []
 						}
@@ -121,7 +171,23 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "http://127.0.0.1:8000/api/students/1/show"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/students/1/show",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"students",
+										"1",
+										"show"
+									]
+								}
 							},
 							"response": []
 						}
@@ -138,9 +204,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -154,7 +224,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/courses/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/courses/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -163,9 +244,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -184,7 +269,17 @@
 										}
 									}
 								},
-								"url": "{{baseurl}}/api/quizez/3"
+								"url": {
+									"raw": "{{baseurl}}/api/quizez/3",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"quizez",
+										"3"
+									]
+								}
 							},
 							"response": []
 						},
@@ -193,9 +288,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "DELETE",
 								"header": [
@@ -209,7 +308,23 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/courses/2"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/courses/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										"2"
+									]
+								}
 							},
 							"response": []
 						}
@@ -228,9 +343,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "10|dketHj6XYczm3KQ5IMJPFQi1qRUsB6CAvM25NE0c"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "10|dketHj6XYczm3KQ5IMJPFQi1qRUsB6CAvM25NE0c",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -329,9 +448,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|t6tLDx1I8FEXxi0Qyp7B02ll4ZfRXl2wNqq0enoG"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|t6tLDx1I8FEXxi0Qyp7B02ll4ZfRXl2wNqq0enoG",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -345,7 +468,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/students/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/students/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"students",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -354,9 +488,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -401,7 +539,18 @@
 										}
 									]
 								},
-								"url": "{{baseurl}}/api/dashboard/students/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/students/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"students",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -410,9 +559,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "12|R22KBgJwBFgjr2KkctxIgl3sn7rCg6SIABfQg4UR"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "12|R22KBgJwBFgjr2KkctxIgl3sn7rCg6SIABfQg4UR",
+											"type": "string"
+										}
+									]
 								},
 								"method": "PUT",
 								"header": [
@@ -432,7 +585,18 @@
 										}
 									]
 								},
-								"url": "{{baseurl}}/api/dashboard/students/1"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/students/1",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"students",
+										"1"
+									]
+								}
 							},
 							"response": []
 						},
@@ -444,9 +608,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "12|R22KBgJwBFgjr2KkctxIgl3sn7rCg6SIABfQg4UR"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "12|R22KBgJwBFgjr2KkctxIgl3sn7rCg6SIABfQg4UR",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -460,7 +628,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/students/3"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/students/3",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"students",
+										"3"
+									]
+								}
 							},
 							"response": []
 						}
@@ -477,9 +656,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|qNKrZaymFjynFy3Nsphl1LSXmpwnG09Ar3f9NaX3"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|qNKrZaymFjynFy3Nsphl1LSXmpwnG09Ar3f9NaX3",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -493,7 +676,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/levels/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/levels/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"levels",
+										""
+									]
+								}
 							},
 							"response": []
 						}
@@ -510,9 +704,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "{{token}}"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -553,9 +751,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "{{token}}"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -569,7 +771,18 @@
 									"mode": "raw",
 									"raw": "{\r\n  \"name\": \"test\",\r\n  \"email\": \"test@app.com\",\r\n  \"phone\": \"0115767\",\r\n  \"password\": \"123456\",\r\n  \"password_confirmation\": \"123456\",\r\n  \"role\": \"teacher\",\r\n\"permissions\":[\r\n\"courses-read\",\r\n\"courses-create\"\r\n]\r\n}"
 								},
-								"url": "{{baseurl}}/api/dashboard/users/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/users/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"users",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -578,9 +791,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "{{token}}"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "PUT",
 								"header": [
@@ -606,7 +823,18 @@
 										}
 									]
 								},
-								"url": "{{baseurl}}/api/dashboard/users/3"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/users/3",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"users",
+										"3"
+									]
+								}
 							},
 							"response": []
 						},
@@ -615,9 +843,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|qcKyOP1hVwe7B7Ls4SFER0Zt9nd6K50arhaIFv7n"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|qcKyOP1hVwe7B7Ls4SFER0Zt9nd6K50arhaIFv7n",
+											"type": "string"
+										}
+									]
 								},
 								"method": "PUT",
 								"header": [
@@ -647,7 +879,19 @@
 										}
 									]
 								},
-								"url": "{{baseurl}}/api/dashboard/users/1/change-password"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/users/1/change-password",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"users",
+										"1",
+										"change-password"
+									]
+								}
 							},
 							"response": []
 						},
@@ -659,9 +903,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|qcKyOP1hVwe7B7Ls4SFER0Zt9nd6K50arhaIFv7n"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|qcKyOP1hVwe7B7Ls4SFER0Zt9nd6K50arhaIFv7n",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -675,7 +923,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/users/3"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/users/3",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"users",
+										"3"
+									]
+								}
 							},
 							"response": []
 						},
@@ -684,9 +943,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|qcKyOP1hVwe7B7Ls4SFER0Zt9nd6K50arhaIFv7n"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|qcKyOP1hVwe7B7Ls4SFER0Zt9nd6K50arhaIFv7n",
+											"type": "string"
+										}
+									]
 								},
 								"method": "DELETE",
 								"header": [
@@ -700,7 +963,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/users/7"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/users/7",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"users",
+										"7"
+									]
+								}
 							},
 							"response": []
 						}
@@ -717,9 +991,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -733,7 +1011,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/courses/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/courses/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -742,9 +1031,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -794,7 +1087,18 @@
 										}
 									]
 								},
-								"url": "{{baseurl}}/api/dashboard/courses/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/courses/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -803,9 +1107,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "PUT",
 								"header": [
@@ -884,9 +1192,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -900,7 +1212,23 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/courses/1"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/courses/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										"1"
+									]
+								}
 							},
 							"response": []
 						},
@@ -909,9 +1237,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "DELETE",
 								"header": [
@@ -925,7 +1257,23 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/courses/2"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/courses/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										"2"
+									]
+								}
 							},
 							"response": []
 						},
@@ -934,9 +1282,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "PUT",
 								"header": [
@@ -950,7 +1302,24 @@
 									"mode": "urlencoded",
 									"urlencoded": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/courses/1/approve"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/courses/1/approve",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										"1",
+										"approve"
+									]
+								}
 							},
 							"response": []
 						}
@@ -967,9 +1336,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -983,7 +1356,23 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/listens/"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/listens/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"listens",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -992,9 +1381,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "{{token}}"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -1034,7 +1427,18 @@
 										}
 									]
 								},
-								"url": "{{baseurl}}/api/dashboard/listens/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/listens/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"listens",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -1043,9 +1447,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "PUT",
 								"header": [
@@ -1140,9 +1548,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -1156,7 +1568,23 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/listens/1"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/listens/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"listens",
+										"1"
+									]
+								}
 							},
 							"response": []
 						},
@@ -1165,9 +1593,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "DELETE",
 								"header": [
@@ -1181,7 +1613,23 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/listens/1"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/listens/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"listens",
+										"1"
+									]
+								}
 							},
 							"response": []
 						},
@@ -1190,9 +1638,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "PUT",
 								"header": [
@@ -1206,7 +1658,24 @@
 									"mode": "urlencoded",
 									"urlencoded": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/listens/1/approve"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/listens/1/approve",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"listens",
+										"1",
+										"approve"
+									]
+								}
 							},
 							"response": []
 						},
@@ -1215,9 +1684,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "{{token}}"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "PUT",
 								"header": [
@@ -1242,7 +1715,19 @@
 										}
 									]
 								},
-								"url": "{{baseurl}}/api/dashboard/listens/1/upload-file"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/listens/1/upload-file",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"listens",
+										"1",
+										"upload-file"
+									]
+								}
 							},
 							"response": []
 						}
@@ -1256,9 +1741,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "{{token}}"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -1295,7 +1784,18 @@
 										}
 									]
 								},
-								"url": "{{baseurl}}/api/dashboard/subscriptions/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/subscriptions/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"subscriptions",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -1307,9 +1807,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "{{token}}"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -1323,7 +1827,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/subscriptions/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/subscriptions/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"subscriptions",
+										""
+									]
+								}
 							},
 							"response": []
 						}
@@ -1340,9 +1855,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -1382,9 +1901,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -1403,7 +1926,19 @@
 										}
 									}
 								},
-								"url": "{{baseurl}}/api/dashboard/courses/1/questions"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/courses/1/questions",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										"1",
+										"questions"
+									]
+								}
 							},
 							"response": []
 						},
@@ -1412,9 +1947,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "DELETE",
 								"header": [
@@ -1428,7 +1967,23 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/questions/1"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/questions/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"questions",
+										"1"
+									]
+								}
 							},
 							"response": []
 						}
@@ -1445,9 +2000,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -1461,7 +2020,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/quizzes/3"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/quizzes/3",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"quizzes",
+										"3"
+									]
+								}
 							},
 							"response": []
 						},
@@ -1473,9 +2043,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -1489,7 +2063,18 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{baseurl}}/api/dashboard/quizzes/3"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/quizzes/3",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"quizzes",
+										"3"
+									]
+								}
 							},
 							"response": []
 						},
@@ -1498,9 +2083,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|ayrRLyYxGUPhAv3RYl0qOlvYsAacr6dOhIhVs5gl",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [
@@ -1519,7 +2108,20 @@
 										}
 									}
 								},
-								"url": "{{baseurl}}/api/dashboard/courses/1/quizzes/"
+								"url": {
+									"raw": "{{baseurl}}/api/dashboard/courses/1/quizzes/",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"api",
+										"dashboard",
+										"courses",
+										"1",
+										"quizzes",
+										""
+									]
+								}
 							},
 							"response": []
 						},
@@ -1528,9 +2130,13 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": {
-										"token": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB"
-									}
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|JvrIDG6Bau0nQNCajE1FzF3Ay6R2NBnFqh0TAwFB",
+											"type": "string"
+										}
+									]
 								},
 								"method": "DELETE",
 								"header": [
@@ -1544,7 +2150,23 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "http://127.0.0.1:8000/api/dashboard/quizzes/2"
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/dashboard/quizzes/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"dashboard",
+										"quizzes",
+										"2"
+									]
+								}
 							},
 							"response": []
 						}

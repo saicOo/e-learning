@@ -19,7 +19,10 @@ Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
     Route::get('/profile','AuthController@profile');
     Route::post('/student/upload-image','AuthController@uploadImage');
     Route::post('/logout', 'AuthController@logout');
-    Route::post('/quizez/{quiz}', 'QuizController@submitQuiz');
+    Route::get('/quizez/{quiz}', 'QuizController@show');
+    Route::post('/quiz-attempts/{quiz}', 'QuizAttemptController@submitQuiz');
+    Route::get('/quiz-attempts', 'QuizAttemptController@index');
+    Route::get('/quiz-attempts/{quizAttempt}', 'QuizAttemptController@show');
 });
 Route::apiResource('courses', 'CourseController')->only(['index','show']);
 Route::apiResource('listens', 'ListenController')->only(['index','show']);

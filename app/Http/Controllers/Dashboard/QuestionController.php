@@ -91,6 +91,10 @@ class QuestionController extends Controller
      *             @OA\Property(property="correct_option", type="integer", example="index option : 0, 1, 2, 3" ),
      *             @OA\Property(property="type", type="integer", example="1=>TrueFalse, 2=>Choice,3 =>Article'"),
      *             @OA\Property(property="listen_id", type="integer", example="integer"),
+     *             @OA\Property(property="options", type="array", @OA\Items(
+     *               type="string",example="option answer",
+     *              ),),
+     *
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),

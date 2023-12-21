@@ -1267,6 +1267,13 @@
                                     "listen_id": {
                                         "type": "integer",
                                         "example": "integer"
+                                    },
+                                    "options": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "option answer"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -1407,6 +1414,13 @@
                                     "integer": {
                                         "type": "integer",
                                         "example": "integer"
+                                    },
+                                    "questions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -1526,7 +1540,7 @@
                                     },
                                     "attendance_type": {
                                         "type": "enum",
-                                        "example": "online , offnline"
+                                        "example": "online , offline"
                                     }
                                 },
                                 "type": "object"
@@ -1609,7 +1623,7 @@
                                     },
                                     "attendance_type": {
                                         "type": "enum",
-                                        "example": "online , offnline"
+                                        "example": "online , offline"
                                     },
                                     "active": {
                                         "type": "boolen",
@@ -1937,12 +1951,9 @@
                                             "example": "manger , teacher, assistant"
                                         }
                                     },
-                                    "permissions": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string",
-                                            "example": "user_create"
-                                        }
+                                    "image": {
+                                        "type": "file",
+                                        "example": "path image"
                                     },
                                     "user_id": {
                                         "type": "integer",
@@ -2248,6 +2259,133 @@
                 "parameters": [
                     {
                         "name": "listen_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/quiz-attempts": {
+            "get": {
+                "tags": [
+                    "Front Api Attempts"
+                ],
+                "summary": "get all attempts of student",
+                "operationId": "658d32c955e557d8adf4d6a38dc5aa65",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/quiz-attempts/{quizAttempt_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Attempts"
+                ],
+                "summary": "show quiz attempt and answers",
+                "operationId": "9edd51182d00cc1168d7d69fd2113afe",
+                "parameters": [
+                    {
+                        "name": "quizAttempt_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/quiz-attempts/{quiz_id}": {
+            "post": {
+                "tags": [
+                    "Front Api Quiz Attempt"
+                ],
+                "summary": "update user",
+                "operationId": "95b3ec632dc73ce278d84caa1b6e8d95",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "answers": {
+                                        "type": "object",
+                                        "example": {
+                                            "10": 0,
+                                            "25": 1
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/quizzes/{quiz_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Quizzes"
+                ],
+                "summary": "show quiz",
+                "operationId": "058145d57f85ef63f769f05c605244ca",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
