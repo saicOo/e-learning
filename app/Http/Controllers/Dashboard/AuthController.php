@@ -9,9 +9,10 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
 
     /**
@@ -24,7 +25,7 @@ class AuthController extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *              required={"email", "password"},
-     *             @OA\Property(property="email", type="email", example="manger@app.com"),
+     *             @OA\Property(property="email", type="email", example="manager@app.com"),
      *             @OA\Property(property="password", type="string", example="1234"),
      *         ),
      *     ),
@@ -33,7 +34,6 @@ class AuthController extends Controller
      */
     public function login(Request $request){
 
-        try {
             $validateUser = Validator::make($request->all(),
             [
                 'email' => 'required|email|string|max:255',
@@ -65,21 +65,13 @@ class AuthController extends Controller
             $cookie = cookie('token', $token, $expiry_minutes)->withSameSite('None'); // 1 minute
             $expiry_date = Carbon::now();
             $expiry_date = $expiry_date->addMinutes($expiry_minutes);
-            return response()->json([
+             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
                 'data' => [
                     'user' => $user,
-                    'expiry_token' => $expiry_date,
-                ]
+                    'expiry_token' => $expiry_date]
                 ],200)->withCookie($cookie);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
     }
 
     /**

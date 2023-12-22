@@ -3,24 +3,29 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Course;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use App\Services\UploadService;
+use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
 
-class CourseController extends Controller
+class CourseController extends BaseController
 {
-    public function __construct()
+    protected $uploadService;
+
+    public function __construct(UploadService $uploadService)
     {
         $this->middleware(['permission:courses_read'])->only(['index','show']);
         $this->middleware(['permission:courses_create'])->only('store');
         $this->middleware(['permission:courses_update'])->only('update');
         $this->middleware(['permission:courses_delete'])->only('destroy');
         $this->middleware(['permission:courses_approve'])->only('approve');
+        $this->uploadService = $uploadService;
     }
     /**
      * @OA\Get(
@@ -109,12 +114,7 @@ class CourseController extends Controller
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->withCount('listens')->get();
 
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'courses' => $courses,
-                ]
-            ], 200);
+        return $this->sendResponse("",['courses' => $courses]);
     }
 
     /**
@@ -156,27 +156,14 @@ class CourseController extends Controller
 
 
          if($validate->fails()){
-             return response()->json([
-                 'success' => false,
-                 'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                 'message' => 'validation error',
-                 'errors' => $validate->errors()
-             ], 200);
+                return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
          }
          $request_data = $validate->validated();
          if($request->image){
-            $imageName = Str::random(20) . uniqid()  . '.webp';
-                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    })->save( Storage::disk('public')->path('courses/'.$imageName));
-            $request_data['image']  = 'courses/'.$imageName;
+        $request_data['image'] = $this->uploadService->uploadImage('courses', $request->image);
         }
          $course = Course::create($request_data);
-
-         return response()->json([
-             'status' => true,
-             'message' => 'Course Created Successfully',
-         ], 200);
+         return $this->sendResponse("Course Created Successfully",['course' => $course]);
     }
 
     /**
@@ -201,12 +188,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'course' => $course,
-            ]
-        ], 200);
+        return $this->sendResponse("",['course' => $course]);
     }
 
     /**
@@ -256,31 +238,15 @@ class CourseController extends Controller
 
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         $request_data = $validate->validated();
         if($request->image){
-            if($course->image != 'courses/default.webp' || $course->image){
-                Storage::disk('public')->delete($course->image);
-            }
-            $imageName = Str::random(20) . uniqid()  . '.webp';
-                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    })->save( Storage::disk('public')->path('courses/'.$imageName));
-            $request_data['image']  = 'courses/'.$imageName;
+        $request_data['image'] = $this->uploadService->uploadImage('courses', $request->image, $course->image);
         }
         $request_data['active'] = 0;
         $course->update($request_data);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Course Updated Successfully',
-        ], 200);
+        return $this->sendResponse("Course Updated Successfully",['course' => $course]);
     }
 
     /**
@@ -308,10 +274,7 @@ class CourseController extends Controller
             Storage::disk('public')->delete($course->image);
         }
         $course->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Deleted Data Successfully',
-            ], 200);
+         return $this->sendResponse("Deleted Data Successfully");
     }
 
     /**
@@ -348,21 +311,12 @@ class CourseController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $course->update([
             'active'=> $request->active,
         ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Course Approved Successfully',
-        ], 200);
+        return $this->sendResponse("Course Approved Successfully",["course"=>$course]);
     }
 }

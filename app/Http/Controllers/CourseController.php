@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController as BaseController;
 
-class CourseController extends Controller
+class CourseController extends BaseController
 {
     /**
      * @OA\Get(
@@ -80,12 +81,7 @@ class CourseController extends Controller
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->withCount('listens')->get();
 
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'courses' => $courses,
-                ]
-            ], 200);
+        return $this->sendResponse("",['courses' => $courses]);
     }
 
         /**
@@ -109,20 +105,10 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         if ($course->active != 1) {
-            return response()->json(
-                [
-                    'status_code'=>404,
-                    'success' => false,
-                    'message' => 'Record not found.'
-                ], 200);
+            return $this->sendError('Record not found.');
         }
-        
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'course' => $course,
-            ]
-        ], 200);
+
+        return $this->sendResponse("",['course' => $course]);
     }
 
 }

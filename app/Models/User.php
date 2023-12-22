@@ -7,12 +7,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
     use LaratrustUserTrait;
-    use HasApiTokens, HasFactory;
+    use HasApiTokens, HasFactory,Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +21,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $guarded = [];
-
+    // protected $fillable = [
+    //     'name',
+    //     'email',
+    //     'password',
+    // ];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -63,10 +68,4 @@ class User extends Authenticatable
         return $this->hasMany(Course::class);
     }
 
-
-    // public function permissions()
-    // {
-    //     return $this->belongsToMany(Permission::class, 'permission_user');
-
-    // }
 }

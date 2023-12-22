@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController as BaseController;
 
-class ContactController extends Controller
+class ContactController extends BaseController
 {
     public function __construct()
     {
@@ -39,12 +40,7 @@ class ContactController extends Controller
             ->OrWhere('phone','Like','%'.$request->search.'%');
         })->get();
 
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'contacts' => $contacts,
-                ]
-            ], 200);
+            return $this->sendResponse("",['contacts' => $contacts]);
     }
 
     /**
@@ -69,9 +65,6 @@ class ContactController extends Controller
     public function destroy(Contact $contact)
     {
         $contact->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Deleted Data Successfully',
-            ], 200);
+ return $this->sendResponse("Deleted Data Successfully");
     }
 }

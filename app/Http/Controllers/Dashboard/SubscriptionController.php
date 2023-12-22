@@ -7,12 +7,13 @@ use App\Models\Course;
 use App\Models\Student;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
-use App\Rules\ValidSubscription;
 use Illuminate\Http\Response;
+use App\Rules\ValidSubscription;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
 
-class SubscriptionController extends Controller
+class SubscriptionController extends BaseController
 {
 
     public function __construct()
@@ -59,12 +60,7 @@ class SubscriptionController extends Controller
             return $query->where('course_id',$request->course_id);
         })->get();
 
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'subscriptions' => $subscriptions,
-                ]
-            ], 200);
+        return $this->sendResponse("",['subscriptions' => $subscriptions]);
     }
 
     /**
@@ -93,12 +89,7 @@ class SubscriptionController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $current = Carbon::now();
@@ -111,11 +102,7 @@ class SubscriptionController extends Controller
             'end_date' => $end_date
         ]);
 
-
-        return response()->json([
-            'status' => true,
-            'message' => "Student Is Subscription Successfully",
-        ], 200);
+        return $this->sendResponse("Student Is Subscription Successfully",['subscription' => $subscription]);
     }
 
     /**
@@ -139,12 +126,7 @@ class SubscriptionController extends Controller
      */
     public function show(Subscription $subscription)
     {
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'subscription' => $subscription,
-            ]
-        ], 200);
+        return $this->sendResponse("",['subscription' => $subscription]);
     }
 
 
@@ -170,9 +152,6 @@ class SubscriptionController extends Controller
     public function destroy(Subscription $subscription)
     {
         $subscription->delete();
-        return response()->json([
-            'status' => true,
-            'message' => 'Deleted Data Successfully',
-        ], 200);
+        return $this->sendResponse("Deleted Data Successfully");
     }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController as BaseController;
 
-class CategoryController extends Controller
+class CategoryController extends BaseController
 {
     public function __construct()
     {
@@ -40,12 +41,7 @@ class CategoryController extends Controller
             return $query->where('name','Like','%'.$request->search.'%');
         })->get();
 
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'categories' => $categories,
-                ]
-            ], 200);
+        return $this->sendResponse("",['categories' => $categories]);
     }
 
     /**
@@ -73,20 +69,12 @@ class CategoryController extends Controller
 
 
          if($validate->fails()){
-             return response()->json([
-                 'success' => false,
-                 'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                 'message' => 'validation error',
-                 'errors' => $validate->errors()
-             ], 200);
+                         return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+
          }
 
          $category = Category::create($validate->validated());
-
-         return response()->json([
-             'status' => true,
-             'message' => 'Category Created Successfully',
-         ], 200);
+         return $this->sendResponse("Category Created Successfully",['category' => $category]);
     }
 
     /**
@@ -122,22 +110,13 @@ class CategoryController extends Controller
 
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $category->update([
             'name'=>$request->name,
         ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Category Updated Successfully',
-        ], 200);
+        return $this->sendResponse("Category Updated Successfully",['category' => $category]);
     }
 
     /**
@@ -162,9 +141,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Deleted Data Successfully',
-            ], 200);
+        return $this->sendResponse("Deleted Data Successfully");
     }
 }

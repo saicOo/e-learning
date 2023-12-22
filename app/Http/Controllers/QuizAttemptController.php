@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Quiz;
 use App\Models\Question;
 use App\Models\QuizAttempt;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-class QuizAttemptController extends Controller
+use Illuminate\Http\Response;
+use App\Http\Controllers\BaseController as BaseController;
+use Illuminate\Support\Facades\Validator;
+
+class QuizAttemptController extends BaseController
 {
 
     /**
@@ -23,13 +25,7 @@ class QuizAttemptController extends Controller
     public function index(Request $request)
     {
         $attempts = $request->user()->attempts;
-
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'attempts' => $attempts,
-            ]
-        ], 200);
+        return $this->sendResponse("",['attempts' => $attempts]);
     }
 
     /**
@@ -54,13 +50,11 @@ class QuizAttemptController extends Controller
     public function show(QuizAttempt $quizAttempt)
     {
         $attempt = $quizAttempt;
-        $attempt->answers;
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'attempt' => $attempt,
-            ]
-        ], 200);
+        foreach ($attempt->answers as $answer) {
+            $answer->question;
+        }
+
+        return $this->sendResponse("",['attempt' => $attempt]);
     }
 
     /**
@@ -98,12 +92,7 @@ class QuizAttemptController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         // Save quiz data to the database
         $attempt = $quiz->attempts()->create([
@@ -143,13 +132,7 @@ class QuizAttemptController extends Controller
         $attempt->update(['score'=>$score]);
 
         $quiz->attempts;
-        return response()->json([
-            'status' => true,
-            'message' => 'Quiz Created Successfully',
-            'data' => [
-                'quiz' => $quiz,
-            ]
-        ], 200);
+        return $this->sendResponse("Quiz Created Successfully",['quiz' => $quiz]);
     }
 
     // Add helper methods as needed

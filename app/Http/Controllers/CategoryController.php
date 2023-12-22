@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController as BaseController;
 
-class CategoryController extends Controller
+class CategoryController extends BaseController
 {
     /**
      * @OA\Get(
@@ -18,11 +19,6 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'categories' => $categories,
-                ]
-            ], 200);
+        return $this->sendResponse("",['categories' => $categories]);
     }
 }

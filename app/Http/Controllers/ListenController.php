@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Listen;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController as BaseController;
 
-class ListenController extends Controller
+class ListenController extends BaseController
 {
     /**
      * @OA\Get(
@@ -38,18 +39,12 @@ class ListenController extends Controller
      */
     public function index(Request $request)
     {
-        $listens = Listen::where('active',1)->when($request->course_id,function ($query) use ($request){ // if course_id
+        $listens = Listen::select("id","name","description")->with("quizzes:id,title,questions_count,listen_id")->where('active',1)->when($request->course_id,function ($query) use ($request){ // if course_id
             return $query->where('course_id',$request->course_id);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->get();
-
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'listens' => $listens,
-            ]
-        ], 200);
+        return $this->sendResponse("",['listens' => $listens]);
     }
 
     /**
@@ -74,18 +69,8 @@ class ListenController extends Controller
     public function show(Listen $listen)
     {
         if ($listen->active != 1) {
-            return response()->json(
-                [
-                    'status_code'=>404,
-                    'success' => false,
-                    'message' => 'Record not found.'
-                ], 200);
+            return $this->sendError('Record not found.');
         }
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'listen' => $listen,
-            ]
-        ], 200);
+        return $this->sendResponse("",['listen' => $listen]);
     }
 }

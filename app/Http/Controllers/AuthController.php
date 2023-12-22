@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Student;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\BaseController as BaseController;
+use Illuminate\Support\Facades\Validator;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     /**
      * @OA\Post(
@@ -65,7 +66,8 @@ class AuthController extends Controller
             // $cookie = cookie('token_student', $token, $expiry_minutes)->withSameSite('None'); // 1 minute
             $expiry_date = Carbon::now();
             $expiry_date = $expiry_date->addMinutes($expiry_minutes);
-            return response()->json([
+                    return $this->sendResponse("",['assistant' => $assistant]);
+ return response()->json([
                 'status' => true,
                 'message' => 'Student Logged In Successfully',
                 'data' => [
@@ -115,7 +117,8 @@ class AuthController extends Controller
     public function profile(Request $request)
     {
             $student = $request->user();
-            return response()->json([
+                    return $this->sendResponse("",['assistant' => $assistant]);
+ return response()->json([
                 'status' => true,
                 'data' => $student,
             ], 200);
@@ -146,12 +149,7 @@ class AuthController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         $student = $request->user();
         $request_data = $validate->validate();

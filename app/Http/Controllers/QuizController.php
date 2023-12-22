@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Quiz;
 use App\Models\Question;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Controllers\BaseController as BaseController;
+use Illuminate\Support\Facades\Validator;
 
-class QuizController extends Controller
+class QuizController extends BaseController
 {
     /**
      * @OA\Get(
@@ -32,12 +33,7 @@ class QuizController extends Controller
     public function show(Quiz $quiz)
     {
         $quiz->questions;
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'quiz' => $quiz,
-            ]
-        ], 200);
+        return $this->sendResponse("",['quiz' => $quiz]);
     }
 
 }

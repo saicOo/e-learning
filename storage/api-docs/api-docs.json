@@ -258,6 +258,221 @@
                 }
             }
         },
+        "/api/dashboard/assistants": {
+            "get": {
+                "tags": [
+                    "Dashboard Api assistant"
+                ],
+                "summary": "get all Assistants",
+                "operationId": "1d39d080e92076820fa5b8011ec63f81",
+                "parameters": [
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "filter assistants with active (active = 1 , not active = 0)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name , email or phone",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "Add New assistant",
+                "operationId": "1c95960880c2b926c2dbbe0dcb87da82",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "assistant_id": {
+                                        "type": "integer",
+                                        "example": "Sets the teacher assistant's ID"
+                                    },
+                                    "image": {
+                                        "type": "file",
+                                        "example": "path image"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/assistants/{assistant_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "show assistant",
+                "operationId": "a0bce9b466f85966c85ff7ffccc82f4a",
+                "parameters": [
+                    {
+                        "name": "assistant_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "update assistant",
+                "operationId": "b205ed0ff9987f7176b7741f5b960a2a",
+                "parameters": [
+                    {
+                        "name": "assistant_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "active": {
+                                        "type": "boolen",
+                                        "example": "integer"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "assistant_create"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "Delete assistant",
+                "operationId": "66054b3fdcb2f81c6305d96336d04e71",
+                "parameters": [
+                    {
+                        "name": "assistant_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/dashboard/login": {
             "post": {
                 "tags": [
@@ -276,7 +491,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "email",
-                                        "example": "manger@app.com"
+                                        "example": "manager@app.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -1865,28 +2080,18 @@
                 }
             }
         },
-        "/api/dashboard/users": {
+        "/api/dashboard/teachers": {
             "get": {
                 "tags": [
-                    "Dashboard Api Users"
+                    "Dashboard Api Teacher"
                 ],
-                "summary": "get all users",
-                "operationId": "38b3ee451ceefc3922b4e52c444f31c5",
+                "summary": "get all teachers",
+                "operationId": "095c9eacc2d4a574d2558effda4e1121",
                 "parameters": [
-                    {
-                        "name": "role",
-                        "in": "query",
-                        "description": "filter users with role (manger , teacher , assistant)",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     {
                         "name": "active",
                         "in": "query",
-                        "description": "filter users with active (active = 1 , not active = 0)",
+                        "description": "filter teachers with active (active = 1 , not active = 0)",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -1915,10 +2120,10 @@
             },
             "post": {
                 "tags": [
-                    "Dashboard Api Users"
+                    "Dashboard Api Teachers"
                 ],
-                "summary": "Add New User",
-                "operationId": "a59d25ee02552bf4ed5c21808841336b",
+                "summary": "Add New Teacher",
+                "operationId": "a4174eb70d4cc7447bfdac5c59366e17",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1944,20 +2149,9 @@
                                         "type": "string",
                                         "example": "string"
                                     },
-                                    "role": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string",
-                                            "example": "manger , teacher, assistant"
-                                        }
-                                    },
                                     "image": {
                                         "type": "file",
                                         "example": "path image"
-                                    },
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": "Sets the teacher assistant's ID"
                                     }
                                 },
                                 "type": "object"
@@ -1975,16 +2169,16 @@
                 }
             }
         },
-        "/api/dashboard/users/{user_id}": {
+        "/api/dashboard/teachers/{teacher_id}": {
             "get": {
                 "tags": [
-                    "Dashboard Api Users"
+                    "Dashboard Api Teachers"
                 ],
-                "summary": "show user",
-                "operationId": "f874086dcc044c104145830328e3081c",
+                "summary": "show teacher",
+                "operationId": "37091fd84dd80a7ab3dc59f7fd882f30",
                 "parameters": [
                     {
-                        "name": "user_id",
+                        "name": "teacher_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -2007,13 +2201,13 @@
             },
             "put": {
                 "tags": [
-                    "Dashboard Api Users"
+                    "Dashboard Api Teachers"
                 ],
-                "summary": "update user",
-                "operationId": "df2564e86835933c6f30f943d5bfc573",
+                "summary": "update teacher",
+                "operationId": "6b64ed9a5fdc77c6d03d5733cd8cdf8e",
                 "parameters": [
                     {
-                        "name": "user_id",
+                        "name": "teacher_id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -2066,47 +2260,18 @@
                         "description": "Resource Not Found"
                     }
                 }
-            },
-            "delete": {
-                "tags": [
-                    "Dashboard Api Users"
-                ],
-                "summary": "Delete User",
-                "operationId": "4a0919d48edfdfaa7dd122f182160fe6",
-                "parameters": [
-                    {
-                        "name": "user_id",
-                        "in": "path",
-                        "required": true,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "404": {
-                        "description": "Resource Not Found"
-                    }
-                }
             }
         },
-        "/api/dashboard/users/{user_id}/change-password": {
+        "/api/dashboard/teachers/{teacher_id}/change-password": {
             "put": {
                 "tags": [
-                    "Dashboard Api Users"
+                    "Dashboard Api Teachers"
                 ],
-                "summary": "change password user",
-                "operationId": "968fefd2056c7355c105719784ff2ff0",
+                "summary": "change password teacher",
+                "operationId": "5dbddb7ad1e685901f90d75f21e755c4",
                 "parameters": [
                     {
-                        "name": "user_id",
+                        "name": "teacher_id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -2150,13 +2315,13 @@
                 }
             }
         },
-        "/api/dashboard/users/{user_id}/upload-image": {
-            "post": {
+        "/api/dashboard/users/{user_id}": {
+            "delete": {
                 "tags": [
                     "Dashboard Api Users"
                 ],
-                "summary": "upload file User",
-                "operationId": "68b0c97f4764019d7b978255b6c2703d",
+                "summary": "Delete User",
+                "operationId": "18e3dbda9bb63884f9e694f5ebb0f48c",
                 "parameters": [
                     {
                         "name": "user_id",
@@ -2168,6 +2333,115 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/users/{user_id}/upload-image": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Users"
+                ],
+                "summary": "upload file User",
+                "operationId": "4b22498c2dce4da8f00920fa08d27b76",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "file",
+                                        "example": "path image"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/users/change-password": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Users"
+                ],
+                "summary": "change password user",
+                "operationId": "0efad2e6fa0cab3195e4278c7329612d",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "old_password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/users/upload-image": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Users"
+                ],
+                "summary": "upload file User",
+                "operationId": "4a4689dd18a8a9445e1fd0e71ab43a7a",
                 "requestBody": {
                     "content": {
                         "application/json": {

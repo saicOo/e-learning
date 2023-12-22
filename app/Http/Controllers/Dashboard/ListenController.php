@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Listen;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Response;
+use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
 
-class ListenController extends Controller
+class ListenController extends BaseController
 {
     public function __construct()
     {
@@ -70,12 +71,7 @@ class ListenController extends Controller
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->get();
 
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'listens' => $listens,
-            ]
-        ], 200);
+        return $this->sendResponse("",['listens' => $listens]);
     }
 
     /**
@@ -107,25 +103,14 @@ class ListenController extends Controller
 
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $request_data = $validate->validated();
 
         $listen = Listen::create($request_data);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Listen Created Successfully',
-            'data' => [
-                'listen' => $listen,
-            ]
-        ], 200);
+        return $this->sendResponse("Listen Created Successfully",['listen' => $listen]);
     }
 
     /**
@@ -149,12 +134,7 @@ class ListenController extends Controller
      */
     public function show(Listen $listen)
     {
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'listen' => $listen,
-            ]
-        ], 200);
+        return $this->sendResponse("",['listen' => $listen]);
     }
 
     /**
@@ -196,12 +176,7 @@ class ListenController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $request_data = $validate->validated();
@@ -209,10 +184,7 @@ class ListenController extends Controller
         $request_data['active'] = 0;
         $listen->update($request_data);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Listen Updated Successfully',
-        ], 200);
+        return $this->sendResponse("Listen Updated Successfully",['listen' => $listen]);
     }
 
     /**
@@ -243,10 +215,7 @@ class ListenController extends Controller
             Storage::disk('public')->delete($listen->attached);
         }
         $listen->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Deleted Data Successfully',
-            ], 200);
+        return $this->sendResponse("Deleted Data Successfully");
     }
 
     /**
@@ -291,12 +260,7 @@ class ListenController extends Controller
         }
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         if($listen->video != 'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4' || $listen->video != null){
@@ -309,10 +273,7 @@ class ListenController extends Controller
             'video'=> $path_video,
         ]);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'The video has been uploaded successfully',
-        ], 200);
+        return $this->sendResponse("The video has been uploaded successfully",['listen' => $listen]);
     }
 
     /**
@@ -349,12 +310,7 @@ class ListenController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
             if($listen->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf' || $listen->attached != null){
@@ -367,11 +323,7 @@ class ListenController extends Controller
             'active'=> 0,
             'attached'=> $path_attached,
         ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'The file has been uploaded successfully',
-        ], 200);
+        return $this->sendResponse("The file has been uploaded successfully",['listen' => $listen]);
     }
 
     /**
@@ -408,21 +360,13 @@ class ListenController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $listen->update([
             'active'=> $request->active,
         ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Listen Approved Successfully',
-        ], 200);
+        
+        return $this->sendResponse("Listen Approved Successfully",['listen' => $listen]);
     }
 }

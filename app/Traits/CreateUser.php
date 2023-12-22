@@ -5,7 +5,7 @@ use App\Models\User;
 
 trait CreateUser
 {
-    private function createUser(User $user, $role){
-
+    private function createUser($data){
+        
     }
 }

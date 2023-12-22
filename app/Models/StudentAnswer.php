@@ -10,8 +10,13 @@ class StudentAnswer extends Model
     use HasFactory;
 
     protected $guarded = [];
-    
+
     public function attempt()
+    {
+        return $this->belongsTo(QuizAttempt::class);
+    }
+    
+    public function question()
     {
         return $this->belongsTo(Question::class);
     }

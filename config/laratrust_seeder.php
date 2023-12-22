@@ -11,7 +11,7 @@ return [
     'truncate_tables' => true,
 
     'roles_structure' => [
-        'manger' => [
+        'manager' => [
             'users' => 'c,r,u,d',
             'students' => 'c,r,u,d',
             'courses' => 'c,r,u,d,a',

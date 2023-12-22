@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
 use App\Models\Level;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController as BaseController;
 
-class LevelController extends Controller
+class LevelController extends BaseController
 {
 
     /**
@@ -21,12 +22,7 @@ class LevelController extends Controller
     public function index()
     {
         $levels = Level::all();
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'levels' => $levels,
-                ]
-            ], 200);
+        return $this->sendResponse("",['levels' => $levels]);
     }
 
 }

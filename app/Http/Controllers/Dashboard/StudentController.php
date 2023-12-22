@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Response;
+use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
 
 
-class StudentController extends Controller
+class StudentController extends BaseController
 {
     public function __construct()
     {
@@ -57,10 +58,8 @@ class StudentController extends Controller
                 ->OrWhere('email','Like','%'.$request->search.'%')
                 ->OrWhere('phone','Like','%'.$request->search.'%');
             })->get();
-            return response()->json([
-                'status' => true,
-                'data' => ['studenets' => $students],
-            ], 200);
+
+            return $this->sendResponse("",['students' => $students]);
     }
 
 
@@ -113,11 +112,7 @@ class StudentController extends Controller
                 'password' => Hash::make($request->password)
             ]);
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Student Created Successfully',
-            ], 200);
-
+        return $this->sendResponse("Student Created Successfully",['student' => $student]);
     }
 
     /**
@@ -141,10 +136,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-            return response()->json([
-                'status' => true,
-                'data' => ['student' => $student],
-            ], 200);
+        return $this->sendResponse("",['student' => $student]);
     }
 
     /**
@@ -198,15 +190,7 @@ class StudentController extends Controller
 
             $student->update($validate->validated());
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Student Updated Successfully',
-            ], 200);
-
-            // return response()->json([
-            //     'success' => false,
-            //     'message' => $th->getMessage()
-            // ], 500);
+            return $this->sendResponse("Student Updated Successfully",['student' => $student]);
 
     }
 
@@ -254,23 +238,15 @@ class StudentController extends Controller
         }
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         #Update the new Password
-        $user->update([
+        $student->update([
             'password' => Hash::make($request->new_password)
         ]);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Password changed successfully!',
-        ], 200);
+        return $this->sendResponse("Password changed successfully!",['student' => $student]);
     }
 
     /**
@@ -297,10 +273,8 @@ class StudentController extends Controller
         if($student->image != 'students/default.webp' ||  $student->image){
             Storage::disk('public')->delete($student->image);
         }
-            $student->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Deleted Data Successfully',
-            ], 200);
+        $student->delete();
+        
+        return $this->sendResponse("Deleted Data Successfully");
     }
 }

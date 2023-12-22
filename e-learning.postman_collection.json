@@ -157,7 +157,7 @@
 					]
 				},
 				{
-					"name": "students",
+					"name": "attempts",
 					"item": [
 						{
 							"name": "index",
@@ -165,14 +165,30 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "9|oROdtywbXMnyuE3rXMapGAlYyPBUGL0mfvEHLF6W",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "formdata",
 									"formdata": []
 								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/students/1/show",
+									"raw": "http://127.0.0.1:8000/api/quiz-attempts",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -183,9 +199,53 @@
 									"port": "8000",
 									"path": [
 										"api",
-										"students",
-										"1",
-										"show"
+										"quiz-attempts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "9|oROdtywbXMnyuE3rXMapGAlYyPBUGL0mfvEHLF6W",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/quiz-attempts",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"quiz-attempts"
 									]
 								}
 							},
@@ -197,7 +257,7 @@
 					"name": "quizez",
 					"item": [
 						{
-							"name": "index",
+							"name": "show",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},

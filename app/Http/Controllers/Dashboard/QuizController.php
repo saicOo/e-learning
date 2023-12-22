@@ -6,10 +6,11 @@ use App\Models\Quiz;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController as BaseController;
+use Illuminate\Support\Facades\Validator;
 
-class QuizController extends Controller
+class QuizController extends BaseController
 {
     /**
      * @OA\Get(
@@ -61,12 +62,7 @@ class QuizController extends Controller
             return $query->where('title','Like','%'.$request->search.'%');
         })->get();
 
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'quizzes' => $quizzes,
-            ]
-        ], 200);
+        return $this->sendResponse("",['quizzes' => $quizzes]);
     }
 
     /**
@@ -116,12 +112,7 @@ class QuizController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $request_data = $validate->validated();
@@ -134,14 +125,7 @@ class QuizController extends Controller
             }
         }
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Quiz Created Successfully',
-            'data' => [
-                'quiz' => $quiz,
-            ]
-        ], 200);
-
+        return $this->sendResponse("Quiz Created Successfully",['quiz' => $quiz]);
 
     }
 
@@ -167,20 +151,12 @@ class QuizController extends Controller
     public function show(Quiz $quiz)
     {
         $quiz->questions;
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'quiz' => $quiz,
-            ]
-        ], 200);
+        return $this->sendResponse("",['quiz' => $quiz]);
     }
 
     public function destroy(Quiz $quiz)
     {
         $quiz->delete();
-        return response()->json([
-            'status' => true,
-            'message' => 'Deleted Data Successfully',
-        ], 200);
+        return $this->sendResponse("Deleted Data Successfully");
     }
 }

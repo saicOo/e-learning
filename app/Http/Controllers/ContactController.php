@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
 
-class ContactController extends Controller
+class ContactController extends BaseController
 {
 
         /**
@@ -41,20 +42,12 @@ class ContactController extends Controller
          ]);
 
          if($validate->fails()){
-             return response()->json([
-                 'success' => false,
-                 'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                 'message' => 'validation error',
-                 'errors' => $validate->errors()
-             ], 200);
+                         return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+
          }
 
-         $course = Contact::create($validate->validated());
-
-         return response()->json([
-             'status' => true,
-             'message' => 'Contact Created Successfully',
-         ], 200);
+         $contact = Contact::create($validate->validated());
+        return $this->sendResponse("Contact Created Successfully",['contact' => $contact]);
     }
 
 }

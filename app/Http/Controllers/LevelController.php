@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Level;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController as BaseController;
 
-class LevelController extends Controller
+class LevelController extends BaseController
 {
     /**
      * @OA\Get(
@@ -18,11 +19,6 @@ class LevelController extends Controller
     public function index()
     {
         $levels = Level::all();
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'levels' => $levels,
-                ]
-            ], 200);
+        return $this->sendResponse("",['levels' => $levels]);
     }
 }

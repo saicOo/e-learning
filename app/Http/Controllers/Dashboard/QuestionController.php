@@ -6,10 +6,11 @@ use App\Models\Course;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController as BaseController;
+use Illuminate\Support\Facades\Validator;
 
-class QuestionController extends Controller
+class QuestionController extends BaseController
 {
 /**
      * @OA\Get(
@@ -62,12 +63,7 @@ class QuestionController extends Controller
             return $query->where('title','Like','%'.$request->search.'%');
         })->get();
 
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'questions' => $questions,
-            ]
-        ], 200);
+        return $this->sendResponse("",['questions' => $questions]);
     }
     /**
      * @OA\Post(
@@ -117,12 +113,7 @@ class QuestionController extends Controller
 
 
         if($validate->fails()){
-            return response()->json([
-                'success' => false,
-                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'validation error',
-                'errors' => $validate->errors()
-            ], 200);
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $question = $course->questions()->create([
@@ -134,11 +125,7 @@ class QuestionController extends Controller
             "listen_id" => $request->listen_id,
         ]);
 
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Question Created Successfully',
-            ], 200);
+        return $this->sendResponse("Question Created Successfully",['question' => $question]);
     }
 
     /**
@@ -163,9 +150,6 @@ class QuestionController extends Controller
     public function destroy(Question $question)
     {
         $question->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Deleted Data Successfully',
-            ], 200);
+        return $this->sendResponse("Deleted Data Successfully");
     }
 }
