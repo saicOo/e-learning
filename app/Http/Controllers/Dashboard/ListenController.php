@@ -220,7 +220,7 @@ class ListenController extends BaseController
 
     /**
      * @OA\Put(
-     *     path="/api/dashboard/listens/{listene_id}/upload-video",
+     *     path="/api/dashboard/listens/{listen_id}/upload-video",
      *      tags={"Dashboard Api Listens"},
      *     summary="upload video Listen",
      *     @OA\Parameter(
@@ -278,7 +278,7 @@ class ListenController extends BaseController
 
     /**
      * @OA\Post(
-     *     path="/api/dashboard/listens/{listene_id}/upload-file",
+     *     path="/api/dashboard/listens/{listen_id}/upload-file",
      *      tags={"Dashboard Api Listens"},
      *     summary="upload file Listen",
      *     @OA\Parameter(
@@ -328,7 +328,7 @@ class ListenController extends BaseController
 
     /**
      * @OA\Put(
-     *     path="/api/dashboard/listens/{listene_id}/approve",
+     *     path="/api/dashboard/listens/{listen_id}/approve",
      *      tags={"Dashboard Api Listens"},
      *     summary="Approve Listen",
      *     @OA\Parameter(

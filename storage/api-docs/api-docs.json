@@ -261,7 +261,7 @@
         "/api/dashboard/assistants": {
             "get": {
                 "tags": [
-                    "Dashboard Api assistant"
+                    "Dashboard Api Assistants"
                 ],
                 "summary": "get all Assistants",
                 "operationId": "1d39d080e92076820fa5b8011ec63f81",
@@ -1610,10 +1610,6 @@
                                         "type": "string",
                                         "example": "string"
                                     },
-                                    "grade": {
-                                        "type": "integer",
-                                        "example": "integer"
-                                    },
                                     "questions_count": {
                                         "type": "integer",
                                         "example": "integer"
@@ -2083,7 +2079,7 @@
         "/api/dashboard/teachers": {
             "get": {
                 "tags": [
-                    "Dashboard Api Teacher"
+                    "Dashboard Api Teachers"
                 ],
                 "summary": "get all teachers",
                 "operationId": "095c9eacc2d4a574d2558effda4e1121",
@@ -2260,125 +2256,24 @@
                         "description": "Resource Not Found"
                     }
                 }
-            }
-        },
-        "/api/dashboard/teachers/{teacher_id}/change-password": {
-            "put": {
+            },
+            "delete": {
                 "tags": [
                     "Dashboard Api Teachers"
                 ],
-                "summary": "change password teacher",
-                "operationId": "5dbddb7ad1e685901f90d75f21e755c4",
+                "summary": "Delete Teacher",
+                "operationId": "bde696a6336081d023c9fec539c849c1",
                 "parameters": [
                     {
                         "name": "teacher_id",
                         "in": "path",
                         "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "old_password": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
-                                    "new_password": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
-                                    "new_password_confirmation": {
-                                        "type": "string",
-                                        "example": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "404": {
-                        "description": "Resource Not Found"
-                    }
-                }
-            }
-        },
-        "/api/dashboard/users/{user_id}": {
-            "delete": {
-                "tags": [
-                    "Dashboard Api Users"
-                ],
-                "summary": "Delete User",
-                "operationId": "18e3dbda9bb63884f9e694f5ebb0f48c",
-                "parameters": [
-                    {
-                        "name": "user_id",
-                        "in": "path",
-                        "required": true,
                         "explode": true,
                         "schema": {
                             "type": "integer"
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "404": {
-                        "description": "Resource Not Found"
-                    }
-                }
-            }
-        },
-        "/api/dashboard/users/{user_id}/upload-image": {
-            "post": {
-                "tags": [
-                    "Dashboard Api Users"
-                ],
-                "summary": "upload file User",
-                "operationId": "4b22498c2dce4da8f00920fa08d27b76",
-                "parameters": [
-                    {
-                        "name": "user_id",
-                        "in": "path",
-                        "required": true,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "image": {
-                                        "type": "file",
-                                        "example": "path image"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "OK"

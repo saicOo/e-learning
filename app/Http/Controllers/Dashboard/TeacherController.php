@@ -29,7 +29,7 @@ class TeacherController extends BaseController
     /**
      * @OA\Get(
      *     path="/api/dashboard/teachers",
-     *      tags={"Dashboard Api Teacher"},
+     *      tags={"Dashboard Api Teachers"},
      *     summary="get all teachers",
      * @OA\Parameter(
      *         name="active",
@@ -202,71 +202,12 @@ class TeacherController extends BaseController
     }
 
     /**
-     * @OA\Put(
-     *     path="/api/dashboard/teachers/{teacher_id}/change-password",
-     *      tags={"Dashboard Api Teachers"},
-     *     summary="change password teacher",
-     * @OA\Parameter(
-     *          name="teacher_id",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     * @OA\RequestBody(
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="old_password", type="string", example="string"),
-     *             @OA\Property(property="new_password", type="string", example="string"),
-     *             @OA\Property(property="new_password_confirmation", type="string", example="string"),
-     *         ),
-     *     ),
-     *     @OA\Response(response=200, description="OK"),
-     *       @OA\Response(response=401, description="Unauthenticated"),
-     *      @OA\Response(response=404, description="Resource Not Found")
-     * )
-     */
-    public function changePassword(Request $request, $id)
-    {
-        $teacher = User::whereRoleIs('teacher')->where('id',$id)->first();
-        if(!$teacher){
-            return $this->sendError('The Teacher Not Fount');
-        }
-            //Validated
-        $validate = Validator::make($request->all(),
-        [
-            'old_password' => 'required',
-            'new_password' => 'required|confirmed',
-        ]);
-
-
-        #Match The Old Password
-        if(!Hash::check($request->old_password, $teacher->password)){
-            $validate->after(function($validate) {
-                $validate->errors()->add('old_password', "Old Password Doesn't match!");
-              });
-        }
-
-        if($validate->fails()){
-            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        #Update the new Password
-        $teacher->update([
-            'password' => Hash::make($request->new_password)
-        ]);
-
-        return $this->sendResponse("Password changed successfully!");
-    }
-
-    /**
      * @OA\Delete(
-     *     path="/api/dashboard/users/{user_id}",
-     *      tags={"Dashboard Api Users"},
-     *     summary="Delete User",
+     *     path="/api/dashboard/teachers/{teacher_id}",
+     *      tags={"Dashboard Api Teachers"},
+     *     summary="Delete Teacher",
      *     @OA\Parameter(
-     *         name="user_id",
+     *         name="teacher_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -292,49 +233,4 @@ class TeacherController extends BaseController
         return $this->sendResponse("Deleted Data Successfully");
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/dashboard/users/{user_id}/upload-image",
-     *      tags={"Dashboard Api Users"},
-     *     summary="upload file User",
-     *     @OA\Parameter(
-     *         name="user_id",
-     *         in="path",
-     *         required=true,
-     *         explode=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *     ),
-     * @OA\RequestBody(
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="image", type="file", example="path image"),
-     *         ),
-     *     ),
-     *       @OA\Response(response=200, description="OK"),
-     *       @OA\Response(response=401, description="Unauthenticated"),
-     *      @OA\Response(response=404, description="Resource Not Found")
-     *    )
-     */
-    public function uploadImage(Request $request, $id)
-    {
-        $teacher = User::whereRoleIs('teacher')->where('id',$id)->first();
-        if(!$teacher){
-            return $this->sendError('The Teacher Not Fount');
-        }
-        //Validated
-        $validate = Validator::make($request->all(),
-        [
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg',
-        ]);
-
-        if($validate->fails()){
-            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-        $request_data['image'] = $this->uploadService->uploadImage('users', $request->image, $teacher->image);
-
-        $teacher->update($request_data);
-        return $this->sendResponse("The Image has been uploaded successfully");
-    }
 }

@@ -35,6 +35,7 @@ class QuestionSeeder extends Seeder
                 "title" => $faker->sentence(rand(2,8)),
                 "grade" => rand(1,10),
                 "type" => $type,
+                "image" => null,
                 "correct_option" => $correct_option,
                 "options" => $options,
                 "listen_id" =>$listen_id,

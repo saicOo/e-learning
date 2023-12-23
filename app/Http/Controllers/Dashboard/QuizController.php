@@ -83,7 +83,6 @@ class QuizController extends BaseController
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="title", type="string", example="string"),
-     *             @OA\Property(property="grade", type="integer", example="integer"),
      *             @OA\Property(property="questions_count", type="integer", example="integer" ),
      *             @OA\Property(property="type", type="integer", example="course, listen"),
      *             @OA\Property(property="listen_id", type="integer", example="integer"),

@@ -17,6 +17,12 @@ trait PermissionsUser
                     'listens_create',
                     'listens_read',
                     'listens_update',
+                    'categories_read',
+                    'quizzes_read',
+                    'quizzes_update',
+                    'questions_create',
+                    'quizzes_delete',
+                    'questions_read',
                 ];
                 break;
             case 'assistant':
@@ -27,6 +33,9 @@ trait PermissionsUser
                     'subscriptions_create',
                     'subscriptions_read',
                     'subscriptions_update',
+                    'categories_read',
+                    'quizzes_read',
+                    'questions_read',
                 ];
                 break;
 

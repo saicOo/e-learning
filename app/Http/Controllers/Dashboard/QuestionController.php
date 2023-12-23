@@ -3,15 +3,27 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Course;
+use App\Models\Listen;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Services\UploadService;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BaseController as BaseController;
 
 class QuestionController extends BaseController
 {
+    protected $uploadService;
+    
+    public function __construct(UploadService $uploadService)
+    {
+        $this->middleware(['permission:questions_read'])->only(['index','show']);
+        $this->middleware(['permission:questions_create'])->only('store');
+        $this->middleware(['permission:questions_delete'])->only('destroy');
+        $this->uploadService = $uploadService;
+    }
 /**
      * @OA\Get(
      *     path="/api/dashboard/questions",
@@ -83,6 +95,7 @@ class QuestionController extends BaseController
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="title", type="string", example="string"),
+     *             @OA\Property(property="image", type="string", example="path file"),
      *             @OA\Property(property="grade", type="integer", example="integer"),
      *             @OA\Property(property="correct_option", type="integer", example="index option : 0, 1, 2, 3" ),
      *             @OA\Property(property="type", type="integer", example="1=>TrueFalse, 2=>Choice,3 =>Article'"),
@@ -99,31 +112,44 @@ class QuestionController extends BaseController
      */
     public function store(Request $request, Course $course)
     {
-        //Validated
-        $validate = Validator::make($request->all(),
-        [
+        $rules = [
             'title' => 'required|string|max:1000',
-            'options' => 'required|array|min:1',
-            'options.*' => 'required|string|max:1000',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
             'grade' => 'required|integer|max:100',
-            'correct_option' => 'required|in:0,1,2,3',
             'type' => 'required|in:1,2,3', //1=>TrueFalse, 2=>Choice,3 =>Article'
             'listen_id' => 'required|exists:listens,id',
-        ]);
+        ];
 
+        if ($request->type != 3) {
+            $rules += [
+                'options' => 'required|array|min:1',
+                'options.*' => 'required|string|max:1000',
+            ];
+
+            if($request->type == 1){$rules += ['correct_option' => 'required|in:0,1'];}
+
+            if($request->type == 2){$rules += ['correct_option' => 'required|in:0,1,2,3'];}
+        }
+        
+        //Validated
+        $validate = Validator::make($request->all(), $rules);
+
+        $check_course_id = Listen::findOrFail($request->listen_id)->first()->course_id;
+        if ($check_course_id != $course->id) {
+            $validate->after(function($validate) {
+                $validate->errors()->add('listen_id', "This listen is not here !");
+              });
+        }
 
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
-        $question = $course->questions()->create([
-            "title" => $request->title,
-            "grade" => $request->grade,
-            "type" => $request->type,
-            "correct_option" => $request->correct_option,
-            "options" => $request->options,
-            "listen_id" => $request->listen_id,
-        ]);
+        $request_data = $validate->validate();
+        $request_data['course_id'] = $course->id;
+        if($request->image && $request->type == 3){
+            $request_data['image'] = $this->uploadService->uploadImage('questions', $request->image);
+        }
+        $question = $course->questions()->create($request_data);
 
         return $this->sendResponse("Question Created Successfully",['question' => $question]);
     }
@@ -149,6 +175,9 @@ class QuestionController extends BaseController
      */
     public function destroy(Question $question)
     {
+        if($question->image != 'questions/default.webp' ||  $question->image){
+            Storage::disk('public')->delete($question->image);
+        }
         $question->delete();
         return $this->sendResponse("Deleted Data Successfully");
     }

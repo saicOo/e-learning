@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
@@ -15,6 +16,18 @@ class Question extends Model
         'options' => 'array',
     ];
 
+    protected $appends = ['image_url'];
+
+    protected $hidden = [
+        'image',
+    ];
+
+    public function getImageUrlAttribute(){
+        if($this->image){
+            return Storage::disk('public')->url($this->image);
+        }
+        return null;
+    }
     public function course()
     {
         return $this->belongsTo(Course::class);

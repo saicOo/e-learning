@@ -16,8 +16,9 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->text('title');
+            $table->text('image')->nullable();
             $table->integer('grade');
-            $table->json('options'); // JSON array of answer options
+            $table->json('options')->nullable(); // JSON array of answer options
             $table->integer('correct_option')->nullable(); // Index of the correct option in the 'options' array
             $table->tinyInteger('type')->comment('1=>TrueFalse, 2=>Choice,3 =>Article');
             $table->unsignedBigInteger('listen_id');

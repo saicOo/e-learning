@@ -138,7 +138,7 @@ class QuizAttemptController extends BaseController
     // Add helper methods as needed
     private function getCorrectAnswerForQuestion($questionId)
     {
-        return Question::find($questionId);
+        return Question::findOrFail($questionId);
     }
 
     private function calculateScore($responses ,$maxGrade = 10)

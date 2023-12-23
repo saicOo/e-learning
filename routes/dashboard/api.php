@@ -20,14 +20,9 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     
     // routes teachers
     Route::resource('teachers', 'TeacherController')->except(['edit','create']);
-    // Route::put('teachers/{user}/change-password', 'TeacherController@changePassword');
-    // Route::post('teachers/{user}/upload-image', 'TeacherController@uploadImage');
     // routes assistants
     Route::resource('assistants', 'AssistantController')->except(['edit','create']);
-    // Route::put('assistants/{user}/change-password', 'AssistantController@changePassword');
-    // Route::post('assistants/{user}/upload-image', 'AssistantController@uploadImage');
     // routes users
-    // Route::apiResource('users', 'UserController')->except(['edit','create']);
     Route::put('users/{user}/change-password', 'UserController@changePassword');
     Route::post('users/{user}/upload-image', 'UserController@uploadImage');
     // routes students

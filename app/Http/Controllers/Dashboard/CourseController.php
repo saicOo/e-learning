@@ -129,7 +129,7 @@ class CourseController extends BaseController
      *             @OA\Property(property="price", type="double", example="double"),
      *             @OA\Property(property="description", type="string", example="string"),
      *             @OA\Property(property="semester", type="enum", example="string"),
-     *             @OA\Property(property="image", type="string", example="https://www.techsmith.com/blog/wp-content/uploads/2022/03/resize-image.png"),
+     *             @OA\Property(property="image", type="string", example="path file"),
      *             @OA\Property(property="user_id", type="integer", example="integer"),
      *             @OA\Property(property="level_id", type="integer", example="integer"),
      *             @OA\Property(property="category_id", type="integer", example="integer"),

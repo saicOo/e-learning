@@ -29,7 +29,7 @@ class AssistantController extends BaseController
     /**
      * @OA\Get(
      *     path="/api/dashboard/assistants",
-     *      tags={"Dashboard Api assistant"},
+     *      tags={"Dashboard Api Assistants"},
      *     summary="get all Assistants",
      * @OA\Parameter(
      *         name="active",
