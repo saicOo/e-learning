@@ -25,6 +25,7 @@ class CourseController extends BaseController
         $this->middleware(['permission:courses_update'])->only('update');
         $this->middleware(['permission:courses_delete'])->only('destroy');
         $this->middleware(['permission:courses_approve'])->only('approve');
+        $this->middleware(['checkApiAffiliation'])->only(['show']);
         $this->uploadService = $uploadService;
     }
     /**
@@ -99,6 +100,13 @@ class CourseController extends BaseController
      */
     public function index(Request $request)
     {
+
+        $user = $request->user();
+        // if user role teacher
+        if ($user->roles[0]->name == "teacher") $request->user_id = $user->id;
+        // if user role assistant
+        if ($user->roles[0]->name == "assistant")  $request->user_id = $user->user_id;
+
         $courses = Course::with(['user:id,name,email','level:id,name','category:id,name'])
         ->when($request->user_id,function ($query) use ($request){ // if user_id
             return $query->where('user_id',$request->user_id);

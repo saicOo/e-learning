@@ -21,6 +21,7 @@ class ListenController extends BaseController
         $this->middleware(['permission:listens_update'])->only('uploadFile');
         $this->middleware(['permission:listens_delete'])->only('destroy');
         $this->middleware(['permission:listens_approve'])->only('approve');
+
     }
 /**
      * @OA\Get(

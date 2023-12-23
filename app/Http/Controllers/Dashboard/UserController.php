@@ -98,10 +98,11 @@ class UserController extends BaseController
         }
         $request_data = $validate->validate();
 
-        $request_data['image'] = $this->uploadService->uploadImage('users', $request->image, $request->user()->image);
+        $image = $this->uploadService->uploadImage('users', $request->image, $request->user()->image);
 
-
-        $request->user()->update($request_data);
+        $request->user()->update([
+            "image"=> $image,
+        ]);
 
         return $this->sendResponse("The Image has been uploaded successfully");
     }
