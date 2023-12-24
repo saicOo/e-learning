@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateListensTable extends Migration
+class CreateLessonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateListensTable extends Migration
      */
     public function up()
     {
-        Schema::create('listens', function (Blueprint $table) {
+        Schema::create('lessons', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->enum('video_type',['file','url']);
@@ -34,6 +34,6 @@ class CreateListensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('listens');
+        Schema::dropIfExists('lessons');
     }
 }

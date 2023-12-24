@@ -17,12 +17,12 @@ class CreateQuizzesTable extends Migration
             $table->id();
             $table->text('title');
             $table->integer('questions_count');
-            $table->enum('type',['course','listen']);
+            $table->enum('type',['course','lesson']);
             $table->boolean('active')->default(0)->comment('0=>not active ,1=>active');
             $table->unsignedBigInteger('course_id')->nullable();
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
-            $table->unsignedBigInteger('listen_id')->nullable();
-            $table->foreign('listen_id')->references('id')->on('listens')->onDelete('cascade');
+            $table->unsignedBigInteger('lesson_id')->nullable();
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
             $table->unsignedBigInteger('quiz_id')->nullable();
             $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
             $table->timestamps();

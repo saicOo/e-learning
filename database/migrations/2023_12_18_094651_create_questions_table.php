@@ -21,8 +21,8 @@ class CreateQuestionsTable extends Migration
             $table->json('options')->nullable(); // JSON array of answer options
             $table->integer('correct_option')->nullable(); // Index of the correct option in the 'options' array
             $table->tinyInteger('type')->comment('1=>TrueFalse, 2=>Choice,3 =>Article');
-            $table->unsignedBigInteger('listen_id');
-            $table->foreign('listen_id')->references('id')->on('listens')->onDelete('cascade');
+            $table->unsignedBigInteger('lesson_id');
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
             $table->unsignedBigInteger('course_id');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->timestamps();

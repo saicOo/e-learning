@@ -25,7 +25,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
     Route::get('/quiz-attempts/{quizAttempt}', 'QuizAttemptController@show');
 });
 Route::apiResource('courses', 'CourseController')->only(['index','show']);
-Route::apiResource('listens', 'ListenController')->only(['index','show']);
+Route::apiResource('lessons', 'LessonController')->only(['index','show']);
 Route::get('/categories','CategoryController@index');
 Route::get('/levels','LevelController@index');
 Route::post('/contacts','ContactController@store');

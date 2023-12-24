@@ -825,7 +825,7 @@
                                     },
                                     "image": {
                                         "type": "string",
-                                        "example": "https://www.techsmith.com/blog/wp-content/uploads/2022/03/resize-image.png"
+                                        "example": "path file"
                                     },
                                     "user_id": {
                                         "type": "integer",
@@ -1030,35 +1030,18 @@
                 }
             }
         },
-        "/api/dashboard/levels": {
+        "/api/dashboard/courses/{course_id}/lessons": {
             "get": {
                 "tags": [
-                    "Dashboard Api Levels"
+                    "Dashboard Api Lessons"
                 ],
-                "summary": "Get All Levels",
-                "operationId": "74a30dac217a8e9e7c641cde17da58b3",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    }
-                }
-            }
-        },
-        "/api/dashboard/listens": {
-            "get": {
-                "tags": [
-                    "Dashboard Api Listens"
-                ],
-                "summary": "get all listens",
-                "operationId": "9186539c2dd6db2326f32d5518f1009d",
+                "summary": "get all lessons",
+                "operationId": "e3ab064d58b6dc7b08b33c872855848e",
                 "parameters": [
                     {
                         "name": "course_id",
                         "in": "query",
-                        "description": "filter listens with course",
+                        "description": "filter lessons with course",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -1068,7 +1051,7 @@
                     {
                         "name": "active",
                         "in": "query",
-                        "description": "filter listens with active (active = 1 , not active = 0)",
+                        "description": "filter lessons with active (active = 1 , not active = 0)",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -1097,10 +1080,10 @@
             },
             "post": {
                 "tags": [
-                    "Dashboard Api Listens"
+                    "Dashboard Api Lessons"
                 ],
-                "summary": "Add New Listens",
-                "operationId": "ac59d07cb8176fe5f4aad0309ec68c73",
+                "summary": "Add New Lessons",
+                "operationId": "2e578165eab0167e3f5d49bb36dff4be",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1113,10 +1096,6 @@
                                     "description": {
                                         "type": "string",
                                         "example": "string"
-                                    },
-                                    "course_id": {
-                                        "type": "integer",
-                                        "example": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -1134,16 +1113,16 @@
                 }
             }
         },
-        "/api/dashboard/listens/{listen_id}": {
+        "/api/dashboard/lessons/{lesson_id}": {
             "get": {
                 "tags": [
-                    "Dashboard Api Listens"
+                    "Dashboard Api Lessons"
                 ],
-                "summary": "show listen",
-                "operationId": "4ed995bd8d72ee8c4de434b323eae8f4",
+                "summary": "show lesson",
+                "operationId": "b332f079247e05f63d13c9975d4d62be",
                 "parameters": [
                     {
-                        "name": "listen_id",
+                        "name": "lesson_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -1166,13 +1145,13 @@
             },
             "put": {
                 "tags": [
-                    "Dashboard Api Listens"
+                    "Dashboard Api Lessons"
                 ],
-                "summary": "Updated Listen",
-                "operationId": "53fc9a20843b74dd1c8cf10a1c5ca2e6",
+                "summary": "Updated Lesson",
+                "operationId": "aea12d67ce64f8e0214cd874de1c0a6e",
                 "parameters": [
                     {
-                        "name": "listen_id",
+                        "name": "lesson_id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -1225,13 +1204,13 @@
             },
             "delete": {
                 "tags": [
-                    "Dashboard Api Listens"
+                    "Dashboard Api Lessons"
                 ],
-                "summary": "Delete Listen",
-                "operationId": "05263c6567288aa7dcf1d368fc2290a8",
+                "summary": "Delete Lesson",
+                "operationId": "e8dd049e5c38d1f0f61b559629f86ef3",
                 "parameters": [
                     {
-                        "name": "listen_id",
+                        "name": "lesson_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -1253,16 +1232,16 @@
                 }
             }
         },
-        "/api/dashboard/listens/{listene_id}/upload-video": {
+        "/api/dashboard/lessons/{lesson_id}/upload-video": {
             "put": {
                 "tags": [
-                    "Dashboard Api Listens"
+                    "Dashboard Api Lessons"
                 ],
-                "summary": "upload video Listen",
-                "operationId": "a5f398d7b3d36475182810a8ac99d97c",
+                "summary": "upload video Lesson",
+                "operationId": "d782ad69fe1cb7fc1f903035e06fe5a2",
                 "parameters": [
                     {
-                        "name": "listen_id",
+                        "name": "lesson_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -1299,16 +1278,16 @@
                 }
             }
         },
-        "/api/dashboard/listens/{listene_id}/upload-file": {
+        "/api/dashboard/lessons/{lesson_id}/upload-file": {
             "post": {
                 "tags": [
-                    "Dashboard Api Listens"
+                    "Dashboard Api Lessons"
                 ],
-                "summary": "upload file Listen",
-                "operationId": "5ef9377da6ce4a1684c30ec9d80f7724",
+                "summary": "upload file Lesson",
+                "operationId": "cbc7424daba2987631176458532e4dfe",
                 "parameters": [
                     {
-                        "name": "listen_id",
+                        "name": "lesson_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -1345,16 +1324,16 @@
                 }
             }
         },
-        "/api/dashboard/listens/{listene_id}/approve": {
+        "/api/dashboard/lessons/{lesson_id}/approve": {
             "put": {
                 "tags": [
-                    "Dashboard Api Listens"
+                    "Dashboard Api Lessons"
                 ],
-                "summary": "Approve Listen",
-                "operationId": "29e0377dfe38640c3ca23e8767ad8dc3",
+                "summary": "Approve Lesson",
+                "operationId": "821a9ccb35a507441de6e5f273268956",
                 "parameters": [
                     {
-                        "name": "listen_id",
+                        "name": "lesson_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -1391,17 +1370,34 @@
                 }
             }
         },
-        "/api/dashboard/questions": {
+        "/api/dashboard/levels": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Levels"
+                ],
+                "summary": "Get All Levels",
+                "operationId": "74a30dac217a8e9e7c641cde17da58b3",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses/{course_id}/questions": {
             "get": {
                 "tags": [
                     "Dashboard Api Questions"
                 ],
                 "summary": "get all questions",
-                "operationId": "6a822bfe34890f3708b6e3677e06a84d",
+                "operationId": "717fad4cfd8e2eccded2ac7cbf01ecee",
                 "parameters": [
                     {
                         "name": "course_id",
-                        "in": "query",
+                        "in": "path",
                         "description": "filter questions with course",
                         "required": false,
                         "explode": true,
@@ -1410,9 +1406,9 @@
                         }
                     },
                     {
-                        "name": "listen_id",
+                        "name": "lesson_id",
                         "in": "query",
-                        "description": "filter questions with listen",
+                        "description": "filter questions with lesson",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -1438,9 +1434,7 @@
                         "description": "Unauthenticated"
                     }
                 }
-            }
-        },
-        "/api/dashboard/courses/{course_id}/questions": {
+            },
             "post": {
                 "tags": [
                     "Dashboard Api Questions"
@@ -1467,6 +1461,10 @@
                                         "type": "string",
                                         "example": "string"
                                     },
+                                    "image": {
+                                        "type": "string",
+                                        "example": "path file"
+                                    },
                                     "grade": {
                                         "type": "integer",
                                         "example": "integer"
@@ -1479,7 +1477,7 @@
                                         "type": "integer",
                                         "example": "1=>TrueFalse, 2=>Choice,3 =>Article'"
                                     },
-                                    "listen_id": {
+                                    "lesson_id": {
                                         "type": "integer",
                                         "example": "integer"
                                     },
@@ -1537,6 +1535,124 @@
                 }
             }
         },
+        "/api/dashboard/quizzes/{quiz_id}/quiz-attempts": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Attempts"
+                ],
+                "summary": "get all attempts of student",
+                "operationId": "6f2daf8ff299da28a0eaa7382e75ccd4",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/quiz-attempts/{quizAttempt_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Attempts"
+                ],
+                "summary": "show quiz attempt and answers",
+                "operationId": "ca6c5904f48ac5b20c90d9477554feb9",
+                "parameters": [
+                    {
+                        "name": "quizAttempt_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dashboard Api Attempts"
+                ],
+                "summary": "Updated Attempts",
+                "operationId": "c6a48088fbdc35e6daf5c6be855d75ca",
+                "parameters": [
+                    {
+                        "name": "quizAttempt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "video": {
+                                        "type": "file",
+                                        "example": "path file"
+                                    },
+                                    "attached": {
+                                        "type": "file",
+                                        "example": "path file"
+                                    },
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/dashboard/courses/{course_id}/quizzes": {
             "get": {
                 "tags": [
@@ -1555,9 +1671,9 @@
                         }
                     },
                     {
-                        "name": "listen_id",
+                        "name": "lesson_id",
                         "in": "query",
-                        "description": "filter quizzes with listen",
+                        "description": "filter quizzes with lesson",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -1616,9 +1732,9 @@
                                     },
                                     "type": {
                                         "type": "integer",
-                                        "example": "course, listen"
+                                        "example": "course, lesson"
                                     },
-                                    "listen_id": {
+                                    "lesson_id": {
                                         "type": "integer",
                                         "example": "integer"
                                     },
@@ -2365,32 +2481,18 @@
                 }
             }
         },
-        "/api/levels": {
+        "/api/lessons": {
             "get": {
                 "tags": [
-                    "Front Api Levels"
+                    "Front Api Lessons"
                 ],
-                "summary": "Get All Levels",
-                "operationId": "b21200cd0ebde08419a3347af27dcad7",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/listens": {
-            "get": {
-                "tags": [
-                    "Front Api Listens"
-                ],
-                "summary": "get all listens",
-                "operationId": "350e367a850e0664520a236e74523330",
+                "summary": "get all lessons",
+                "operationId": "db776a108da2bb0a2f97ede1e0443b1c",
                 "parameters": [
                     {
                         "name": "course_id",
                         "in": "query",
-                        "description": "filter listens with course",
+                        "description": "filter lessons with course",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -2418,16 +2520,16 @@
                 }
             }
         },
-        "/api/listens/{listen_id}": {
+        "/api/lessons/{lesson_id}": {
             "get": {
                 "tags": [
-                    "Front Api Listens"
+                    "Front Api Lessons"
                 ],
-                "summary": "show listen",
-                "operationId": "e7ccd2b92f25dc4860b5278a95ab39a3",
+                "summary": "show lesson",
+                "operationId": "3022a3acb64299e66eaa0e1a8b5f4e52",
                 "parameters": [
                     {
-                        "name": "listen_id",
+                        "name": "lesson_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -2445,6 +2547,20 @@
                     },
                     "404": {
                         "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/levels": {
+            "get": {
+                "tags": [
+                    "Front Api Levels"
+                ],
+                "summary": "Get All Levels",
+                "operationId": "b21200cd0ebde08419a3347af27dcad7",
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }

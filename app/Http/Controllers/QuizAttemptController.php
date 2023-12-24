@@ -105,18 +105,18 @@ class QuizAttemptController extends BaseController
         $maxGrade = 0;
         $grade = 0;
         $answer = "";
-        foreach ($answers as $questionId => $studentAnswer) {
+        foreach ($answers as $questionId => $studentAnswerIndex) {
             // Replace this logic with your grading criteria
             $dataQuestion = $this->getCorrectAnswerForQuestion($questionId); // Replace with your actual logic
-            $grade = ($studentAnswer == $dataQuestion->correct_option) ? $dataQuestion->grade : 0;
+            $grade = ($studentAnswerIndex == $dataQuestion->correct_option) ? $dataQuestion->grade : 0;
             $responses[$questionId] = [
-                'answer' => $studentAnswer, // string
                 'grade' => $grade,
+                // 'answer' => $studentAnswerIndex, // string
             ];
 
-            $answer = $studentAnswer;
+            $answer = $studentAnswerIndex;
             if($dataQuestion->type != 3){
-                $answer = $dataQuestion->options[$studentAnswer];
+                $answer = $dataQuestion->options[$studentAnswerIndex];
             }
 
             $attempt->answers()->create([

@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\BaseController as BaseController;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BaseController as BaseController;
 
 
 class StudentController extends BaseController
@@ -274,7 +275,7 @@ class StudentController extends BaseController
             Storage::disk('public')->delete($student->image);
         }
         $student->delete();
-        
+
         return $this->sendResponse("Deleted Data Successfully");
     }
 }

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 use Faker\Factory;
 use App\Models\Course;
-use App\Models\Listen;
+use App\Models\Lesson;
 use Illuminate\Database\Seeder;
 
 class QuestionSeeder extends Seeder
@@ -30,7 +30,7 @@ class QuestionSeeder extends Seeder
             }
 
             $course = Course::inRandomOrder()->first();
-            $listen_id = $course->listens[0]->id ? $course->listens[0]->id : null;
+            $lesson_id = $course->lessons[0]->id ? $course->lessons[0]->id : null;
             $question = $course->questions()->create([
                 "title" => $faker->sentence(rand(2,8)),
                 "grade" => rand(1,10),
@@ -38,7 +38,7 @@ class QuestionSeeder extends Seeder
                 "image" => null,
                 "correct_option" => $correct_option,
                 "options" => $options,
-                "listen_id" =>$listen_id,
+                "lesson_id" =>$lesson_id,
             ]);
         }
     }

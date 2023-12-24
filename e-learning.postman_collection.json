@@ -1386,7 +1386,7 @@
 					]
 				},
 				{
-					"name": "listens",
+					"name": "lessons",
 					"item": [
 						{
 							"name": "index",
@@ -1417,7 +1417,7 @@
 									"formdata": []
 								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/dashboard/listens/",
+									"raw": "http://127.0.0.1:8000/api/dashboard/lessons/",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -1429,7 +1429,7 @@
 									"path": [
 										"api",
 										"dashboard",
-										"listens",
+										"lessons",
 										""
 									]
 								}
@@ -1488,14 +1488,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{baseurl}}/api/dashboard/listens/",
+									"raw": "{{baseurl}}/api/dashboard/lessons/",
 									"host": [
 										"{{baseurl}}"
 									],
 									"path": [
 										"api",
 										"dashboard",
-										"listens",
+										"lessons",
 										""
 									]
 								}
@@ -1554,7 +1554,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/dashboard/listens/1",
+									"raw": "http://127.0.0.1:8000/api/dashboard/lessons/1",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -1566,7 +1566,7 @@
 									"path": [
 										"api",
 										"dashboard",
-										"listens",
+										"lessons",
 										"1"
 									],
 									"query": [
@@ -1629,7 +1629,7 @@
 									"formdata": []
 								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/dashboard/listens/1",
+									"raw": "http://127.0.0.1:8000/api/dashboard/lessons/1",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -1641,7 +1641,7 @@
 									"path": [
 										"api",
 										"dashboard",
-										"listens",
+										"lessons",
 										"1"
 									]
 								}
@@ -1674,7 +1674,7 @@
 									"formdata": []
 								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/dashboard/listens/1",
+									"raw": "http://127.0.0.1:8000/api/dashboard/lessons/1",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -1686,7 +1686,7 @@
 									"path": [
 										"api",
 										"dashboard",
-										"listens",
+										"lessons",
 										"1"
 									]
 								}
@@ -1719,7 +1719,7 @@
 									"urlencoded": []
 								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/dashboard/listens/1/approve",
+									"raw": "http://127.0.0.1:8000/api/dashboard/lessons/1/approve",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -1731,7 +1731,7 @@
 									"path": [
 										"api",
 										"dashboard",
-										"listens",
+										"lessons",
 										"1",
 										"approve"
 									]
@@ -1776,14 +1776,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{baseurl}}/api/dashboard/listens/1/upload-file",
+									"raw": "{{baseurl}}/api/dashboard/lessons/1/upload-file",
 									"host": [
 										"{{baseurl}}"
 									],
 									"path": [
 										"api",
 										"dashboard",
-										"listens",
+										"lessons",
 										"1",
 										"upload-file"
 									]
@@ -1979,7 +1979,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \r\n    \"title\" : \"test exam ?\",\r\n    \"marks\" : 50,\r\n    \"correct_option\" : 1,\r\n    \"type\" : 2,\r\n    \"grade\" : 5,\r\n    \"listen_id\" : 1,\r\n    \"options\":  [\r\n        \"2eefeae\",\r\n        \"1ffaeaeaf\"\r\n    ]\r\n   \r\n}\r\n",
+									"raw": "{\r\n    \r\n    \"title\" : \"test exam ?\",\r\n    \"marks\" : 50,\r\n    \"correct_option\" : 1,\r\n    \"type\" : 2,\r\n    \"grade\" : 5,\r\n    \"lesson_id\" : 1,\r\n    \"options\":  [\r\n        \"2eefeae\",\r\n        \"1ffaeaeaf\"\r\n    ]\r\n   \r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2161,7 +2161,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"title\" : \"test exam\", \r\n    \"type\" : \"listen\", \r\n    \"questions_count\" : 2, \r\n    \"listen_id\" : 1, \r\n    \"questions\" : [\r\n        2,1\r\n    ]\r\n}",
+									"raw": "{\r\n    \"title\" : \"test exam\", \r\n    \"type\" : \"lesson\", \r\n    \"questions_count\" : 2, \r\n    \"lesson_id\" : 1, \r\n    \"questions\" : [\r\n        2,1\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2237,7 +2237,7 @@
 	],
 	"event": [
 		{
-			"listen": "prerequest",
+			"lesson": "prerequest",
 			"script": {
 				"type": "text/javascript",
 				"exec": [
@@ -2246,7 +2246,7 @@
 			}
 		},
 		{
-			"listen": "test",
+			"lesson": "test",
 			"script": {
 				"type": "text/javascript",
 				"exec": [

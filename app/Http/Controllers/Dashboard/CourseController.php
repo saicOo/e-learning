@@ -21,11 +21,11 @@ class CourseController extends BaseController
     public function __construct(UploadService $uploadService)
     {
         $this->middleware(['permission:courses_read'])->only(['index','show']);
-        $this->middleware(['permission:courses_create'])->only('store');
+        $this->middleware(['ability:teacher|assistant,courses_create,require_all'])->only('store');
         $this->middleware(['permission:courses_update'])->only('update');
         $this->middleware(['permission:courses_delete'])->only('destroy');
         $this->middleware(['permission:courses_approve'])->only('approve');
-        $this->middleware(['checkApiAffiliation'])->only(['show']);
+        $this->middleware(['checkApiAffiliation']);
         $this->uploadService = $uploadService;
     }
     /**
@@ -120,7 +120,7 @@ class CourseController extends BaseController
             return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
-        })->withCount('listens')->get();
+        })->withCount('lessons')->get();
 
         return $this->sendResponse("",['courses' => $courses]);
     }
@@ -138,7 +138,6 @@ class CourseController extends BaseController
      *             @OA\Property(property="description", type="string", example="string"),
      *             @OA\Property(property="semester", type="enum", example="string"),
      *             @OA\Property(property="image", type="string", example="path file"),
-     *             @OA\Property(property="user_id", type="integer", example="integer"),
      *             @OA\Property(property="level_id", type="integer", example="integer"),
      *             @OA\Property(property="category_id", type="integer", example="integer"),
      *         ),
@@ -157,11 +156,16 @@ class CourseController extends BaseController
              'description' => 'required|string|max:255',
              'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
              'semester' => 'required|in:first semester,second semester,full semester',
-             'user_id'=> 'required|exists:users,id',
              'level_id'=> 'required|exists:levels,id',
             'category_id'=> 'required|exists:categories,id',
          ]);
 
+         $user = $request->user();
+         if($user->roles[0]->name == 'teacher'){
+            $request_data['user_id'] = $user->id;
+            }else{
+                $request_data['user_id'] = $user->user_id;
+            }
 
          if($validate->fails()){
                 return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);

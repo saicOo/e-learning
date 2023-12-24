@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Validator;
 
 class QuizController extends BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:quizzes_read'])->only(['index','show']);
+        $this->middleware(['ability:teacher|assistant,quizzes_create,require_all'])->only('store');
+        $this->middleware(['permission:quizzes_delete'])->only('destroy');
+    }
     /**
      * @OA\Get(
      *     path="/api/dashboard/courses/{course_id}/quizzes",
@@ -27,9 +33,9 @@ class QuizController extends BaseController
      *         ),
      *     ),
      *   @OA\Parameter(
-     *         name="listen_id",
+     *         name="lesson_id",
      *         in="query",
-     *         description="filter quizzes with listen",
+     *         description="filter quizzes with lesson",
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
@@ -52,10 +58,9 @@ class QuizController extends BaseController
      */
     public function index(Request $request, Course $course)
     {
-        $quizzes = Quiz::with('questions')->when($course->id,function ($query) use ($course){ // if course_id
-            return $query->where('course_id',$course->id);
-        })->when($request->listen_id,function ($query) use ($request){ // if listen_id
-            return $query->where('listen_id',$request->listen_id);
+        $quizzes = Quiz::with('questions')->where('course_id',$course->id)
+        ->when($request->lesson_id,function ($query) use ($request){ // if lesson_id
+            return $query->where('lesson_id',$request->lesson_id);
         })->when($request->type,function ($query) use ($request){ // if type
             return $query->where('type',$request->type);
         })->when($request->search,function ($query) use ($request){ // if search
@@ -84,8 +89,8 @@ class QuizController extends BaseController
      *             type="object",
      *             @OA\Property(property="title", type="string", example="string"),
      *             @OA\Property(property="questions_count", type="integer", example="integer" ),
-     *             @OA\Property(property="type", type="integer", example="course, listen"),
-     *             @OA\Property(property="listen_id", type="integer", example="integer"),
+     *             @OA\Property(property="type", type="integer", example="course, lesson"),
+     *             @OA\Property(property="lesson_id", type="integer", example="integer"),
      *             @OA\Property(property="integer", type="integer", example="integer"),
      *             @OA\Property(property="questions", type="array", @OA\Items(
      *               type="integer",example="1",
@@ -102,8 +107,8 @@ class QuizController extends BaseController
         $validate = Validator::make($request->all(),
         [
             'title' => 'required|string|max:1000',
-            'type' => 'required|in:course,listen',
-            'listen_id' => 'nullable|exists:listens,id',
+            'type' => 'required|in:course,lesson',
+            'lesson_id' => 'nullable|exists:lessons,id',
             'quiz_id' => 'nullable|exists:quizzes,id',
             'questions_count' => 'required|integer',
             'questions' => 'required|array|min:1',

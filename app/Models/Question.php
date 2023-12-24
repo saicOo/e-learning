@@ -33,10 +33,10 @@ class Question extends Model
         return $this->belongsTo(Course::class);
     }//end of course
 
-    public function listen()
+    public function lesson()
     {
-        return $this->belongsTo(Listen::class);
-    }//end of listen
+        return $this->belongsTo(Lesson::class);
+    }//end of lesson
 
 
     // public function option()

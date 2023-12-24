@@ -17,37 +17,48 @@ use Illuminate\Support\Facades\Route;
 */
 // routes teacher
 Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
-    
+
     // routes teachers
     Route::resource('teachers', 'TeacherController')->except(['edit','create']);
     // routes assistants
     Route::resource('assistants', 'AssistantController')->except(['edit','create']);
     // routes users
-    Route::put('users/change-password', 'UserController@changePassword');
-    Route::post('users/upload-image', 'UserController@uploadImage');
+    Route::put('/users/change-password', 'UserController@changePassword');
+    Route::post('/users/upload-image', 'UserController@uploadImage');
     // routes students
     Route::apiResource('students', 'StudentController')->except(['edit','create']);
-    Route::put('students/{student}/change-password', 'StudentController@changePassword');
+    Route::put('/students/{student}/change-password', 'StudentController@changePassword');
     // routes courses
     Route::apiResource('courses', 'CourseController')->except(['edit','create']);
     Route::put('/courses/{course}/approve','CourseController@approve');
-    // routes listens
-    Route::apiResource('listens', 'ListenController')->except(['edit','create']);
-    Route::put('/listens/{listen}/approve','ListenController@approve');
-    Route::post('/listens/{listen}/upload-video','ListenController@uploadVideo');
-    Route::post('/listens/{listen}/upload-file','ListenController@uploadFile');
+    // routes lessons
+    Route::controller(LessonController::class)->group(function () {
+        Route::get('/courses/{course}/lessons', 'index');
+        Route::post('/courses/{course}/lessons', 'store');
+        Route::get('/lessons/{lesson}', 'show');
+        Route::put('/lessons/{lesson}', 'update');
+        Route::delete('lessons/{lesson}', 'destroy');
+        Route::put('/lessons/{lesson}/approve', 'approve');
+        Route::post('/lessons/{lesson}/upload-video', 'uploadVideo');
+        Route::post('/lessons/{lesson}/upload-file', 'uploadFile');
+    });
     // routes questions
-    // Route::apiResource('questions', 'QuestionController')->except(['edit','create']);
     Route::controller(QuestionController::class)->group(function () {
-        Route::get('/questions', 'index');
+        Route::get('/courses/{course}/questions', 'index');
         Route::post('/courses/{course}/questions', 'store');
         Route::delete('questions/{question}', 'destroy');
+    });
+    // routes QuizAttempt
+    Route::controller(QuizAttemptController::class)->group(function () {
+        Route::get('/quizzes/{quiz}/quiz-attempts', 'index');
+        Route::get('/quiz-attempts/{quizAttempt}', 'show');
+        Route::put('/quiz-attempts/{quizAttempt}', 'store');
     });
     Route::controller(QuizController::class)->group(function () {
         Route::get('/courses/{course}/quizzes', 'index');
         Route::post('/courses/{course}/quizzes', 'store');
-        Route::get('quizzes/{quiz}', 'show');
-        Route::delete('quizzes/{quiz}', 'destroy');
+        Route::get('/quizzes/{quiz}', 'show');
+        Route::delete('/quizzes/{quiz}', 'destroy');
     });
     // routes contacts
 Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);

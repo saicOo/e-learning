@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 use Faker\Factory;
 use App\Models\Course;
-use App\Models\Listen;
+use App\Models\Lesson;
 use Illuminate\Database\Seeder;
 
-class ListenSeeder extends Seeder
+class LessonSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class ListenSeeder extends Seeder
     {
         $faker = Factory::create();
         for ($i=0; $i < 80; $i++) {
-            Listen::create([
+            Lesson::create([
                 'name'=>$faker->sentence(2),
                 'description'=>$faker->sentence(20),
                 'video'=>'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4',

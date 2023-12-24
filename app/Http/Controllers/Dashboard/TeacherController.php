@@ -9,8 +9,9 @@ use Illuminate\Http\Response;
 use App\Services\UploadService;
 use App\Traits\PermissionsUser;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\BaseController as BaseController;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BaseController as BaseController;
 
 class TeacherController extends BaseController
 {
@@ -57,13 +58,13 @@ class TeacherController extends BaseController
      */
     public function index(Request $request)
     {
-        $teachers = User::whereRoleIs('teacher')->when($request->active,function ($query) use ($request){ // if active
+        $teachers = User::when($request->active,function ($query) use ($request){ // if active
             return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')
             ->OrWhere('email','Like','%'.$request->search.'%')
             ->OrWhere('phone','Like','%'.$request->search.'%');
-        })->get();
+        })->whereRoleIs('teacher')->get();
 
         return $this->sendResponse("",['teachers' => $teachers]);
     }
@@ -197,7 +198,7 @@ class TeacherController extends BaseController
         unset($request_data['permissions']);
         $teacher->update($request_data);
         if ($request->permissions) $teacher->syncPermissions($request->permissions);
-        
+
         return $this->sendResponse("Teacher Updated Successfully");
     }
 

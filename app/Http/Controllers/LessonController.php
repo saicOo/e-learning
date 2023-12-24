@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Listen;
+use App\Models\Lesson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
 
-class ListenController extends BaseController
+class LessonController extends BaseController
 {
     /**
      * @OA\Get(
-     *     path="/api/listens",
-     *      tags={"Front Api Listens"},
-     *     summary="get all listens",
+     *     path="/api/lessons",
+     *      tags={"Front Api Lessons"},
+     *     summary="get all lessons",
      *   @OA\Parameter(
      *         name="course_id",
      *         in="query",
-     *         description="filter listens with course",
+     *         description="filter lessons with course",
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
@@ -39,21 +39,21 @@ class ListenController extends BaseController
      */
     public function index(Request $request)
     {
-        $listens = Listen::select("id","name","description")->with("quizzes:id,title,questions_count,listen_id")->where('active',1)->when($request->course_id,function ($query) use ($request){ // if course_id
+        $lessons = Lesson::select("id","name","description")->with("quizzes:id,title,questions_count,lesson_id")->where('active',1)->when($request->course_id,function ($query) use ($request){ // if course_id
             return $query->where('course_id',$request->course_id);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->get();
-        return $this->sendResponse("",['listens' => $listens]);
+        return $this->sendResponse("",['lessons' => $lessons]);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/listens/{listen_id}",
-     *      tags={"Front Api Listens"},
-     *     summary="show listen",
+     *     path="/api/lessons/{lesson_id}",
+     *      tags={"Front Api Lessons"},
+     *     summary="show lesson",
      *     @OA\Parameter(
-     *         name="listen_id",
+     *         name="lesson_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -66,11 +66,11 @@ class ListenController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function show(Listen $listen)
+    public function show(Lesson $lesson)
     {
-        if ($listen->active != 1) {
+        if ($lesson->active != 1) {
             return $this->sendError('Record not found.');
         }
-        return $this->sendResponse("",['listen' => $listen]);
+        return $this->sendResponse("",['lesson' => $lesson]);
     }
 }

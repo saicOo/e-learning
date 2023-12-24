@@ -57,13 +57,13 @@ class AssistantController extends BaseController
      */
     public function index(Request $request)
     {
-        $assistants = User::whereRoleIs('assistant')->when($request->active,function ($query) use ($request){ // if active
+        $assistants = User::when($request->active,function ($query) use ($request){ // if active
             return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')
             ->OrWhere('email','Like','%'.$request->search.'%')
             ->OrWhere('phone','Like','%'.$request->search.'%');
-        })->get();
+        })->whereRoleIs('assistant')->get();
 
         return $this->sendResponse("",['assistants' => $assistants]);
     }

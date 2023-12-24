@@ -16,7 +16,7 @@ return [
             'assistants' => 'c,r,u,d',
             'students' => 'c,r,u,d',
             'courses' => 'c,r,u,d,a',
-            'listens' => 'c,r,u,d,a',
+            'lessons' => 'c,r,u,d,a',
             'subscriptions' => 'c,r,u,d',
             'contacts' => 'r,d',
             'categories' => 'c,r,u,d',

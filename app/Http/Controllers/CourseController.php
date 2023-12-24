@@ -79,7 +79,7 @@ class CourseController extends BaseController
             return $query->where('semester',$request->semester);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
-        })->withCount('listens')->get();
+        })->withCount('lessons')->get();
 
         return $this->sendResponse("",['courses' => $courses]);
     }

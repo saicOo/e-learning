@@ -37,8 +37,8 @@ class Course extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function listens(){
-        return $this->hasMany(Listen::class);
+    public function lessons(){
+        return $this->hasMany(Lesson::class);
     }
 
     public function questions()

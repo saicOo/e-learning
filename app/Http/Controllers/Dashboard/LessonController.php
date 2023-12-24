@@ -2,36 +2,38 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Listen;
+use App\Models\Course;
+use App\Models\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BaseController as BaseController;
 
-class ListenController extends BaseController
+class LessonController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware(['permission:listens_read'])->only(['index','show']);
-        $this->middleware(['permission:listens_create'])->only('store');
-        $this->middleware(['permission:listens_update'])->only('update');
-        $this->middleware(['permission:listens_update'])->only('uploadVideo');
-        $this->middleware(['permission:listens_update'])->only('uploadFile');
-        $this->middleware(['permission:listens_delete'])->only('destroy');
-        $this->middleware(['permission:listens_approve'])->only('approve');
+        $this->middleware(['permission:lessons_read'])->only(['index','show']);
+        $this->middleware(['ability:teacher|assistant,lessons_create,require_all'])->only('store');
+        $this->middleware(['permission:lessons_update'])->only('update');
+        $this->middleware(['permission:lessons_update'])->only('uploadVideo');
+        $this->middleware(['permission:lessons_update'])->only('uploadFile');
+        $this->middleware(['permission:lessons_delete'])->only('destroy');
+        $this->middleware(['permission:lessons_approve'])->only('approve');
+        $this->middleware(['checkApiAffiliation']);
 
     }
 /**
      * @OA\Get(
-     *     path="/api/dashboard/listens",
-     *      tags={"Dashboard Api Listens"},
-     *     summary="get all listens",
+     *     path="/api/dashboard/courses/{course_id}/lessons",
+     *      tags={"Dashboard Api Lessons"},
+     *     summary="get all lessons",
      *   @OA\Parameter(
      *         name="course_id",
      *         in="query",
-     *         description="filter listens with course",
+     *         description="filter lessons with course",
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
@@ -41,7 +43,7 @@ class ListenController extends BaseController
      * @OA\Parameter(
      *         name="active",
      *         in="query",
-     *         description="filter listens with active (active = 1 , not active = 0)",
+     *         description="filter lessons with active (active = 1 , not active = 0)",
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
@@ -62,44 +64,41 @@ class ListenController extends BaseController
      *       @OA\Response(response=401, description="Unauthenticated"),
      * )
      */
-    public function index(Request $request)
+    public function index(Request $request, Course $course)
     {
-        $listens = Listen::when($request->course_id,function ($query) use ($request){ // if course_id
-            return $query->where('course_id',$request->course_id);
-        })->when($request->active,function ($query) use ($request){ // if active
+        $lessons = Lesson::where('course_id',$course->id)
+        ->when($request->active,function ($query) use ($request){ // if active
             return $query->where('active',$request->active);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->get();
 
-        return $this->sendResponse("",['listens' => $listens]);
+        return $this->sendResponse("",['lessons' => $lessons]);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/dashboard/listens",
-     *      tags={"Dashboard Api Listens"},
-     *     summary="Add New Listens",
+     *     path="/api/dashboard/courses/{course_id}/lessons",
+     *      tags={"Dashboard Api Lessons"},
+     *     summary="Add New Lessons",
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="description", type="string", example="string"),
-     *             @OA\Property(property="course_id", type="integer", example="integer"),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
      * )
      */
-    public function store(Request $request)
+    public function store(Request $request, Course $course)
     {
         //Validated
         $validate = Validator::make($request->all(),
         [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'course_id'=> 'required|exists:courses,id'
         ]);
 
 
@@ -108,19 +107,19 @@ class ListenController extends BaseController
         }
 
         $request_data = $validate->validated();
+        $request_data['course_id'] = $course->id;
+        $lesson = Lesson::create($request_data);
 
-        $listen = Listen::create($request_data);
-
-        return $this->sendResponse("Listen Created Successfully",['listen' => $listen]);
+        return $this->sendResponse("Lesson Created Successfully",['lesson' => $lesson]);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/dashboard/listens/{listen_id}",
-     *      tags={"Dashboard Api Listens"},
-     *     summary="show listen",
+     *     path="/api/dashboard/lessons/{lesson_id}",
+     *      tags={"Dashboard Api Lessons"},
+     *     summary="show lesson",
      *     @OA\Parameter(
-     *         name="listen_id",
+     *         name="lesson_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -133,18 +132,18 @@ class ListenController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function show(Listen $listen)
+    public function show(Lesson $lesson)
     {
-        return $this->sendResponse("",['listen' => $listen]);
+        return $this->sendResponse("",['lesson' => $lesson]);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/dashboard/listens/{listen_id}",
-     *      tags={"Dashboard Api Listens"},
-     *     summary="Updated Listen",
+     *     path="/api/dashboard/lessons/{lesson_id}",
+     *      tags={"Dashboard Api Lessons"},
+     *     summary="Updated Lesson",
      * @OA\Parameter(
-     *          name="listen_id",
+     *          name="lesson_id",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
@@ -166,7 +165,7 @@ class ListenController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function update(Request $request, Listen $listen)
+    public function update(Request $request, Lesson $lesson)
     {
         //Validated
         $validate = Validator::make($request->all(),
@@ -183,18 +182,18 @@ class ListenController extends BaseController
         $request_data = $validate->validated();
 
         $request_data['active'] = 0;
-        $listen->update($request_data);
+        $lesson->update($request_data);
 
-        return $this->sendResponse("Listen Updated Successfully",['listen' => $listen]);
+        return $this->sendResponse("Lesson Updated Successfully",['lesson' => $lesson]);
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/dashboard/listens/{listen_id}",
-     *      tags={"Dashboard Api Listens"},
-     *     summary="Delete Listen",
+     *     path="/api/dashboard/lessons/{lesson_id}",
+     *      tags={"Dashboard Api Lessons"},
+     *     summary="Delete Lesson",
      *     @OA\Parameter(
-     *         name="listen_id",
+     *         name="lesson_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -207,25 +206,25 @@ class ListenController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function destroy(Listen $listen)
+    public function destroy(Lesson $lesson)
     {
-        if($listen->video != 'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4'){
-            Storage::disk('public')->delete($listen->video);
+        if($lesson->video != 'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4'){
+            Storage::disk('public')->delete($lesson->video);
         }
-        if($listen->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf'){
-            Storage::disk('public')->delete($listen->attached);
+        if($lesson->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf'){
+            Storage::disk('public')->delete($lesson->attached);
         }
-        $listen->delete();
+        $lesson->delete();
         return $this->sendResponse("Deleted Data Successfully");
     }
 
     /**
      * @OA\Put(
-     *     path="/api/dashboard/listens/{listen_id}/upload-video",
-     *      tags={"Dashboard Api Listens"},
-     *     summary="upload video Listen",
+     *     path="/api/dashboard/lessons/{lesson_id}/upload-video",
+     *      tags={"Dashboard Api Lessons"},
+     *     summary="upload video Lesson",
      *     @OA\Parameter(
-     *         name="listen_id",
+     *         name="lesson_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -244,7 +243,7 @@ class ListenController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function uploadVideo(Request $request, Listen $listen)
+    public function uploadVideo(Request $request, Lesson $lesson)
     {
         if($request->video_type == 'file'){
             $validate = Validator::make($request->all(),
@@ -264,26 +263,26 @@ class ListenController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        if($listen->video != 'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4' || $listen->video != null){
-            Storage::disk('public')->delete($listen->video);
+        if($lesson->video != 'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4' || $lesson->video != null){
+            Storage::disk('public')->delete($lesson->video);
         }
         $path_video = $request->file('video')->store('video',['disk' => 'public']);
 
-        $listen->update([
+        $lesson->update([
             'active'=> 0,
             'video'=> $path_video,
         ]);
 
-        return $this->sendResponse("The video has been uploaded successfully",['listen' => $listen]);
+        return $this->sendResponse("The video has been uploaded successfully",['lesson' => $lesson]);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/dashboard/listens/{listen_id}/upload-file",
-     *      tags={"Dashboard Api Listens"},
-     *     summary="upload file Listen",
+     *     path="/api/dashboard/lessons/{lesson_id}/upload-file",
+     *      tags={"Dashboard Api Lessons"},
+     *     summary="upload file Lesson",
      *     @OA\Parameter(
-     *         name="listen_id",
+     *         name="lesson_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -302,7 +301,7 @@ class ListenController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function uploadFile(Request $request, Listen $listen)
+    public function uploadFile(Request $request, Lesson $lesson)
     {
         //Validated
         $validate = Validator::make($request->all(),
@@ -314,26 +313,26 @@ class ListenController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-            if($listen->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf' || $listen->attached != null){
-                Storage::disk('public')->delete($listen->attached);
+            if($lesson->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf' || $lesson->attached != null){
+                Storage::disk('public')->delete($lesson->attached);
             }
             $path_attached = $request->file('attached')->store('attached',['disk' => 'public']);
 
 
-        $listen->update([
+        $lesson->update([
             'active'=> 0,
             'attached'=> $path_attached,
         ]);
-        return $this->sendResponse("The file has been uploaded successfully",['listen' => $listen]);
+        return $this->sendResponse("The file has been uploaded successfully",['lesson' => $lesson]);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/dashboard/listens/{listen_id}/approve",
-     *      tags={"Dashboard Api Listens"},
-     *     summary="Approve Listen",
+     *     path="/api/dashboard/lessons/{lesson_id}/approve",
+     *      tags={"Dashboard Api Lessons"},
+     *     summary="Approve Lesson",
      *     @OA\Parameter(
-     *         name="listen_id",
+     *         name="lesson_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -352,7 +351,7 @@ class ListenController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function approve(Request $request, Listen $listen)
+    public function approve(Request $request, Lesson $lesson)
     {
         //Validated
         $validate = Validator::make($request->all(),
@@ -364,10 +363,10 @@ class ListenController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $listen->update([
+        $lesson->update([
             'active'=> $request->active,
         ]);
-        
-        return $this->sendResponse("Listen Approved Successfully",['listen' => $listen]);
+
+        return $this->sendResponse("Lesson Approved Successfully",['lesson' => $lesson]);
     }
 }
