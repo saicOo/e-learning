@@ -21,7 +21,7 @@ class CreateCoursesTable extends Migration
             // $table->text('image')->default('courses/default.webp');
             $table->double('price',10, 2);
             $table->enum('semester',['first semester','second semester','full semester']);
-            $table->boolean('active')->default(0)->comment('0=>not active ,1=>active');
+            $table->enum('publish',['publish','unpublish'])->default("unpublish");
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('level_id');

@@ -22,7 +22,6 @@ class UserService
     //         'name' => 'nullable|string|max:255',
     //         'email' => 'nullable|string|email|max:255|unique:users,email,'.$data->id,
     //         'phone' => 'nullable|numeric|digits:11|unique:users,phone,'.$data->id,
-    //         'active' => 'nullable|in:1,0',
     //         'permissions' => 'nullable|array|min:1',
     //         'permissions.*' => 'nullable|exists:permissions,name',
     //     ];

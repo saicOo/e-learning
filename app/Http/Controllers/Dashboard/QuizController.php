@@ -15,7 +15,7 @@ class QuizController extends BaseController
     public function __construct()
     {
         $this->middleware(['permission:quizzes_read'])->only(['index','show']);
-        $this->middleware(['ability:teacher|assistant,quizzes_create,require_all'])->only('store');
+        $this->middleware(['permission:quizzes_create'])->only('store');
         $this->middleware(['permission:quizzes_delete'])->only('destroy');
         $this->middleware(['checkApiAffiliation']);
     }
@@ -130,7 +130,7 @@ class QuizController extends BaseController
             }
         }
 
-        return $this->sendResponse("Quiz Created Successfully",['quiz' => $quiz]);
+        return $this->sendResponse("Quiz Created Successfully");
 
     }
 

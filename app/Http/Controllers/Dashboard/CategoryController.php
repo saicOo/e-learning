@@ -74,7 +74,7 @@ class CategoryController extends BaseController
          }
 
          $category = Category::create($validate->validated());
-         return $this->sendResponse("Category Created Successfully",['category' => $category]);
+         return $this->sendResponse("Category Created Successfully");
     }
 
     /**

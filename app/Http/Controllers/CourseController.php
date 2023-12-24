@@ -68,7 +68,7 @@ class CourseController extends BaseController
      */
     public function index(Request $request)
     {
-        $courses = Course::where('active',1)->with(['user:id,name,email','level:id,name','category:id,name'])
+        $courses = Course::with(['user:id,name,email','level:id,name','category:id,name'])
         ->when($request->user_id,function ($query) use ($request){ // if user_id
             return $query->where('user_id',$request->user_id);
         })->when($request->level_id,function ($query) use ($request){ // if level_id
@@ -79,7 +79,7 @@ class CourseController extends BaseController
             return $query->where('semester',$request->semester);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
-        })->withCount('lessons')->get();
+        })->where("publish","publish")->withCount('lessons')->get();
 
         return $this->sendResponse("",['courses' => $courses]);
     }
@@ -104,7 +104,7 @@ class CourseController extends BaseController
      */
     public function show(Course $course)
     {
-        if ($course->active != 1) {
+        if ($course->publish != "publish") {
             return $this->sendError('Record not found.');
         }
 

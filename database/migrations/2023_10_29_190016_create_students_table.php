@@ -22,7 +22,7 @@ class CreateStudentsTable extends Migration
             $table->string('password');
             $table->enum('attendance_type',['online','offline']);
             $table->text('image')->nullable();
-            $table->boolean('active')->default(1)->comment('0=>not active ,1=>active');
+            $table->enum('publish',['publish','unpublish'])->default("publish");
             $table->rememberToken();
             $table->timestamps();
         });

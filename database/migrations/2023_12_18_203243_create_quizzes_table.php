@@ -18,7 +18,7 @@ class CreateQuizzesTable extends Migration
             $table->text('title');
             $table->integer('questions_count');
             $table->enum('type',['course','lesson']);
-            $table->boolean('active')->default(0)->comment('0=>not active ,1=>active');
+            $table->enum('publish',['publish','unpublish'])->default("unpublish");
             $table->unsignedBigInteger('course_id')->nullable();
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->unsignedBigInteger('lesson_id')->nullable();

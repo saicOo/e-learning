@@ -16,7 +16,7 @@ class LessonController extends BaseController
     public function __construct()
     {
         $this->middleware(['permission:lessons_read'])->only(['index','show']);
-        $this->middleware(['ability:teacher|assistant,lessons_create,require_all'])->only('store');
+        $this->middleware(['permission:lessons_create'])->only('store');
         $this->middleware(['permission:lessons_update'])->only('update');
         $this->middleware(['permission:lessons_update'])->only('uploadVideo');
         $this->middleware(['permission:lessons_update'])->only('uploadFile');
@@ -41,9 +41,9 @@ class LessonController extends BaseController
      *         ),
      *     ),
      * @OA\Parameter(
-     *         name="active",
+     *         name="publish",
      *         in="query",
-     *         description="filter lessons with active (active = 1 , not active = 0)",
+     *         description="filter lessons with publish (publish , unpublish)",
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
@@ -67,8 +67,8 @@ class LessonController extends BaseController
     public function index(Request $request, Course $course)
     {
         $lessons = Lesson::where('course_id',$course->id)
-        ->when($request->active,function ($query) use ($request){ // if active
-            return $query->where('active',$request->active);
+        ->when($request->publish,function ($query) use ($request){ // if publish
+            return $query->where('publish',$request->publish);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->get();
@@ -181,7 +181,7 @@ class LessonController extends BaseController
 
         $request_data = $validate->validated();
 
-        $request_data['active'] = 0;
+        $request_data['publish'] = "unpublish";
         $lesson->update($request_data);
 
         return $this->sendResponse("Lesson Updated Successfully",['lesson' => $lesson]);
@@ -219,7 +219,7 @@ class LessonController extends BaseController
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/dashboard/lessons/{lesson_id}/upload-video",
      *      tags={"Dashboard Api Lessons"},
      *     summary="upload video Lesson",
@@ -269,7 +269,7 @@ class LessonController extends BaseController
         $path_video = $request->file('video')->store('video',['disk' => 'public']);
 
         $lesson->update([
-            'active'=> 0,
+            'publish'=> "unpublish",
             'video'=> $path_video,
         ]);
 
@@ -320,7 +320,7 @@ class LessonController extends BaseController
 
 
         $lesson->update([
-            'active'=> 0,
+            'publish'=> "unpublish",
             'attached'=> $path_attached,
         ]);
         return $this->sendResponse("The file has been uploaded successfully",['lesson' => $lesson]);
@@ -343,7 +343,7 @@ class LessonController extends BaseController
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="active", type="boolen", example="1 or 0"),
+     *             @OA\Property(property="publish", type="boolen", example="publish or unpublish"),
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
@@ -356,7 +356,7 @@ class LessonController extends BaseController
         //Validated
         $validate = Validator::make($request->all(),
         [
-            'active' => 'required|in:1,0',
+            'publish' => 'required|in:publish,unpublish',
         ]);
 
         if($validate->fails()){
@@ -364,7 +364,7 @@ class LessonController extends BaseController
         }
 
         $lesson->update([
-            'active'=> $request->active,
+            'publish'=> $request->publish,
         ]);
 
         return $this->sendResponse("Lesson Approved Successfully",['lesson' => $lesson]);

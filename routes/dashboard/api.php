@@ -95,6 +95,8 @@ Route::get('/permissions',function () {
         'status' => true,
         'data' => [
             'permissions' => Permission::all(),
+            'models' => ['teachers','assistants','students','courses'
+            ,'lessons','subscriptions','contacts','categories','quizzes','questions']
         ]
     ], 200);
 });

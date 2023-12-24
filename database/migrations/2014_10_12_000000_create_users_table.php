@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique();
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('active')->default(1)->comment('0=>not active ,1=>active');
+            $table->enum('publish',['publish','unpublish'])->default("publish");
             $table->text('image')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');

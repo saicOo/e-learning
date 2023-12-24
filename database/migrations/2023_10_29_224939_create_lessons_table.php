@@ -20,7 +20,7 @@ class CreateLessonsTable extends Migration
             $table->text('video')->nullable();
             $table->text('attached')->nullable();
             $table->text('description');
-            $table->boolean('active')->default(0)->comment('0=>not active ,1=>active');
+            $table->enum('publish',['publish','unpublish'])->default("unpublish");
             $table->unsignedBigInteger('course_id');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->timestamps();

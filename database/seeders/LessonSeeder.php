@@ -23,7 +23,7 @@ class LessonSeeder extends Seeder
                 'video'=>'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4',
                 'attached'=>'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf',
                 'course_id'=>Course::inRandomOrder()->first()->id,
-                'active'=>1
+                'publish'=>"publish"
              ]);
         }
     }

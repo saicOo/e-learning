@@ -27,9 +27,9 @@ class StudentController extends BaseController
      *      tags={"Dashboard Api Students"},
      *     summary="get all students",
      * @OA\Parameter(
-     *         name="active",
+     *         name="publish",
      *         in="query",
-     *         description="filter students with active (active = 1 , not active = 0)",
+     *         description="filter students with publish (publish , unpublish)",
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
@@ -52,8 +52,8 @@ class StudentController extends BaseController
      */
     public function index(Request $request)
     {
-            $students = Student::when($request->active,function ($query) use ($request){ // if active
-                return $query->where('active',$request->active);
+            $students = Student::when($request->publish,function ($query) use ($request){ // if publish
+                return $query->where('publish',$request->publish);
             })->when($request->search,function ($query) use ($request){ // if search
                 return $query->where('name','Like','%'.$request->search.'%')
                 ->OrWhere('email','Like','%'.$request->search.'%')
@@ -113,7 +113,7 @@ class StudentController extends BaseController
                 'password' => Hash::make($request->password)
             ]);
 
-        return $this->sendResponse("Student Created Successfully",['student' => $student]);
+        return $this->sendResponse("Student Created Successfully");
     }
 
     /**
@@ -160,7 +160,7 @@ class StudentController extends BaseController
      *             @OA\Property(property="email", type="string", example="string"),
      *             @OA\Property(property="phone", type="string", example="string"),
      *             @OA\Property(property="attendance_type", type="enum", example="online , offline"),
-     *             @OA\Property(property="active", type="boolen", example="integer"),
+     *             @OA\Property(property="publish", type="boolen", example="integer"),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -177,7 +177,7 @@ class StudentController extends BaseController
                 'email' => 'nullable|string|email|max:255|unique:students,email,'.$student->id,
                 'phone' => 'nullable|numeric|digits:11|unique:students,phone,'.$student->id,
                 'attendance_type' => 'nullable|in:online,offline',
-                'active' => 'nullable|in:1,0',
+                'publish' => 'nullable|in:publish,unpublish',
             ]);
 
             if($validate->fails()){

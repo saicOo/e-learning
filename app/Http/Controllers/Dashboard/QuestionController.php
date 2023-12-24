@@ -20,7 +20,7 @@ class QuestionController extends BaseController
     public function __construct(UploadService $uploadService)
     {
         $this->middleware(['permission:questions_read'])->only(['index','show']);
-        $this->middleware(['ability:teacher|assistant,questions_create,require_all'])->only('store');
+        $this->middleware(['permission:questions_create'])->only('store');
         $this->middleware(['permission:questions_delete'])->only('destroy');
         $this->middleware(['checkApiAffiliation']);
         $this->uploadService = $uploadService;
@@ -134,12 +134,12 @@ class QuestionController extends BaseController
         //Validated
         $validate = Validator::make($request->all(), $rules);
 
-        $check_course_id = Lesson::findOrFail($request->lesson_id)->first()->course_id;
-        // if ($check_course_id != $course->id) {
-        //     $validate->after(function($validate) {
-        //         $validate->errors()->add('lesson_id', "This lesson is not here !");
-        //       });
-        // }
+        $check_course_id = Lesson::findOrFail($request->lesson_id)->course_id;
+        if ($check_course_id != $course->id) {
+            $validate->after(function($validate) {
+                $validate->errors()->add('lesson_id', "This lesson is not here !");
+              });
+        }
 
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -149,9 +149,9 @@ class QuestionController extends BaseController
         if($request->image && $request->type == 3){
             $request_data['image'] = $this->uploadService->uploadImage('questions', $request->image);
         }
-        $question = $course->questions()->create($request_data);
+        $course->questions()->create($request_data);
 
-        return $this->sendResponse("Question Created Successfully",['question' => $question]);
+        return $this->sendResponse("Question Created Successfully");
     }
 
     /**

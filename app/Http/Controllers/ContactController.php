@@ -47,7 +47,7 @@ class ContactController extends BaseController
          }
 
          $contact = Contact::create($validate->validated());
-        return $this->sendResponse("Contact Created Successfully",['contact' => $contact]);
+        return $this->sendResponse("Contact Created Successfully");
     }
 
 }

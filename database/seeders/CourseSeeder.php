@@ -28,7 +28,7 @@ class CourseSeeder extends Seeder
                 'user_id'=>User::whereRoleIs('teacher')->inRandomOrder()->first()->id,
                 'level_id'=>Level::inRandomOrder()->first()->id,
                 'category_id'=>Category::inRandomOrder()->first()->id,
-                'active'=>1
+                'publish'=>"publish"
              ]);
         }
     }

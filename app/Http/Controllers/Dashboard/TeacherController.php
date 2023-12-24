@@ -33,9 +33,9 @@ class TeacherController extends BaseController
      *      tags={"Dashboard Api Teachers"},
      *     summary="get all teachers",
      * @OA\Parameter(
-     *         name="active",
+     *         name="publish",
      *         in="query",
-     *         description="filter teachers with active (active = 1 , not active = 0)",
+     *         description="filter teachers with publish (publish , unpublish)",
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
@@ -58,8 +58,8 @@ class TeacherController extends BaseController
      */
     public function index(Request $request)
     {
-        $teachers = User::when($request->active,function ($query) use ($request){ // if active
-            return $query->where('active',$request->active);
+        $teachers = User::when($request->publish,function ($query) use ($request){ // if publish
+            return $query->where('publish',$request->publish);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')
             ->OrWhere('email','Like','%'.$request->search.'%')
@@ -163,7 +163,7 @@ class TeacherController extends BaseController
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="email", type="string", example="string"),
      *             @OA\Property(property="phone", type="string", example="string"),
-     *             @OA\Property(property="active", type="boolen", example="integer"),
+     *             @OA\Property(property="publish", type="boolen", example="integer"),
      *             @OA\Property(property="permissions", type="array", @OA\Items(
      *               type="string",example="user_create",
      *              ),),
@@ -185,7 +185,7 @@ class TeacherController extends BaseController
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|string|email|max:255|unique:users,email,'.$teacher->id,
             'phone' => 'nullable|numeric|digits:11|unique:users,phone,'.$teacher->id,
-            'active' => 'nullable|in:1,0',
+            'publish' => 'nullable|in:publish,unpublish',
             'permissions' => 'nullable|array|min:1',
             'permissions.*' => 'nullable|exists:permissions,name',
         ]);

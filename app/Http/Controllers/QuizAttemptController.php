@@ -132,7 +132,7 @@ class QuizAttemptController extends BaseController
         $attempt->update(['score'=>$score]);
 
         $quiz->attempts;
-        return $this->sendResponse("Quiz Created Successfully",['quiz' => $quiz]);
+        return $this->sendResponse("Quiz Created Successfully");
     }
 
     // Add helper methods as needed

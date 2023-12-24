@@ -10,12 +10,12 @@ class LessonController extends BaseController
 {
     /**
      * @OA\Get(
-     *     path="/api/lessons",
+     *     path="/api/courses/{course}/lessons",
      *      tags={"Front Api Lessons"},
      *     summary="get all lessons",
      *   @OA\Parameter(
      *         name="course_id",
-     *         in="query",
+     *         in="path",
      *         description="filter lessons with course",
      *         required=false,
      *         explode=true,
@@ -37,13 +37,11 @@ class LessonController extends BaseController
      *       @OA\Response(response=401, description="Unauthenticated"),
      * )
      */
-    public function index(Request $request)
+    public function index(Request $request, Course $course)
     {
-        $lessons = Lesson::select("id","name","description")->with("quizzes:id,title,questions_count,lesson_id")->where('active',1)->when($request->course_id,function ($query) use ($request){ // if course_id
-            return $query->where('course_id',$request->course_id);
-        })->when($request->search,function ($query) use ($request){ // if search
+        $lessons = Lesson::select("id","name","description")->with("quizzes:id,title,questions_count,lesson_id")->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
-        })->get();
+        })->where('course_id',$course->id)->where("publish","publish")->get();
         return $this->sendResponse("",['lessons' => $lessons]);
     }
 
@@ -68,7 +66,7 @@ class LessonController extends BaseController
      */
     public function show(Lesson $lesson)
     {
-        if ($lesson->active != 1) {
+        if ($lesson->publish != "publish") {
             return $this->sendError('Record not found.');
         }
         return $this->sendResponse("",['lesson' => $lesson]);

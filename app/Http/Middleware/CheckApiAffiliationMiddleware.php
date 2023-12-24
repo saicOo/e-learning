@@ -16,10 +16,9 @@ class CheckApiAffiliationMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // dd($request->route('lesson')->course->user_id);
-        $user = $request->user(); // Assuming you are using Laravel's built-in authentication
+        $user = $request->user();
         if ($user->roles[0]->name == 'manager') {
-            return $next($request); // Allow administrators to access
+            return $next($request);
         }
 
         if ($user->roles[0]->name == 'teacher') {

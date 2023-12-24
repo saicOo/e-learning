@@ -20,8 +20,9 @@ class CourseController extends BaseController
 
     public function __construct(UploadService $uploadService)
     {
+        $this->middleware(['removalOfManager'])->only('store');
         $this->middleware(['permission:courses_read'])->only(['index','show']);
-        $this->middleware(['ability:teacher|assistant,courses_create,require_all'])->only('store');
+        $this->middleware(['permission:courses_create'])->only('store');
         $this->middleware(['permission:courses_update'])->only('update');
         $this->middleware(['permission:courses_delete'])->only('destroy');
         $this->middleware(['permission:courses_approve'])->only('approve');
@@ -75,9 +76,9 @@ class CourseController extends BaseController
      *         ),
      *     ),
      * @OA\Parameter(
-     *         name="active",
+     *         name="publish",
      *         in="query",
-     *         description="filter courses with active (active = 1 , not active = 0)",
+     *         description="filter courses with publish (publish, unpublish)",
      *         required=false,
      *         explode=true,
      *         @OA\Schema(
@@ -115,8 +116,8 @@ class CourseController extends BaseController
             return $query->where('category_id',$request->category_id);
         })->when($request->semester,function ($query) use ($request){ // if semester
             return $query->where('semester',$request->semester);
-        })->when($request->active,function ($query) use ($request){ // if active
-            return $query->where('active',$request->active);
+        })->when($request->publish,function ($query) use ($request){ // if publish
+            return $query->where('publish',$request->publish);
         })->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->withCount('lessons')->get();
@@ -174,7 +175,7 @@ class CourseController extends BaseController
         $request_data['image'] = $this->uploadService->uploadImage('courses', $request->image);
         }
          $course = Course::create($request_data);
-         return $this->sendResponse("Course Created Successfully",['course' => $course]);
+         return $this->sendResponse("Course Created Successfully");
     }
 
     /**
@@ -260,7 +261,7 @@ class CourseController extends BaseController
         if($request->image){
         $request_data['image'] = $this->uploadService->uploadImage('courses', $request->image, $course->image);
         }
-        $request_data['active'] = 0;
+        $request_data['publish'] = "unpublish";
         $course->update($request_data);
         return $this->sendResponse("Course Updated Successfully",['course' => $course]);
     }
@@ -310,7 +311,7 @@ class CourseController extends BaseController
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="active", type="boolen", example="1 or 0"),
+     *             @OA\Property(property="publish", type="boolen", example="publish or unpublish"),
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
@@ -323,7 +324,7 @@ class CourseController extends BaseController
         //Validated
         $validate = Validator::make($request->all(),
         [
-            'active' => 'required|in:1,0',
+            'publish' => 'required|in:publish,unpublish',
         ]);
 
         if($validate->fails()){
@@ -331,7 +332,7 @@ class CourseController extends BaseController
         }
 
         $course->update([
-            'active'=> $request->active,
+            'publish'=> $request->publish,
         ]);
         return $this->sendResponse("Course Approved Successfully",["course"=>$course]);
     }
