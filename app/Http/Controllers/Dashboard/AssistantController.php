@@ -25,12 +25,21 @@ class AssistantController extends BaseController
         $this->userService = $userService;
     }
     use PermissionsUser;
-    
+
     /**
      * @OA\Get(
-     *     path="/api/dashboard/assistants",
+     *     path="/api/dashboard/teachers/{teacher_id}/assistants",
      *      tags={"Dashboard Api Assistants"},
      *     summary="get all Assistants",
+     * @OA\Parameter(
+     *         name="teacher_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
      * @OA\Parameter(
      *         name="active",
      *         in="query",
@@ -55,7 +64,7 @@ class AssistantController extends BaseController
      *       @OA\Response(response=401, description="Unauthenticated"),
      * )
      */
-    public function index(Request $request)
+    public function index(Request $request, User $user)
     {
         $assistants = User::when($request->active,function ($query) use ($request){ // if active
             return $query->where('active',$request->active);
@@ -63,7 +72,7 @@ class AssistantController extends BaseController
             return $query->where('name','Like','%'.$request->search.'%')
             ->OrWhere('email','Like','%'.$request->search.'%')
             ->OrWhere('phone','Like','%'.$request->search.'%');
-        })->whereRoleIs('assistant')->get();
+        })->where("user_id",$user->id)->whereRoleIs('assistant')->get();
 
         return $this->sendResponse("",['assistants' => $assistants]);
     }
@@ -199,7 +208,7 @@ class AssistantController extends BaseController
         unset($request_data['permissions']);
         $assistant->update($request_data);
         if ($request->permissions) $assistant->syncPermissions($request->permissions);
-        
+
         return $this->sendResponse("Assistant Updated Successfully");
     }
 

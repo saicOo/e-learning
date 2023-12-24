@@ -22,6 +22,7 @@ class QuestionController extends BaseController
         $this->middleware(['permission:questions_read'])->only(['index','show']);
         $this->middleware(['ability:teacher|assistant,questions_create,require_all'])->only('store');
         $this->middleware(['permission:questions_delete'])->only('destroy');
+        $this->middleware(['checkApiAffiliation']);
         $this->uploadService = $uploadService;
     }
 /**

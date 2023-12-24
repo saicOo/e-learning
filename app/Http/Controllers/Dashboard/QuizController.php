@@ -17,6 +17,7 @@ class QuizController extends BaseController
         $this->middleware(['permission:quizzes_read'])->only(['index','show']);
         $this->middleware(['ability:teacher|assistant,quizzes_create,require_all'])->only('store');
         $this->middleware(['permission:quizzes_delete'])->only('destroy');
+        $this->middleware(['checkApiAffiliation']);
     }
     /**
      * @OA\Get(

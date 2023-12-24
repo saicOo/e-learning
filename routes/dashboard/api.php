@@ -18,10 +18,16 @@ use Illuminate\Support\Facades\Route;
 // routes teacher
 Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
 
-    // routes teachers
+    // routes teachers teachers
     Route::resource('teachers', 'TeacherController')->except(['edit','create']);
     // routes assistants
-    Route::resource('assistants', 'AssistantController')->except(['edit','create']);
+    Route::controller(AssistantController::class)->group(function () {
+        Route::get('/teachers/{user}/assistants', 'index');
+        Route::post('/teachers/{user}/assistants', 'store');
+        Route::get('/assistants/{user}', 'show');
+        Route::put('/assistants/{user}', 'update');
+        Route::delete('assistants/{user}', 'destroy');
+    });
     // routes users
     Route::put('/users/change-password', 'UserController@changePassword');
     Route::post('/users/upload-image', 'UserController@uploadImage');
