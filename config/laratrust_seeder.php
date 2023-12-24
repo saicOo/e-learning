@@ -21,7 +21,7 @@ return [
             'contacts' => 'r,d',
             'categories' => 'c,r,u,d',
             'quizzes' => 'c,r,u,d',
-            'questions' => 'c,r,d',
+            'questions' => 'c,r,u,d',
         ],
         'teacher' => [],
         'assistant' => [],

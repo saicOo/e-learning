@@ -258,14 +258,23 @@
                 }
             }
         },
-        "/api/dashboard/assistants": {
+        "/api/dashboard/teachers/{teacher_id}/assistants": {
             "get": {
                 "tags": [
                     "Dashboard Api Assistants"
                 ],
                 "summary": "get all Assistants",
-                "operationId": "1d39d080e92076820fa5b8011ec63f81",
+                "operationId": "b5892a28526106dce30c9fc4d6c465b2",
                 "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
                     {
                         "name": "active",
                         "in": "query",
@@ -295,7 +304,9 @@
                         "description": "Unauthenticated"
                     }
                 }
-            },
+            }
+        },
+        "/api/dashboard/assistants": {
             "post": {
                 "tags": [
                     "Dashboard Api Assistants"
@@ -826,10 +837,6 @@
                                     "image": {
                                         "type": "string",
                                         "example": "path file"
-                                    },
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": "integer"
                                     },
                                     "level_id": {
                                         "type": "integer",

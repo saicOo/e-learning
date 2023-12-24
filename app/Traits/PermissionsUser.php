@@ -11,6 +11,7 @@ trait PermissionsUser
                 return [
                     'students_read',
                     'subscriptions_read',
+                    'assistants_read',
                     'courses_create',
                     'courses_read',
                     'courses_update',
@@ -18,11 +19,12 @@ trait PermissionsUser
                     'lessons_read',
                     'lessons_update',
                     'categories_read',
+                    'questions_read',
+                    'questions_create',
+                    'questions_update',
                     'quizzes_read',
                     'quizzes_update',
-                    'questions_create',
                     'quizzes_delete',
-                    'questions_read',
                 ];
                 break;
             case 'assistant':
