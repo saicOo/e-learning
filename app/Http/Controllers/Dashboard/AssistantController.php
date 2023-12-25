@@ -19,9 +19,9 @@ class AssistantController extends BaseController
     public function __construct(UserService $userService)
     {
         // $this->middleware(['permission:assistants_read'])->only(['index','show']);
-        // $this->middleware(['permission:assistants_create'])->only('store');
         // $this->middleware(['permission:assistants_update'])->only('update');
         // $this->middleware(['permission:assistants_delete'])->only('destroy');
+        $this->middleware(['role:teacher'])->only('store');
         $this->userService = $userService;
     }
     use PermissionsUser;
@@ -90,7 +90,6 @@ class AssistantController extends BaseController
      *             @OA\Property(property="phone", type="string", example="string"),
      *             @OA\Property(property="password", type="string", example="string"),
      *             @OA\Property(property="password_confirmation", type="string", example="string"),
-     *             @OA\Property(property="assistant_id", type="integer", example="Sets the teacher assistant's ID"),
      *             @OA\Property(property="image", type="file", example="path image"),
      *         ),
      *     ),
@@ -104,11 +103,10 @@ class AssistantController extends BaseController
         $validate = Validator::make($request->all(),
         [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255|email|unique:assistants,email',
+            'email' => 'required|string|max:255|email|unique:users,email',
             'password' => 'required|string|max:255|confirmed',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
-            'phone' => 'required|numeric|digits:11|unique:assistants,phone',
-            'assistant_id'=> 'nullable|exists:assistants,id',
+            'phone' => 'required|numeric|digits:11|unique:users,phone',
         ]);
 
         if($validate->fails()){
@@ -117,11 +115,12 @@ class AssistantController extends BaseController
 
         $request_data = $validate->validated();
         if($request->image){
-            $request_data['image'] = $this->uploadService->uploadImage('assistants', $request->image);
+            $request_data['image'] = $this->uploadService->uploadImage('users', $request->image);
         }
-        $assistant = $this->userService->createassistant($request_data);
+        $request_data['user_id'] = $request->user()->id;
+        $assistant = $this->userService->createUser($request_data);
         $assistant->attachRole('assistant');
-        $assistant->syncPermissions($this->createPermissionsassistant($assistant, 'assistant'));
+        $assistant->syncPermissions($this->createPermissionsUser($assistant, 'assistant'));
         return $this->sendResponse('Assistant Created Successfully');
     }
 
@@ -144,9 +143,9 @@ class AssistantController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $assistant = User::whereRoleIs('assistant')->where('id',$id)->first();
+        $assistant = User::whereRoleIs('assistant')->where('id',$user->id)->first();
         if(!$assistant){
             return $this->sendError('The Assistant Not Fount');
         }
@@ -184,14 +183,14 @@ class AssistantController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function update(Request $request,$id)
+    public function update(Request $request,User $user)
     {
-        $assistant = User::whereRoleIs('assistant')->where('id',$id)->first();
+        $assistant = User::whereRoleIs('assistant')->where('id',$user->id)->first();
         if(!$assistant){
             return $this->sendError('The Assistant Not Fount');
         }
         //Validated
-        $validate = Validator::make($request,[
+        $validate = Validator::make($request->all(),[
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|string|email|max:255|unique:assistants,email,'.$assistant->id,
             'phone' => 'nullable|numeric|digits:11|unique:assistants,phone,'.$assistant->id,
@@ -231,9 +230,9 @@ class AssistantController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $assistant = User::whereRoleIs('assistant')->where('id',$id)->first();
+        $assistant = User::whereRoleIs('assistant')->where('id',$user->id)->first();
         if(!$assistant){
             return $this->sendError('The Assistant Not Fount');
         }

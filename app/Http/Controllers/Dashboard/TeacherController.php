@@ -19,10 +19,9 @@ class TeacherController extends BaseController
     protected $uploadService;
     public function __construct(UserService $userService,UploadService $uploadService)
     {
-        // $this->middleware(['permission:teachers_read'])->only(['index','show']);
-        // $this->middleware(['permission:teachers_create'])->only('store');
-        // $this->middleware(['permission:teachers_update'])->only('update');
-        // $this->middleware(['permission:teachers_delete'])->only('destroy');
+        $this->middleware(['role:manager'])->only(["index","store"]);
+        $this->middleware(['permission:teachers_update'])->only('update');
+        $this->middleware(['permission:teachers_delete'])->only('destroy');
         $this->userService = $userService;
         $this->uploadService = $uploadService;
     }
@@ -134,9 +133,12 @@ class TeacherController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $teacher = User::whereRoleIs('teacher')->where('id',$id)->first();
+        $teacher = User::whereRoleIs('teacher')->where('id',$user->id)->first();
+        // return auth()->user();
+        // $checkUser = auth()->user();
+        // $checkUser->roles[0]->name;
         if(!$teacher){
             return $this->sendError('The Teacher Not Fount');
         }
@@ -181,7 +183,7 @@ class TeacherController extends BaseController
             return $this->sendError('The Teacher Not Fount');
         }
         //Validated
-        $validate = Validator::make($request,[
+        $validate = Validator::make($request->all(),[
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|string|email|max:255|unique:users,email,'.$teacher->id,
             'phone' => 'nullable|numeric|digits:11|unique:users,phone,'.$teacher->id,
