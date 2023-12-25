@@ -12,16 +12,16 @@ return [
 
     'roles_structure' => [
         'manager' => [
-            'teachers' => 'c,r,u,d',
-            'assistants' => 'c,r,u,d',
-            'students' => 'c,r,u,d',
-            'courses' => 'c,r,u,d,a',
-            'lessons' => 'c,r,u,d,a',
-            'subscriptions' => 'c,r,u,d',
+            'teachers' => 'u',
+            'assistants' => 'c,u,d,a',
+            'students' => 'c,u,d',
+            'courses' => 'c,u,d,a',
+            'lessons' => 'c,u,d,a',
+            'subscriptions' => 'c,u,d',
             'contacts' => 'r,d',
-            'categories' => 'c,r,u,d',
-            'quizzes' => 'c,r,u,d',
-            'questions' => 'c,r,u,d',
+            'categories' => 'c,u,d',
+            'quizzes' => 'c,d,a',
+            'questions' => 'c,d',
         ],
         'teacher' => [],
         'assistant' => [],
@@ -40,3 +40,15 @@ return [
     // ],
 
 ];
+// 'manager' => [
+//     'teachers' => 'c,r,u,d',
+//     'assistants' => 'c,r,u,d',
+//     'students' => 'c,r,u,d',
+//     'courses' => 'c,r,u,d,a',
+//     'lessons' => 'c,r,u,d,a',
+//     'subscriptions' => 'c,r,u,d',
+//     'contacts' => 'r,d',
+//     'categories' => 'c,r,u,d',
+//     'quizzes' => 'c,r,u,d',
+//     'questions' => 'c,r,u,d',
+// ],

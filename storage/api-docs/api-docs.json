@@ -276,9 +276,9 @@
                         }
                     },
                     {
-                        "name": "active",
+                        "name": "publish",
                         "in": "query",
-                        "description": "filter assistants with active (active = 1 , not active = 0)",
+                        "description": "filter assistants with publish (publish , unpublish)",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -337,10 +337,6 @@
                                     "password_confirmation": {
                                         "type": "string",
                                         "example": "string"
-                                    },
-                                    "assistant_id": {
-                                        "type": "integer",
-                                        "example": "Sets the teacher assistant's ID"
                                     },
                                     "image": {
                                         "type": "file",
@@ -425,7 +421,7 @@
                                         "type": "string",
                                         "example": "string"
                                     },
-                                    "active": {
+                                    "publish": {
                                         "type": "boolen",
                                         "example": "integer"
                                     },
@@ -471,6 +467,52 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/assistants/{assistant_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "Approve Assistants",
+                "operationId": "60af47d40729763e0d02bb3112b3b22a",
+                "parameters": [
+                    {
+                        "name": "assistant_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -777,9 +819,9 @@
                         }
                     },
                     {
-                        "name": "active",
+                        "name": "publish",
                         "in": "query",
-                        "description": "filter courses with active (active = 1 , not active = 0)",
+                        "description": "filter courses with publish (publish, unpublish)",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -805,13 +847,26 @@
                         "description": "Unauthenticated"
                     }
                 }
-            },
+            }
+        },
+        "/api/dashboard/teachers/{teacher_id}/courses": {
             "post": {
                 "tags": [
                     "Dashboard Api Courses"
                 ],
                 "summary": "Add New Courses",
-                "operationId": "6ab3b76891e2537266d9d2e900e74b65",
+                "operationId": "3e2dd5278618f742be978b5901e0ffd5",
+                "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -934,10 +989,6 @@
                                         "type": "string",
                                         "example": "https://www.techsmith.com/blog/wp-content/uploads/2022/03/resize-image.png"
                                     },
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": "integer"
-                                    },
                                     "level_id": {
                                         "type": "integer",
                                         "example": "integer"
@@ -1014,9 +1065,9 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "active": {
+                                    "publish": {
                                         "type": "boolen",
-                                        "example": "1 or 0"
+                                        "example": "publish or unpublish"
                                     }
                                 },
                                 "type": "object"
@@ -1056,9 +1107,9 @@
                         }
                     },
                     {
-                        "name": "active",
+                        "name": "publish",
                         "in": "query",
-                        "description": "filter lessons with active (active = 1 , not active = 0)",
+                        "description": "filter lessons with publish (publish , unpublish)",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -1240,12 +1291,12 @@
             }
         },
         "/api/dashboard/lessons/{lesson_id}/upload-video": {
-            "put": {
+            "post": {
                 "tags": [
                     "Dashboard Api Lessons"
                 ],
                 "summary": "upload video Lesson",
-                "operationId": "d782ad69fe1cb7fc1f903035e06fe5a2",
+                "operationId": "4a7fdcdc12f7610a93533ecaa868fd91",
                 "parameters": [
                     {
                         "name": "lesson_id",
@@ -1354,9 +1405,9 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "active": {
+                                    "publish": {
                                         "type": "boolen",
-                                        "example": "1 or 0"
+                                        "example": "publish or unpublish"
                                     }
                                 },
                                 "type": "object"
@@ -1801,6 +1852,81 @@
                         "description": "Resource Not Found"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "Delete Quizzes",
+                "operationId": "7272f07736dd44731ceb6b8ecb45b9b9",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/quizzes/{quiz_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "Approve Quizzes",
+                "operationId": "d20605dff637f962095da086301b0bf9",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
             }
         },
         "/api/dashboard/students": {
@@ -1812,9 +1938,9 @@
                 "operationId": "359e9e7951c9acd498620fc0ebde7614",
                 "parameters": [
                     {
-                        "name": "active",
+                        "name": "publish",
                         "in": "query",
-                        "description": "filter students with active (active = 1 , not active = 0)",
+                        "description": "filter students with publish (publish , unpublish)",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -1959,7 +2085,7 @@
                                         "type": "enum",
                                         "example": "online , offline"
                                     },
-                                    "active": {
+                                    "publish": {
                                         "type": "boolen",
                                         "example": "integer"
                                     }
@@ -2044,6 +2170,52 @@
                                     "new_password_confirmation": {
                                         "type": "string",
                                         "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/students/{student_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Students"
+                ],
+                "summary": "Approve Students",
+                "operationId": "16b5f55fa2bda7aaa0410cc7efaa2a05",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
                                     }
                                 },
                                 "type": "object"
@@ -2208,9 +2380,9 @@
                 "operationId": "095c9eacc2d4a574d2558effda4e1121",
                 "parameters": [
                     {
-                        "name": "active",
+                        "name": "publish",
                         "in": "query",
-                        "description": "filter teachers with active (active = 1 , not active = 0)",
+                        "description": "filter teachers with publish (publish , unpublish)",
                         "required": false,
                         "explode": true,
                         "schema": {
@@ -2351,7 +2523,7 @@
                                         "type": "string",
                                         "example": "string"
                                     },
-                                    "active": {
+                                    "publish": {
                                         "type": "boolen",
                                         "example": "integer"
                                     },
@@ -2397,6 +2569,52 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/teachers/{teacher_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Teachers"
+                ],
+                "summary": "Approve Teachers",
+                "operationId": "ac592cea25e22757e40d1b5d64f86af7",
+                "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -2488,17 +2706,17 @@
                 }
             }
         },
-        "/api/lessons": {
+        "/api/courses/{course}/lessons": {
             "get": {
                 "tags": [
                     "Front Api Lessons"
                 ],
                 "summary": "get all lessons",
-                "operationId": "db776a108da2bb0a2f97ede1e0443b1c",
+                "operationId": "2c4e6971ea10678972bd235206d31c64",
                 "parameters": [
                     {
                         "name": "course_id",
-                        "in": "query",
+                        "in": "path",
                         "description": "filter lessons with course",
                         "required": false,
                         "explode": true,

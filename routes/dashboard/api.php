@@ -23,17 +23,20 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     Route::controller(TeacherController::class)->group(function () {
         Route::get('/teachers', 'index');
         Route::post('/teachers', 'store');
-        Route::get('/teachers/{user}', 'show');
-        Route::put('/teachers/{user}', 'update');
-        Route::delete('teachers/{user}', 'destroy');
+        Route::get('/teachers/{teacher}', 'show');
+        Route::put('/teachers/{teacher}', 'update');
+        Route::delete('teachers/{teacher}', 'destroy');
+        Route::put('/teachers/{teacher}/approve', 'approve');
+
     });
     // routes assistants
     Route::controller(AssistantController::class)->group(function () {
-        Route::get('/teachers/{user}/assistants', 'index');
+        Route::get('/teachers/{teacher}/assistants', 'index');
         Route::post('/assistants', 'store');
-        Route::get('/assistants/{user}', 'show');
-        Route::put('/assistants/{user}', 'update');
-        Route::delete('assistants/{user}', 'destroy');
+        Route::get('/assistants/{assistant}', 'show');
+        Route::put('/assistants/{assistant}', 'update');
+        Route::delete('assistants/{assistant}', 'destroy');
+        Route::put('/assistants/{assistant}/approve', 'approve');
     });
     // routes users
     Route::put('/users/change-password', 'UserController@changePassword');
@@ -41,9 +44,16 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     // routes students
     Route::apiResource('students', 'StudentController')->except(['edit','create']);
     Route::put('/students/{student}/change-password', 'StudentController@changePassword');
+    Route::put('/students/{student}/approve', 'StudentController@approve');
     // routes courses
-    Route::apiResource('courses', 'CourseController')->except(['edit','create']);
-    Route::put('/courses/{course}/approve','CourseController@approve');
+    Route::controller(CourseController::class)->group(function () {
+        Route::get('/courses', 'index');
+        Route::post('/teachers/{teacher}/courses', 'store');
+        Route::get('/courses/{course}', 'show');
+        Route::put('/courses/{course}', 'update');
+        Route::delete('courses/{course}', 'destroy');
+        Route::put('/courses/{course}/approve', 'approve');
+    });
     // routes lessons
     Route::controller(LessonController::class)->group(function () {
         Route::get('/courses/{course}/lessons', 'index');
@@ -72,6 +82,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
         Route::post('/courses/{course}/quizzes', 'store');
         Route::get('/quizzes/{quiz}', 'show');
         Route::delete('/quizzes/{quiz}', 'destroy');
+        Route::put('/quizzes/{quiz}/approve', 'approve');
     });
     // routes contacts
 Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);

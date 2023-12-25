@@ -20,7 +20,7 @@ class LessonSeeder extends Seeder
             Lesson::create([
                 'name'=>$faker->sentence(2),
                 'description'=>$faker->sentence(20),
-                'video'=>'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4',
+                'video'=>'video/zSsEJPGdHgCgYqQNqV27S2mouiQAbFpl8r01QSbW.mp4',
                 'attached'=>'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf',
                 'course_id'=>Course::inRandomOrder()->first()->id,
                 'publish'=>"publish"

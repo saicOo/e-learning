@@ -16,7 +16,6 @@ class StudentController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware(['permission:students_read'])->only(['index','show']);
         $this->middleware(['permission:students_create'])->only('store');
         $this->middleware(['permission:students_update'])->only('update');
         $this->middleware(['permission:students_delete'])->only('destroy');
@@ -177,7 +176,6 @@ class StudentController extends BaseController
                 'email' => 'nullable|string|email|max:255|unique:students,email,'.$student->id,
                 'phone' => 'nullable|numeric|digits:11|unique:students,phone,'.$student->id,
                 'attendance_type' => 'nullable|in:online,offline',
-                'publish' => 'nullable|in:publish,unpublish',
             ]);
 
             if($validate->fails()){
@@ -277,5 +275,49 @@ class StudentController extends BaseController
         $student->delete();
 
         return $this->sendResponse("Deleted Data Successfully");
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/api/dashboard/students/{student_id}/approve",
+     *      tags={"Dashboard Api Students"},
+     *     summary="Approve Students",
+     *     @OA\Parameter(
+     *         name="student_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="publish", type="boolen", example="publish or unpublish"),
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     *    )
+     */
+    public function approve(Request $request, Student $student)
+    {
+        //Validated
+        $validate = Validator::make($request->all(),
+        [
+            'publish' => 'required|in:publish,unpublish',
+        ]);
+
+        if($validate->fails()){
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $student->update([
+            'publish'=> $request->publish,
+        ]);
+
+        return $this->sendResponse("Student ".$request->publish." successfully");
     }
 }

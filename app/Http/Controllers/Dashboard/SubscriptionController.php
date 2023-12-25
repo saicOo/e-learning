@@ -18,7 +18,6 @@ class SubscriptionController extends BaseController
 
     public function __construct()
     {
-        $this->middleware(['permission:subscriptions_read'])->only(['index','show']);
         $this->middleware(['permission:subscriptions_create'])->only('store');
         $this->middleware(['permission:subscriptions_delete'])->only('destroy');
     }

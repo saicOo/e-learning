@@ -14,9 +14,9 @@ class QuizController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware(['permission:quizzes_read'])->only(['index','show']);
         $this->middleware(['permission:quizzes_create'])->only('store');
         $this->middleware(['permission:quizzes_delete'])->only('destroy');
+        $this->middleware(['permission:quizzes_approve'])->only('approve');
         $this->middleware(['checkApiAffiliation']);
     }
     /**
@@ -159,9 +159,72 @@ class QuizController extends BaseController
         return $this->sendResponse("",['quiz' => $quiz]);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/dashboard/quizzes/{quiz_id}",
+     *      tags={"Dashboard Api Quizzes"},
+     *     summary="Delete Quizzes",
+     *     @OA\Parameter(
+     *         name="quiz_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     *    )
+     */
     public function destroy(Quiz $quiz)
     {
         $quiz->delete();
         return $this->sendResponse("Deleted Data Successfully");
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/api/dashboard/quizzes/{quiz_id}/approve",
+     *      tags={"Dashboard Api Quizzes"},
+     *     summary="Approve Quizzes",
+     *     @OA\Parameter(
+     *         name="quiz_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="publish", type="boolen", example="publish or unpublish"),
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     *    )
+     */
+    public function approve(Request $request, Quiz $quiz)
+    {
+        //Validated
+        $validate = Validator::make($request->all(),
+        [
+            'publish' => 'required|in:publish,unpublish',
+        ]);
+
+        if($validate->fails()){
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $quiz->update([
+            'publish'=> $request->publish,
+        ]);
+
+        return $this->sendResponse("Quiz ".$request->publish." successfully");
     }
 }

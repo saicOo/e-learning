@@ -15,15 +15,11 @@ class LessonController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware(['permission:lessons_read'])->only(['index','show']);
         $this->middleware(['permission:lessons_create'])->only('store');
-        $this->middleware(['permission:lessons_update'])->only('update');
-        $this->middleware(['permission:lessons_update'])->only('uploadVideo');
-        $this->middleware(['permission:lessons_update'])->only('uploadFile');
+        $this->middleware(['permission:lessons_update'])->only(['update','uploadVideo','uploadFile']);
         $this->middleware(['permission:lessons_delete'])->only('destroy');
         $this->middleware(['permission:lessons_approve'])->only('approve');
         $this->middleware(['checkApiAffiliation']);
-
     }
 /**
      * @OA\Get(
@@ -208,7 +204,7 @@ class LessonController extends BaseController
      */
     public function destroy(Lesson $lesson)
     {
-        if($lesson->video != 'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4'){
+        if($lesson->video != 'video/zSsEJPGdHgCgYqQNqV27S2mouiQAbFpl8r01QSbW.mp4'){
             Storage::disk('public')->delete($lesson->video);
         }
         if($lesson->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf'){
@@ -263,7 +259,7 @@ class LessonController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        if($lesson->video != 'video/zNAS2X0zOi3RsC58jRqVf5gqmEodZl2DeYEsbGhr.mp4' || $lesson->video != null){
+        if($lesson->video != 'video/zSsEJPGdHgCgYqQNqV27S2mouiQAbFpl8r01QSbW.mp4' || $lesson->video != null){
             Storage::disk('public')->delete($lesson->video);
         }
         $path_video = $request->file('video')->store('video',['disk' => 'public']);
@@ -367,6 +363,6 @@ class LessonController extends BaseController
             'publish'=> $request->publish,
         ]);
 
-        return $this->sendResponse("Lesson Approved Successfully",['lesson' => $lesson]);
+        return $this->sendResponse("Lesson ".$request->publish." successfully");
     }
 }

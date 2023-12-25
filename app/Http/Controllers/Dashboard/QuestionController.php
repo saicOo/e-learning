@@ -19,13 +19,12 @@ class QuestionController extends BaseController
 
     public function __construct(UploadService $uploadService)
     {
-        $this->middleware(['permission:questions_read'])->only(['index','show']);
         $this->middleware(['permission:questions_create'])->only('store');
         $this->middleware(['permission:questions_delete'])->only('destroy');
         $this->middleware(['checkApiAffiliation']);
         $this->uploadService = $uploadService;
     }
-/**
+    /**
      * @OA\Get(
      *     path="/api/dashboard/courses/{course_id}/questions",
      *      tags={"Dashboard Api Questions"},

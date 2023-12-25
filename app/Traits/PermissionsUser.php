@@ -9,35 +9,30 @@ trait PermissionsUser
         switch ($role) {
             case 'teacher':
                 return [
-                    'students_read',
-                    'subscriptions_read',
-                    'assistants_read',
+                    'assistants_update',
+                    'assistants_delete',
+                    'assistants_create',
+                    'assistants_approve',
+                    'teachers_update',
+                    'students_create',
+                    'students_update',
                     'courses_create',
-                    'courses_read',
                     'courses_update',
                     'lessons_create',
-                    'lessons_read',
                     'lessons_update',
-                    'categories_read',
-                    'questions_read',
                     'questions_create',
-                    'questions_update',
-                    'quizzes_read',
-                    'quizzes_update',
+                    'questions_delete',
+                    'quizzes_create',
                     'quizzes_delete',
                 ];
                 break;
             case 'assistant':
                 return [
+                    'assistants_update',
                     'students_create',
-                    'students_read',
                     'students_update',
                     'subscriptions_create',
-                    'subscriptions_read',
                     'subscriptions_update',
-                    'categories_read',
-                    'quizzes_read',
-                    'questions_read',
                 ];
                 break;
 

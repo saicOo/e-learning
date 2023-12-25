@@ -56,7 +56,7 @@ class UserSeeder extends Seeder
             'email'=>'assistant2@app.com',
             'phone'=>'01238545',
             'password'=>bcrypt('1234'),
-            'user_id'=>2,
+            'user_id'=>3,
         ]);
         $assistant2->attachRole('assistant');
         $assistant2->syncPermissions($this->createPermissionsUser($assistant2, 'assistant'));

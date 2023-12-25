@@ -20,13 +20,11 @@ class CourseController extends BaseController
 
     public function __construct(UploadService $uploadService)
     {
-        $this->middleware(['removalOfManager'])->only('store');
-        $this->middleware(['permission:courses_read'])->only(['index','show']);
         $this->middleware(['permission:courses_create'])->only('store');
         $this->middleware(['permission:courses_update'])->only('update');
         $this->middleware(['permission:courses_delete'])->only('destroy');
         $this->middleware(['permission:courses_approve'])->only('approve');
-        $this->middleware(['checkApiAffiliation'])->except(['index',"store"]);
+        $this->middleware(['checkApiAffiliation']);
         $this->uploadService = $uploadService;
     }
     /**
@@ -127,9 +125,18 @@ class CourseController extends BaseController
 
     /**
      * @OA\Post(
-     *     path="/api/dashboard/courses",
+     *     path="/api/dashboard/teachers/{teacher_id}/courses",
      *      tags={"Dashboard Api Courses"},
      *     summary="Add New Courses",
+     * @OA\Parameter(
+     *         name="teacher_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
@@ -146,7 +153,7 @@ class CourseController extends BaseController
      *       @OA\Response(response=401, description="Unauthenticated"),
      * )
      */
-    public function store(Request $request)
+    public function store(Request $request, $teacher_id)
     {
          //Validated
          $validate = Validator::make($request->all(),
@@ -160,12 +167,12 @@ class CourseController extends BaseController
             'category_id'=> 'required|exists:categories,id',
          ]);
 
-         $user = $request->user();
-         if($user->roles[0]->name == 'teacher'){
-            $request_data['user_id'] = $user->id;
-            }else{
-                $request_data['user_id'] = $user->user_id;
-            }
+        //  $user = $request->user();
+        //  if($user->roles[0]->name == 'teacher'){
+        //     $request_data['user_id'] = $user->id;
+        //     }else{
+        //         $request_data['user_id'] = $user->user_id;
+        //     }
 
          if($validate->fails()){
                 return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -174,6 +181,7 @@ class CourseController extends BaseController
          if($request->image){
         $request_data['image'] = $this->uploadService->uploadImage('courses', $request->image);
         }
+         $request_data['user_id'] = $teacher_id;
          $course = Course::create($request_data);
          return $this->sendResponse("Course Created Successfully");
     }
@@ -229,7 +237,6 @@ class CourseController extends BaseController
      *             @OA\Property(property="description", type="string", example="string"),
      *             @OA\Property(property="semester", type="enum", example="string"),
      *             @OA\Property(property="image", type="string", example="https://www.techsmith.com/blog/wp-content/uploads/2022/03/resize-image.png"),
-     *             @OA\Property(property="user_id", type="integer", example="integer"),
      *             @OA\Property(property="level_id", type="integer", example="integer"),
      *             @OA\Property(property="category_id", type="integer", example="integer"),
      *         ),
@@ -248,7 +255,6 @@ class CourseController extends BaseController
             'description' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
             'semester' => 'nullable|in:first semester,second semester,full semester',
-            'user_id'=> 'nullable|exists:users,id',
             'level_id'=> 'nullable|exists:levels,id',
             'category_id'=> 'nullable|exists:categories,id',
         ]);
@@ -334,6 +340,6 @@ class CourseController extends BaseController
         $course->update([
             'publish'=> $request->publish,
         ]);
-        return $this->sendResponse("Course Approved Successfully",["course"=>$course]);
+        return $this->sendResponse("Course ".$request->publish." successfully");
     }
 }

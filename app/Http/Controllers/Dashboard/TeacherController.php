@@ -19,9 +19,10 @@ class TeacherController extends BaseController
     protected $uploadService;
     public function __construct(UserService $userService,UploadService $uploadService)
     {
-        $this->middleware(['role:manager'])->only(["index","store"]);
+        $this->middleware(['role:manager'])->only(["index","store","approve"]);
         $this->middleware(['permission:teachers_update'])->only('update');
         $this->middleware(['permission:teachers_delete'])->only('destroy');
+        $this->middleware(['checkApiAffiliation']);
         $this->userService = $userService;
         $this->uploadService = $uploadService;
     }
@@ -133,12 +134,9 @@ class TeacherController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function show(User $user)
+    public function show($teacher_id)
     {
-        $teacher = User::whereRoleIs('teacher')->where('id',$user->id)->first();
-        // return auth()->user();
-        // $checkUser = auth()->user();
-        // $checkUser->roles[0]->name;
+        $teacher = User::whereRoleIs('teacher')->where('id',$teacher_id)->first();
         if(!$teacher){
             return $this->sendError('The Teacher Not Fount');
         }
@@ -176,9 +174,9 @@ class TeacherController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function update(Request $request,$id)
+    public function update(Request $request,$teacher_id)
     {
-        $teacher = User::whereRoleIs('teacher')->where('id',$id)->first();
+        $teacher = User::whereRoleIs('teacher')->where('id',$teacher_id)->first();
         if(!$teacher){
             return $this->sendError('The Teacher Not Fount');
         }
@@ -197,9 +195,11 @@ class TeacherController extends BaseController
         }
 
         $request_data = $validate->validated();
-        unset($request_data['permissions']);
+        if ($request->permissions){
+            unset($request_data['permissions']);
+            $teacher->syncPermissions($request->permissions);
+        }
         $teacher->update($request_data);
-        if ($request->permissions) $teacher->syncPermissions($request->permissions);
 
         return $this->sendResponse("Teacher Updated Successfully");
     }
@@ -223,9 +223,9 @@ class TeacherController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function destroy($id)
+    public function destroy($teacher_id)
     {
-        $teacher = User::whereRoleIs('teacher')->where('id',$id)->first();
+        $teacher = User::whereRoleIs('teacher')->where('id',$teacher_id)->first();
         if(!$teacher){
             return $this->sendError('The Teacher Not Fount');
         }
@@ -236,4 +236,51 @@ class TeacherController extends BaseController
         return $this->sendResponse("Deleted Data Successfully");
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/dashboard/teachers/{teacher_id}/approve",
+     *      tags={"Dashboard Api Teachers"},
+     *     summary="Approve Teachers",
+     *     @OA\Parameter(
+     *         name="teacher_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="publish", type="boolen", example="publish or unpublish"),
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     *    )
+     */
+    public function approve(Request $request, $teacher_id)
+    {
+        $teacher = User::whereRoleIs('teacher')->where('id',$teacher_id)->first();
+        if(!$teacher){
+            return $this->sendError('The Teacher Not Fount');
+        }
+        //Validated
+        $validate = Validator::make($request->all(),
+        [
+            'publish' => 'required|in:publish,unpublish',
+        ]);
+
+        if($validate->fails()){
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $teacher->update([
+            'publish'=> $request->publish,
+        ]);
+
+        return $this->sendResponse("Teacher ".$request->publish." successfully");
+    }
 }
