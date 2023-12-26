@@ -24,7 +24,7 @@ class CourseController extends BaseController
         $this->middleware(['permission:courses_update'])->only('update');
         $this->middleware(['permission:courses_delete'])->only('destroy');
         $this->middleware(['permission:courses_approve'])->only('approve');
-        $this->middleware(['checkApiAffiliation']);
+        $this->middleware(['checkApiAffiliation'])->except('index');
         $this->uploadService = $uploadService;
     }
     /**

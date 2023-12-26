@@ -32,6 +32,9 @@ class QuizController extends BaseController
      */
     public function show(Quiz $quiz)
     {
+        if ($quiz->publish != "publish") {
+            return $this->sendError('Record not found.');
+        }
         $quiz->questions;
         return $this->sendResponse("",['quiz' => $quiz]);
     }

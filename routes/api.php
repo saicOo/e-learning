@@ -19,11 +19,11 @@ Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
     Route::get('/profile','AuthController@profile');
     Route::post('/student/upload-image','AuthController@uploadImage');
     Route::post('/logout', 'AuthController@logout');
-    Route::get('/quizez/{quiz}', 'QuizController@show');
     Route::post('/quiz-attempts/{quiz}', 'QuizAttemptController@submitQuiz');
     Route::get('/quiz-attempts', 'QuizAttemptController@index');
     Route::get('/quiz-attempts/{quizAttempt}', 'QuizAttemptController@show');
 });
+Route::get('/quizzes/{quiz}', 'QuizController@show');
 
 Route::controller(CourseController::class)->group(function () {
     Route::get('/courses', 'index');

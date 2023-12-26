@@ -84,6 +84,9 @@ class QuizAttemptController extends BaseController
      */
     public function submitQuiz(Request $request, Quiz $quiz)
     {
+        if ($quiz->publish != "publish") {
+            return $this->sendError('Record not found.');
+        }
         //Validated
         $validate = Validator::make($request->all(),
         [

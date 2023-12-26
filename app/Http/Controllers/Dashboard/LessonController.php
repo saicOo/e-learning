@@ -151,9 +151,6 @@ class LessonController extends BaseController
      *             type="object",
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="description", type="string", example="string"),
-     *             @OA\Property(property="video", type="file", example="path file"),
-     *             @OA\Property(property="attached", type="file", example="path file"),
-     *             @OA\Property(property="course_id", type="integer", example="integer"),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -168,7 +165,6 @@ class LessonController extends BaseController
         [
             'name' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
-            'course_id'=> 'nullable|exists:courses,id',
         ]);
 
         if($validate->fails()){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
@@ -10,7 +11,7 @@ class LessonController extends BaseController
 {
     /**
      * @OA\Get(
-     *     path="/api/courses/{course}/lessons",
+     *     path="/api/courses/{course_id}/lessons",
      *      tags={"Front Api Lessons"},
      *     summary="get all lessons",
      *   @OA\Parameter(
@@ -39,7 +40,7 @@ class LessonController extends BaseController
      */
     public function index(Request $request, Course $course)
     {
-        $lessons = Lesson::select("id","name","description")->with("quizzes:id,title,questions_count,lesson_id")->when($request->search,function ($query) use ($request){ // if search
+        $lessons = Lesson::select("id","name","description")->with("quizzes:id,title,publish,questions_count,lesson_id")->when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
         })->where('course_id',$course->id)->where("publish","publish")->get();
         return $this->sendResponse("",['lessons' => $lessons]);

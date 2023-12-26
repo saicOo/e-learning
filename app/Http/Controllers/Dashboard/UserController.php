@@ -15,7 +15,7 @@ class UserController extends BaseController
 {
     protected $uploadService;
     public function __construct(UploadService $uploadService)
-    {  
+    {
         $this->uploadService = $uploadService;
     }
 
@@ -64,7 +64,7 @@ class UserController extends BaseController
         ]);
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'Password changed successfully!',
         ], 200);
     }

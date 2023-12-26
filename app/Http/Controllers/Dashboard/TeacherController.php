@@ -22,7 +22,7 @@ class TeacherController extends BaseController
         $this->middleware(['role:manager'])->only(["index","store","approve"]);
         $this->middleware(['permission:teachers_update'])->only('update');
         $this->middleware(['permission:teachers_delete'])->only('destroy');
-        $this->middleware(['checkApiAffiliation']);
+        $this->middleware(['checkApiAffiliation'])->except('index');
         $this->userService = $userService;
         $this->uploadService = $uploadService;
     }

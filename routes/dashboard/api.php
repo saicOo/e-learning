@@ -89,8 +89,7 @@ Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
     // routes category
     Route::apiResource('categories', 'CategoryController')->only(['index','store','update','delete']);
     // routes subscriptions
-    Route::apiResource('subscriptions', 'SubscriptionController')->except(['edit','create','update']);
-    // Route::delete('/subscriptions/{student}/','SubscribeController@destroy');
+    Route::apiResource('subscriptions', 'SubscriptionController')->only(['index','store','delete']);
     // routes levels
     Route::get('/levels','LevelController@index');
 
@@ -102,7 +101,7 @@ Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
 Route::post('/login','AuthController@login');
 Route::get('/roles',function () {
     return response()->json([
-        'status' => true,
+        'success' => true,
         'data' => [
             'roles' => Role::all(),
         ]
@@ -110,7 +109,7 @@ Route::get('/roles',function () {
 });
 Route::get('/permissions',function () {
     return response()->json([
-        'status' => true,
+        'success' => true,
         'data' => [
             'permissions' => Permission::all(),
             'models' => ['teachers','assistants','students','courses'

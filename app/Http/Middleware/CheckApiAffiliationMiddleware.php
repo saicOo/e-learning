@@ -35,7 +35,7 @@ class CheckApiAffiliationMiddleware
         }
 
         if ($user->roles[0]->name == 'assistant') {
-            if ($request->user()->user_id == $request->route('course')->user_id ||
+            if ($request->route('course') && $request->user()->user_id == $request->route('course')->user_id ||
             ($request->route('quiz') && $request->user()->user_id == $request->route('quiz')->course->user_id) ||
                  ($request->route('lesson') && $request->user()->user_id == $request->route('lesson')->course->user_id) ||
                  ($request->route('question') && $request->user()->user_id == $request->route('question')->course->user_id) ||

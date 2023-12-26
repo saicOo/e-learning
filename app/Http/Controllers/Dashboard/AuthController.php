@@ -66,7 +66,7 @@ class AuthController extends BaseController
             $expiry_date = Carbon::now();
             $expiry_date = $expiry_date->addMinutes($expiry_minutes);
              return response()->json([
-                'status' => true,
+                'success' => true,
                 'message' => 'User Logged In Successfully',
                 'data' => [
                     'user' => $user,

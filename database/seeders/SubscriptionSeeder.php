@@ -17,8 +17,6 @@ class SubscriptionSeeder extends Seeder
     public function run()
     {
         for ($i=0; $i < 100; $i++) {
-
-
             $student = Student::where('attendance_type','online')->inRandomOrder()->first();
             $course = Course::inRandomOrder()->first();
             $current = Carbon::today()->subDays(rand(0, 365));

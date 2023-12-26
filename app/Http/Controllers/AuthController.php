@@ -60,15 +60,14 @@ class AuthController extends BaseController
 
             $token = $student->createToken('token_student',['student'])->plainTextToken;
 
-            $expiry_minutes = 10;
+            $expiry_minutes = 60 * 24;
             // $cookie = cookie('token', $token, 60 * 24); // 1 day
             $cookie = cookie('token', $token, $expiry_minutes); // 1 minute
             // $cookie = cookie('token_student', $token, $expiry_minutes)->withSameSite('None'); // 1 minute
             $expiry_date = Carbon::now();
             $expiry_date = $expiry_date->addMinutes($expiry_minutes);
-                    return $this->sendResponse("",['assistant' => $assistant]);
  return response()->json([
-                'status' => true,
+                'success' => true,
                 'message' => 'Student Logged In Successfully',
                 'data' => [
                     'student' => $student,
@@ -117,11 +116,7 @@ class AuthController extends BaseController
     public function profile(Request $request)
     {
             $student = $request->user();
-                    return $this->sendResponse("",['assistant' => $assistant]);
- return response()->json([
-                'status' => true,
-                'data' => $student,
-            ], 200);
+            return $this->sendResponse("",['student' => $student]);
     }
 
     /**
@@ -167,7 +162,7 @@ class AuthController extends BaseController
         $student->update($request_data);
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'The Image has been uploaded successfully',
         ], 200);
     }
