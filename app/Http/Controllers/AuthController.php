@@ -116,6 +116,7 @@ class AuthController extends BaseController
     public function profile(Request $request)
     {
             $student = $request->user();
+            $student->courses;
             return $this->sendResponse("",['student' => $student]);
     }
 

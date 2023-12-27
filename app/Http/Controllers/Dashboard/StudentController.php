@@ -51,13 +51,24 @@ class StudentController extends BaseController
      */
     public function index(Request $request)
     {
-            $students = Student::when($request->publish,function ($query) use ($request){ // if publish
-                return $query->where('publish',$request->publish);
-            })->when($request->search,function ($query) use ($request){ // if search
-                return $query->where('name','Like','%'.$request->search.'%')
-                ->OrWhere('email','Like','%'.$request->search.'%')
-                ->OrWhere('phone','Like','%'.$request->search.'%');
-            })->get();
+        $students = Student::query();
+
+        // Filter by course name
+        if ($request->has('publish')) {
+            $students->where('publish', $request->input('publish'));
+        }
+        // Filter by course name
+        if ($request->has('search')) {
+            $search = $request->has('search');
+            $students->where(function($query) use ($search) {
+                $query->where('name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('phone', 'LIKE', '%'.$search.'%')
+                    ->orWhere('email', 'LIKE', '%'.$search.'%');
+            });
+        }
+
+
+        $students = $students->get();
 
             return $this->sendResponse("",['students' => $students]);
     }
@@ -136,6 +147,10 @@ class StudentController extends BaseController
      */
     public function show(Student $student)
     {
+        foreach ($student->attempts as $attempt) {
+            $attempt->quiz;
+        }
+        // $student->attempts->quiz;
         return $this->sendResponse("",['student' => $student]);
     }
 

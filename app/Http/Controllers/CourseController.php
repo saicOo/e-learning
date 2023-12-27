@@ -68,18 +68,29 @@ class CourseController extends BaseController
      */
     public function index(Request $request)
     {
-        $courses = Course::with(['user:id,name,email','level:id,name','category:id,name'])
-        ->when($request->user_id,function ($query) use ($request){ // if user_id
-            return $query->where('user_id',$request->user_id);
-        })->when($request->level_id,function ($query) use ($request){ // if level_id
-            return $query->where('level_id',$request->level_id);
-        })->when($request->category_id,function ($query) use ($request){ // if category_id
-            return $query->where('category_id',$request->category_id);
-        })->when($request->semester,function ($query) use ($request){ // if semester
-            return $query->where('semester',$request->semester);
-        })->when($request->search,function ($query) use ($request){ // if search
-            return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
-        })->where("publish","publish")->withCount('lessons')->get();
+        $courses = Course::query();
+
+        $courses->with(['user:id,name,email','level:id,name','category:id,name']);
+        $courses->where('publish', "publish");
+
+        // Filter by course name
+        if ($request->has('search')) {
+            $courses->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+        if($request->has('level_id')){
+            $courses->where('level_id', $request->input('level_id'));
+        }
+        if($request->has('user_id')){
+            $courses->where('user_id', $request->input('user_id'));
+        }
+        if($request->has('category_id')){
+            $courses->where('category_id', $request->input('category_id'));
+        }
+        if($request->has('semester')){
+            $courses->where('semester', $request->input('semester'));
+        }
+
+        $courses = $courses->withCount(['lessons','students'])->get();
 
         return $this->sendResponse("",['courses' => $courses]);
     }

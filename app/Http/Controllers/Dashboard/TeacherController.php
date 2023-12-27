@@ -19,10 +19,10 @@ class TeacherController extends BaseController
     protected $uploadService;
     public function __construct(UserService $userService,UploadService $uploadService)
     {
-        $this->middleware(['role:manager'])->only(["index","store","approve"]);
+        $this->middleware(['role:manager'])->only(["index","store","approve","destroy"]);
         $this->middleware(['permission:teachers_update'])->only('update');
-        $this->middleware(['permission:teachers_delete'])->only('destroy');
         $this->middleware(['checkApiAffiliation'])->except('index');
+        // $this->middleware(['permission:teachers_delete'])->only('destroy');
         $this->userService = $userService;
         $this->uploadService = $uploadService;
     }
@@ -58,13 +58,25 @@ class TeacherController extends BaseController
      */
     public function index(Request $request)
     {
-        $teachers = User::when($request->publish,function ($query) use ($request){ // if publish
-            return $query->where('publish',$request->publish);
-        })->when($request->search,function ($query) use ($request){ // if search
-            return $query->where('name','Like','%'.$request->search.'%')
-            ->OrWhere('email','Like','%'.$request->search.'%')
-            ->OrWhere('phone','Like','%'.$request->search.'%');
-        })->whereRoleIs('teacher')->get();
+        $teachers = User::query();
+        $teachers->whereRoleIs('teacher');
+
+        // Filter by course name
+        if ($request->has('publish')) {
+            $teachers->where('publish', $request->input('publish'));
+        }
+        // Filter by course name
+        if ($request->has('search')) {
+            $search = $request->has('search');
+            $teachers->where(function($query) use ($search) {
+                $query->where('name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('phone', 'LIKE', '%'.$search.'%')
+                    ->orWhere('email', 'LIKE', '%'.$search.'%');
+            });
+        }
+
+
+        $teachers = $teachers->get();
 
         return $this->sendResponse("",['teachers' => $teachers]);
     }

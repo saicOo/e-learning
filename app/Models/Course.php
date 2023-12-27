@@ -50,10 +50,17 @@ class Course extends Model
     {
         return $this->hasMany(Quiz::class);
     }
-    
+
 
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'subscriptions')->select('students.id', 'students.name', 'students.email')
+        ->withPivot('start_date', 'end_date')
+        ->where('end_date', '<', now());
     }
 }

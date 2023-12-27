@@ -52,12 +52,26 @@ class SubscriptionController extends BaseController
      */
     public function index(Request $request)
     {
-        $subscriptions = Subscription::with(['student:id,name,email','course:id,name'])
-        ->when($request->student_id,function ($query) use ($request){ // if student_id
-            return $query->where('student_id',$request->student_id);
-        })->when($request->course_id,function ($query) use ($request){ // if course_id
-            return $query->where('course_id',$request->course_id);
-        })->get();
+        $user = $request->user();
+        $subscriptions = Subscription::query();
+
+        // Filter by course name
+        if ($request->has('student_id')) {
+            $subscriptions->where('student_id', $request->input('student_id'));
+        }
+        // Filter by course name
+        if ($request->has('course_id')) {
+            $subscriptions->where('course_id', $request->input('course_id'));
+        }else {
+            if($user->roles[0]->name == "teacher"){
+                $subscriptions->whereIn('course_id', $user->courses->pluck("id"));
+            }
+            if($user->roles[0]->name == "assistant"){
+                $subscriptions->whereIn('course_id', $user->teacher->courses->pluck("id"));
+            }
+        }
+
+        $subscriptions = $subscriptions->get();
 
         return $this->sendResponse("",['subscriptions' => $subscriptions]);
     }

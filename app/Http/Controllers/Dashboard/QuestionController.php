@@ -65,16 +65,25 @@ class QuestionController extends BaseController
      */
     public function index(Request $request, Course $course)
     {
-        $questions = Question::where('course_id',$course->id)
-        ->when($request->lesson_id,function ($query) use ($request){ // if lesson_id
-            return $query->where('lesson_id',$request->lesson_id);
-        })->when($request->type,function ($query) use ($request){ // if type
-            return $query->where('type',$request->type);
-        })->when($request->search,function ($query) use ($request){ // if search
-            return $query->where('title','Like','%'.$request->search.'%');
-        })->get();
+        $questions = Question::query();
+        // Filter by course name
+        if ($request->has('search')) {
+            $questions->where('title', 'like', '%' . $request->input('search') . '%');
+        }
+        // Filter by course name
+        if ($request->has('lesson_id')) {
+            $questions->where('lesson_id', $request->input('lesson_id'));
+        }
+        // Filter by course name
+        if ($request->has('type')) {
+            $questions->where('type', $request->input('type'));
+        }
+        $questions->where('course_id', $course->id);
+
+        $questions = $questions->get();
 
         return $this->sendResponse("",['questions' => $questions]);
+
     }
     /**
      * @OA\Post(
@@ -120,14 +129,24 @@ class QuestionController extends BaseController
         ];
 
         if ($request->type != 3) {
+
+            if($request->type == 1){
+                $rules += [
+                            'options' => 'required|array|min:2|max:2',
+                            'correct_option' => 'required|in:0,1',
+                ];
+            }
+
+            if($request->type == 2){
+                $rules += [
+                    'options' => 'required|array|min:4|max:4',
+                    'correct_option' => 'required|in:0,1,2,3'
+                ];
+            }
+
             $rules += [
-                'options' => 'required|array|min:1',
                 'options.*' => 'required|string|max:1000',
             ];
-
-            if($request->type == 1){$rules += ['correct_option' => 'required|in:0,1'];}
-
-            if($request->type == 2){$rules += ['correct_option' => 'required|in:0,1,2,3'];}
         }
 
         //Validated

@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Validator;
 
 class QuizController extends BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['checkSubscription'])->only('show');
+    }
     /**
      * @OA\Get(
      *     path="/api/quizzes/{quiz_id}",

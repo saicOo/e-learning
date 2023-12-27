@@ -9,6 +9,7 @@ use App\Http\Controllers\BaseController as BaseController;
 
 class ContactController extends BaseController
 {
+
     public function __construct()
     {
         $this->middleware(['permission:contacts_read'])->only('index');

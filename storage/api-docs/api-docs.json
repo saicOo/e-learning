@@ -1098,7 +1098,7 @@
                 "parameters": [
                     {
                         "name": "course_id",
-                        "in": "query",
+                        "in": "path",
                         "description": "filter lessons with course",
                         "required": false,
                         "explode": true,
@@ -1229,18 +1229,6 @@
                                     "description": {
                                         "type": "string",
                                         "example": "string"
-                                    },
-                                    "video": {
-                                        "type": "file",
-                                        "example": "path file"
-                                    },
-                                    "attached": {
-                                        "type": "file",
-                                        "example": "path file"
-                                    },
-                                    "course_id": {
-                                        "type": "integer",
-                                        "example": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -2706,19 +2694,19 @@
                 }
             }
         },
-        "/api/courses/{course}/lessons": {
+        "/api/courses/{course_id}/lessons": {
             "get": {
                 "tags": [
                     "Front Api Lessons"
                 ],
                 "summary": "get all lessons",
-                "operationId": "2c4e6971ea10678972bd235206d31c64",
+                "operationId": "9e8c31359f1488b233ee39247866f092",
                 "parameters": [
                     {
                         "name": "course_id",
                         "in": "path",
                         "description": "filter lessons with course",
-                        "required": false,
+                        "required": true,
                         "explode": true,
                         "schema": {
                             "type": "integer"

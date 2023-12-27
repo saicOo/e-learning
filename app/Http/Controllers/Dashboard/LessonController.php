@@ -28,7 +28,7 @@ class LessonController extends BaseController
      *     summary="get all lessons",
      *   @OA\Parameter(
      *         name="course_id",
-     *         in="query",
+     *         in="path",
      *         description="filter lessons with course",
      *         required=false,
      *         explode=true,
@@ -62,12 +62,18 @@ class LessonController extends BaseController
      */
     public function index(Request $request, Course $course)
     {
-        $lessons = Lesson::where('course_id',$course->id)
-        ->when($request->publish,function ($query) use ($request){ // if publish
-            return $query->where('publish',$request->publish);
-        })->when($request->search,function ($query) use ($request){ // if search
-            return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
-        })->get();
+        $lessons = Lesson::query();
+        // Filter by course name
+        if ($request->has('search')) {
+            $lessons->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+        // Filter by course name
+        if ($request->has('publish')) {
+            $lessons->where('publish', $request->input('publish'));
+        }
+        $lessons->where('course_id', $course->id);
+
+        $lessons = $lessons->get();
 
         return $this->sendResponse("",['lessons' => $lessons]);
     }

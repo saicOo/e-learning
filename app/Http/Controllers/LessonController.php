@@ -9,6 +9,11 @@ use App\Http\Controllers\BaseController as BaseController;
 
 class LessonController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware(['checkSubscription'])->only('show');
+    }
     /**
      * @OA\Get(
      *     path="/api/courses/{course_id}/lessons",
@@ -18,7 +23,7 @@ class LessonController extends BaseController
      *         name="course_id",
      *         in="path",
      *         description="filter lessons with course",
-     *         required=false,
+     *         required=true,
      *         explode=true,
      *         @OA\Schema(
      *             type="integer",
@@ -40,10 +45,23 @@ class LessonController extends BaseController
      */
     public function index(Request $request, Course $course)
     {
-        $lessons = Lesson::select("id","name","description")->with("quizzes:id,title,publish,questions_count,lesson_id")->when($request->search,function ($query) use ($request){ // if search
-            return $query->where('name','Like','%'.$request->search.'%')->OrWhere('description','Like','%'.$request->search.'%');
-        })->where('course_id',$course->id)->where("publish","publish")->get();
+
+        $lessons = Lesson::query();
+        $lessons->select(["id","name","description"]);
+        $lessons->with("quizzes:id,title,publish,questions_count,lesson_id");
+
+        $lessons->where('course_id', $course->id);
+        // Filter by course name
+        if ($request->has('search')) {
+            $lessons->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+
+        $lessons->where('publish', "publish");
+
+        $lessons = $lessons->get();
+
         return $this->sendResponse("",['lessons' => $lessons]);
+
     }
 
     /**

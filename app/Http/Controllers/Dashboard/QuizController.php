@@ -59,14 +59,23 @@ class QuizController extends BaseController
      */
     public function index(Request $request, Course $course)
     {
-        $quizzes = Quiz::with('questions')->where('course_id',$course->id)
-        ->when($request->lesson_id,function ($query) use ($request){ // if lesson_id
-            return $query->where('lesson_id',$request->lesson_id);
-        })->when($request->type,function ($query) use ($request){ // if type
-            return $query->where('type',$request->type);
-        })->when($request->search,function ($query) use ($request){ // if search
-            return $query->where('title','Like','%'.$request->search.'%');
-        })->get();
+        $quizzes = Quiz::query();
+        $quizzes->with('questions');
+        // Filter by course name
+        if ($request->has('search')) {
+            $quizzes->where('title', 'like', '%' . $request->input('search') . '%');
+        }
+        // Filter by course name
+        if ($request->has('lesson_id')) {
+            $quizzes->where('lesson_id', $request->input('lesson_id'));
+        }
+        // Filter by course name
+        if ($request->has('type')) {
+            $quizzes->where('type', $request->input('type'));
+        }
+        $quizzes->where('course_id', $course->id);
+
+        $quizzes = $quizzes->get();
 
         return $this->sendResponse("",['quizzes' => $quizzes]);
     }

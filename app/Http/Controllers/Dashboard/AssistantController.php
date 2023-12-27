@@ -6,17 +6,19 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Http\Response;
+use App\Services\UploadService;
+use App\Traits\PermissionsUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use App\Traits\PermissionsUser;
 
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController as BaseController;
 
 class AssistantController extends BaseController
 {
     protected $userService;
-    public function __construct(UserService $userService)
+    protected $uploadService;
+    public function __construct(UserService $userService,UploadService $uploadService)
     {
         $this->middleware(['permission:assistants_update'])->only('update');
         $this->middleware(['permission:assistants_delete'])->only('destroy');
@@ -24,6 +26,7 @@ class AssistantController extends BaseController
         $this->middleware(['permission:assistants_approve'])->only('approve');
         $this->middleware(['checkApiAffiliation']);
         $this->userService = $userService;
+        $this->uploadService = $uploadService;
     }
     use PermissionsUser;
 
@@ -67,13 +70,26 @@ class AssistantController extends BaseController
      */
     public function index(Request $request, $teacher_id)
     {
-        $assistants = User::when($request->publish,function ($query) use ($request){ // if publish
-            return $query->where('publish',$request->publish);
-        })->when($request->search,function ($query) use ($request){ // if search
-            return $query->where('name','Like','%'.$request->search.'%')
-            ->OrWhere('email','Like','%'.$request->search.'%')
-            ->OrWhere('phone','Like','%'.$request->search.'%');
-        })->where("user_id",$teacher_id)->whereRoleIs('assistant')->get();
+        $assistants = User::query();
+        $assistants->whereRoleIs('assistant');
+        $assistants->where('user_id', $teacher_id);
+
+        // Filter by course name
+        if ($request->has('publish')) {
+            $assistants->where('publish', $request->input('publish'));
+        }
+        // Filter by course name
+        if ($request->has('search')) {
+            $search = $request->has('search');
+            $assistants->where(function($query) use ($search) {
+                $query->where('name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('phone', 'LIKE', '%'.$search.'%')
+                    ->orWhere('email', 'LIKE', '%'.$search.'%');
+            });
+        }
+
+
+        $assistants = $assistants->get();
 
         return $this->sendResponse("",['assistants' => $assistants]);
     }

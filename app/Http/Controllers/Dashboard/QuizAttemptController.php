@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 
 class QuizAttemptController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['checkApiAffiliation'])->only("index");
+    }
     /**
      * @OA\Get(
      *     path="/api/dashboard/quizzes/{quiz_id}/quiz-attempts",
@@ -93,7 +97,7 @@ class QuizAttemptController extends Controller
     {
 
         return $this->sendResponse("test this api");
-        $quizAttempt->students()->sync();
+        $quizAttempt->student()->update();
 
         return $this->sendResponse("",['attempt' => $attempt]);
     }

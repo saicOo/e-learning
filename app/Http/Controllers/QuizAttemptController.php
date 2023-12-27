@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class QuizAttemptController extends BaseController
 {
-
+    public function __construct()
+    {
+        $this->middleware(['checkSubscription'])->only('submitQuiz');
+    }
     /**
      * @OA\Get(
      *     path="/api/quiz-attempts",
