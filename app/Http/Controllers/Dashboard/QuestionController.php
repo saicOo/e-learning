@@ -147,6 +147,10 @@ class QuestionController extends BaseController
             $rules += [
                 'options.*' => 'required|string|max:1000',
             ];
+        }else {
+            $rules += [
+                'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg',
+            ];
         }
 
         //Validated

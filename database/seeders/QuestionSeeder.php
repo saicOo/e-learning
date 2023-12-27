@@ -30,7 +30,7 @@ class QuestionSeeder extends Seeder
             }
 
             $course = Course::inRandomOrder()->first();
-            $lesson_id = $course->lessons[0]->id ? $course->lessons[0]->id : null;
+            $lesson_id = $course->lessons[0] ? $course->lessons[0]->id : null;
             $question = $course->questions()->create([
                 "title" => $faker->sentence(rand(2,8)),
                 "grade" => rand(1,10),

@@ -33,7 +33,6 @@ class AuthController extends BaseController
      */
     public function login(Request $request){
 
-           try {
             $validate = Validator::make($request->all(),
             [
                 'email' => 'required|email',
@@ -61,12 +60,11 @@ class AuthController extends BaseController
             $token = $student->createToken('token_student',['student'])->plainTextToken;
 
             $expiry_minutes = 60 * 24;
-            // $cookie = cookie('token', $token, 60 * 24); // 1 day
-            $cookie = cookie('token', $token, $expiry_minutes); // 1 minute
-            // $cookie = cookie('token_student', $token, $expiry_minutes)->withSameSite('None'); // 1 minute
+            // $cookie = cookie('token_student', $token, $expiry_minutes); // 1 minute
+            $cookie = cookie('token_student', $token, $expiry_minutes)->withSameSite('None'); // 1 minute
             $expiry_date = Carbon::now();
             $expiry_date = $expiry_date->addMinutes($expiry_minutes);
- return response()->json([
+        return response()->json([
                 'success' => true,
                 'message' => 'Student Logged In Successfully',
                 'data' => [
@@ -74,13 +72,6 @@ class AuthController extends BaseController
                     'expiry_token' => $expiry_date,
                 ]
                 ],200)->withCookie($cookie);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
     }
 
     /**

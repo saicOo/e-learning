@@ -150,7 +150,7 @@ class StudentController extends BaseController
         foreach ($student->attempts as $attempt) {
             $attempt->quiz;
         }
-        // $student->attempts->quiz;
+        $student->courses;
         return $this->sendResponse("",['student' => $student]);
     }
 

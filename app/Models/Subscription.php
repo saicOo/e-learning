@@ -14,7 +14,7 @@ class Subscription extends Model
     protected $appends = ['status'];
 
     public function getStatusAttribute(){
-        return $this->end_date >= now() ? 'active' : 'expired';
+        return $this->end_date > now() ? 'active' : 'expired';
     }
 
     public function course()

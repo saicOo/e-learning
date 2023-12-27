@@ -19,7 +19,7 @@ class QuizSeeder extends Seeder
         $faker = Factory::create();
         for ($i=0; $i < 30; $i++) {
             $course = Course::inRandomOrder()->first();
-            $lesson_id = $course->lessons[0]->id ? $course->lessons[0]->id : null;
+            $lesson_id = $course->lessons[0] ? $course->lessons[0]->id : null;
             $questions_count =  $course->lessons[0]->questions()->count();
             $questions =  $course->lessons[0]->questions()->pluck('id');
 
@@ -29,6 +29,7 @@ class QuizSeeder extends Seeder
                 "type" => $lesson_id != null ? $types[1] : $types[0],
                 "questions_count" => $questions_count,
                 "lesson_id" =>$lesson_id,
+                'publish'=>"publish"
             ]);
 
             foreach ($questions as $question_id) {

@@ -61,6 +61,6 @@ class Course extends Model
     {
         return $this->belongsToMany(Student::class, 'subscriptions')->select('students.id', 'students.name', 'students.email')
         ->withPivot('start_date', 'end_date')
-        ->where('end_date', '<', now());
+        ->where('end_date', '>', now());
     }
 }

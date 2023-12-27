@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Quiz;
+use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class QuizAttemptController extends Controller
 {
@@ -32,7 +35,12 @@ class QuizAttemptController extends Controller
      */
     public function index(Quiz $quiz)
     {
-        $attempts = $quiz->attempts;
+        // $attempts = $quiz->attempts;
+        $attempts->student;
+        $attempts = QuizAttempt::query();
+        $attempts->with('student:id,name,email');
+        $attempts->where('quiz_id', $quiz->id);
+        $attempts = $attempts->get();
         return $this->sendResponse("",['attempts' => $attempts]);
     }
 
@@ -57,8 +65,9 @@ class QuizAttemptController extends Controller
      */
     public function show(QuizAttempt $quizAttempt)
     {
-        $attempt = $quizAttempt;
-        foreach ($attempt->answers as $answer) {
+        $quizAttempt->quiz;
+        $quizAttempt->student;
+        foreach ($quizAttempt->answers as $answer) {
             $answer->question;
         }
 
@@ -97,8 +106,52 @@ class QuizAttemptController extends Controller
     {
 
         return $this->sendResponse("test this api");
-        $quizAttempt->student()->update();
 
-        return $this->sendResponse("",['attempt' => $attempt]);
-    }
+        //Validated
+        $validate = Validator::make($request->all(),
+        [
+            'grades' => 'required|array|min:1',
+            'grades.*' => 'required|integer',
+        ]);
+
+        if($validate->fails()){
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        $grades = $request->input('grades');
+        $responses = [];
+        $maxGrade = 0;
+        foreach ($grades as $questionId => $grade) {
+
+            $responses[$questionId] = [
+                'grade' => $grade,
+            ];
+
+            $quizAttempt->answers()->update([
+                'grade' => $grade,
+            ]);
+
+            $maxGrade += $grade;
+        }
+        // Calculate overall score based on grades
+        $score = $this->calculateScore($responses, $maxGrade);
+
+        $quizAttempt->update(['score'=>$score]);
+
+        return $this->sendResponse("Quiz Grades Update Successfully");
+        }
+
+        private function calculateScore($responses ,$maxGrade = 10)
+        {
+        $totalQuestions = count($responses);
+        $totalScore = 0;
+        foreach ($responses as $response) {
+            // Add each grade to the total score
+            $totalScore += $response['grade'];
+        }
+
+        // Calculate the overall score as a percentage
+        $overallScore = $totalQuestions > 0 ? (($totalScore / $maxGrade) * 100) : 0;
+
+        return $overallScore;
+        }
 }

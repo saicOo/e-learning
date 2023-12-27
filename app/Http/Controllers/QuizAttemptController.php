@@ -7,14 +7,19 @@ use App\Models\Question;
 use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Controllers\BaseController as BaseController;
+use App\Services\UploadService;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BaseController as BaseController;
 
 class QuizAttemptController extends BaseController
 {
-    public function __construct()
+
+    protected $uploadService;
+
+    public function __construct(UploadService $uploadService)
     {
-        $this->middleware(['checkSubscription'])->only('submitQuiz');
+        // $this->middleware(['checkSubscription'])->only('submitQuiz');
+        $this->uploadService = $uploadService;
     }
     /**
      * @OA\Get(
@@ -114,7 +119,8 @@ class QuizAttemptController extends BaseController
         foreach ($answers as $questionId => $studentAnswerIndex) {
             // Replace this logic with your grading criteria
             $dataQuestion = $this->getCorrectAnswerForQuestion($questionId); // Replace with your actual logic
-            $grade = ($studentAnswerIndex == $dataQuestion->correct_option) ? $dataQuestion->grade : 0;
+            $grade = ($studentAnswerIndex == $dataQuestion->correct_option 
+            && $dataQuestion->type != 3) ? $dataQuestion->grade : 0;
             $responses[$questionId] = [
                 'grade' => $grade,
                 // 'answer' => $studentAnswerIndex, // string
@@ -123,6 +129,8 @@ class QuizAttemptController extends BaseController
             $answer = $studentAnswerIndex;
             if($dataQuestion->type != 3){
                 $answer = $dataQuestion->options[$studentAnswerIndex];
+            }else{
+                $answer = $this->uploadService->uploadImage('answers', $studentAnswerIndex);
             }
 
             $attempt->answers()->create([
@@ -137,7 +145,6 @@ class QuizAttemptController extends BaseController
 
         $attempt->update(['score'=>$score]);
 
-        $quiz->attempts;
         return $this->sendResponse("Quiz Created Successfully");
     }
 
