@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\StudentLessonProgress;
 
 class CheckQuizProgress
 {
@@ -16,9 +17,10 @@ class CheckQuizProgress
      */
     public function handle(Request $request, Closure $next)
     {
-
-        $studentId = auth()->user()->id;
-        $lessonId = $quiz->lesson_id;
+        // التاكد اذا كان دخول الطالب مسجل من قبل
+        // التاكد اذا كان الطالب لم ينهي الاختبار
+        $studentId = auth()->user()->id;   
+        $lessonId =  $request->route('quiz')->lesson_id;
         $lessonProgress = StudentLessonProgress::where('student_id', $studentId)
         ->where('lesson_id', $lessonId)
         ->first();

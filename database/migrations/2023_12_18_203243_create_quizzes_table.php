@@ -23,8 +23,8 @@ class CreateQuizzesTable extends Migration
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->unsignedBigInteger('lesson_id')->nullable();
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
-            $table->unsignedBigInteger('quiz_id')->nullable();
-            $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
+            // $table->unsignedBigInteger('quiz_id')->nullable();
+            // $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
             $table->timestamps();
         });
     }

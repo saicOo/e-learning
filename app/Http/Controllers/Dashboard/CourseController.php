@@ -178,7 +178,6 @@ class CourseController extends BaseController
              'name' => 'required|string|max:255',
             'price' => 'required|integer|max:999999',
              'description' => 'required|string|max:255',
-             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
              'semester' => 'required|in:first semester,second semester,full semester',
              'level_id'=> 'required|exists:levels,id',
             'category_id'=> 'required|exists:categories,id',
@@ -195,9 +194,6 @@ class CourseController extends BaseController
                 return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
          }
          $request_data = $validate->validated();
-         if($request->image){
-        $request_data['image'] = $this->uploadService->uploadImage('courses', $request->image);
-        }
          $request_data['user_id'] = $teacher_id;
          $course = Course::create($request_data);
          return $this->sendResponse("Course Created Successfully");
@@ -271,7 +267,6 @@ class CourseController extends BaseController
             'name' => 'nullable|string|max:255',
             'price' => 'nullable|integer|max:999999',
             'description' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
             'semester' => 'nullable|in:first semester,second semester,full semester',
             'level_id'=> 'nullable|exists:levels,id',
             'category_id'=> 'nullable|exists:categories,id',
@@ -282,9 +277,6 @@ class CourseController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         $request_data = $validate->validated();
-        if($request->image){
-        $request_data['image'] = $this->uploadService->uploadImage('courses', $request->image, $course->image);
-        }
         $request_data['publish'] = "unpublish";
         $course->update($request_data);
         return $this->sendResponse("Course Updated Successfully",['course' => $course]);
@@ -311,7 +303,7 @@ class CourseController extends BaseController
      */
     public function destroy(Course $course)
     {
-        if($course->image != 'courses/default.webp' ||  $course->image){
+        if($course->image){
             Storage::disk('public')->delete($course->image);
         }
         $course->delete();
@@ -359,5 +351,52 @@ class CourseController extends BaseController
             'publish'=> $request->publish,
         ]);
         return $this->sendResponse("Course ".$request->publish." successfully");
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/dashboard/courses/{course_id}/upload-image",
+     *      tags={"Dashboard Api Courses"},
+     *     summary="Upload Image Course",
+     *     @OA\Parameter(
+     *         name="course_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="image", type="string", example="path iamge"),
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     *    )
+     */
+    public function uploadImage(Request $request, Course $course)
+    {
+        //Validated
+        $validate = Validator::make($request->all(),
+        [
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg',
+        ]);
+
+        if($validate->fails()){
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        $request_data = $validate->validate();
+
+        $image = $this->uploadService->uploadImage('courses', $request->image, $course->image);
+
+        $course->update([
+            "image"=> $image,
+        ]);
+
+        return $this->sendResponse("The Image has been uploaded successfully");
     }
 }

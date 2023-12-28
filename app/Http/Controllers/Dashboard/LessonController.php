@@ -206,10 +206,10 @@ class LessonController extends BaseController
      */
     public function destroy(Lesson $lesson)
     {
-        if($lesson->video != 'video/zSsEJPGdHgCgYqQNqV27S2mouiQAbFpl8r01QSbW.mp4'){
+        if($lesson->type == 'file' && $lesson->video != null){
             Storage::disk('public')->delete($lesson->video);
         }
-        if($lesson->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf'){
+        if($lesson->attached != null){
             Storage::disk('public')->delete($lesson->attached);
         }
         $lesson->delete();
@@ -252,7 +252,7 @@ class LessonController extends BaseController
         }else{
             $validate = Validator::make($request->all(),
             [
-                'video' => 'required|url|max:1000',
+                'video' => 'required',
                 'video_type' => 'required|in:url',
             ]);
         }
@@ -261,7 +261,7 @@ class LessonController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        if($lesson->video != 'video/zSsEJPGdHgCgYqQNqV27S2mouiQAbFpl8r01QSbW.mp4' || $lesson->video != null){
+        if($lesson->type == 'file' && $lesson->video != null){
             Storage::disk('public')->delete($lesson->video);
         }
         $path_video = $request->file('video')->store('video',['disk' => 'public']);

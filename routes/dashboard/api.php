@@ -50,6 +50,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
         Route::get('/courses', 'index');
         Route::post('/teachers/{teacher}/courses', 'store');
         Route::get('/courses/{course}', 'show');
+        Route::post('/courses/{course}/upload-image', 'uploadImage');
         Route::put('/courses/{course}', 'update');
         Route::delete('courses/{course}', 'destroy');
         Route::put('/courses/{course}/approve', 'approve');
@@ -87,9 +88,9 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     // routes contacts
 Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
     // routes category
-    Route::apiResource('categories', 'CategoryController')->only(['index','store','update','delete']);
+    Route::apiResource('categories', 'CategoryController')->only(['index','store','update','destroy']);
     // routes subscriptions
-    Route::apiResource('subscriptions', 'SubscriptionController')->only(['index','store','delete']);
+    Route::apiResource('subscriptions', 'SubscriptionController')->only(['index','store','destroy']);
     // routes levels
     Route::get('/levels','LevelController@index');
 
