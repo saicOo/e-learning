@@ -19,7 +19,8 @@ class CreateStudentAnswersTable extends Migration
             $table->unsignedBigInteger('quiz_attempt_id');
             $table->text('answer')->nullable();
             $table->text('image')->nullable();
-            $table->integer('grade');
+            $table->integer('grade')->default(0);
+            $table->boolean('done')->default(false);
             $table->timestamps();
             $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
             $table->foreign('quiz_attempt_id')->references('id')->on('quiz_attempts')->onDelete('cascade');

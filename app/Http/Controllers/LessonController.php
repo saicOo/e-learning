@@ -12,7 +12,7 @@ class LessonController extends BaseController
 
     public function __construct()
     {
-        $this->middleware(['checkSubscription'])->only('show');
+        $this->middleware(['checkSubscription','checkLessonProgress'])->only('show');
     }
     /**
      * @OA\Get(

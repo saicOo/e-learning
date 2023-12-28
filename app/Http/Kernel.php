@@ -68,5 +68,7 @@ class Kernel extends HttpKernel
         'checkApiAffiliation' => \App\Http\Middleware\CheckApiAffiliationMiddleware::class,
         'removalOfManager' => \App\Http\Middleware\RemovalOfManager::class,
         'checkSubscription' => \App\Http\Middleware\CheckSubscription::class,
+        'checkLessonProgress' => \App\Http\Middleware\CheckLessonProgress::class,
+        'checkQuizProgress' => \App\Http\Middleware\CheckQuizProgress::class,
     ];
 }

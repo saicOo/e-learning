@@ -8,6 +8,7 @@ use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\UploadService;
+use App\Models\StudentLessonProgress;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController as BaseController;
 
@@ -18,7 +19,7 @@ class QuizAttemptController extends BaseController
 
     public function __construct(UploadService $uploadService)
     {
-        // $this->middleware(['checkSubscription'])->only('submitQuiz');
+        $this->middleware(['checkSubscription','checkQuizProgress'])->only('submitQuiz');
         $this->uploadService = $uploadService;
     }
     /**
@@ -58,9 +59,10 @@ class QuizAttemptController extends BaseController
     public function show(QuizAttempt $quizAttempt)
     {
         $attempt = $quizAttempt;
-        foreach ($attempt->answers as $answer) {
-            $answer->question;
-        }
+        $attempt->questions;
+        // foreach ($attempt->answers as $answer) {
+        //     $answer->question;
+        // }
 
         return $this->sendResponse("",['attempt' => $attempt]);
     }
@@ -99,53 +101,46 @@ class QuizAttemptController extends BaseController
         $validate = Validator::make($request->all(),
         [
             'answers' => 'required|array|min:1',
-            'answers.*' => 'required|integer',
         ]);
 
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        // Save quiz data to the database
-        $attempt = $quiz->attempts()->create([
-            'student_id' => auth()->user()->id,
-        ]);
+        $studentId = auth()->user()->id;
         $answers = $request->input('answers');
-
-        // Example: Assign grades based on correct answers
-        $responses = [];
+        $totalScore = 0;
         $maxGrade = 0;
-        $grade = 0;
-        $answer = "";
-        $image = null;
-        foreach ($answers as $questionId => $studentAnswerIndex) {
 
-            // Replace this logic with your grading criteria
-            $dataQuestion = $this->getCorrectAnswerForQuestion($questionId); // Replace with your actual logic
-            $grade = ($studentAnswerIndex == $dataQuestion->correct_option
-            && $dataQuestion->type != 3) ? $dataQuestion->grade : 0;
-            $responses[$questionId] = [
-                'grade' => $grade,
-                // 'answer' => $studentAnswerIndex, // string
-            ];
+        $attempt = $quiz->attempts()->create([
+            'student_id' => $studentId,
+        ]);
 
-            $answer = $studentAnswerIndex;
-            if($dataQuestion->type != 3){
-                $answer = $dataQuestion->options[$studentAnswerIndex];
+
+        foreach ($quiz->questions as $index => $question) {
+            $image = null;
+            $answer = "";
+            $grade = 0;
+            $questionId = $question->id;
+
+            if($question->type == 3){
+                $image = $this->uploadService->uploadImage('answers', $answers[$questionId]);
             }else{
-                $image = $this->uploadService->uploadImage('answers', $studentAnswerIndex);
-                $answer = "";
+                if(isset($answers[$questionId]) && $answers[$questionId] == $question->correct_option){
+                        $grade = $question->grade;
+                        $answer = $question->options[$answers[$questionId]];
+                        $totalScore += $grade;
+                    }
             }
 
-            $attempt->answers()->create([
-                'question_id' => $questionId,
+            $attempt->questions()->attach($questionId,[
                 'answer' =>  $answer,
                 'image' =>  $image,
                 'grade' => $grade,
             ]);
-            $maxGrade += $dataQuestion->grade;
+            $maxGrade += $question->grade;
         }
         // Calculate overall score based on grades
-        $score = $this->calculateScore($responses, $maxGrade);
+        $score = $this->calculateScore($totalScore, $maxGrade);
 
         $attempt->update([
             'score'=>$score,
@@ -155,22 +150,10 @@ class QuizAttemptController extends BaseController
     }
 
     // Add helper methods as needed
-    private function getCorrectAnswerForQuestion($questionId)
+    private function calculateScore($totalScore ,$maxGrade = 10)
     {
-        return Question::findOrFail($questionId);
-    }
-
-    private function calculateScore($responses ,$maxGrade = 10)
-    {
-        $totalQuestions = count($responses);
-        $totalScore = 0;
-        foreach ($responses as $response) {
-            // Add each grade to the total score
-            $totalScore += $response['grade'];
-        }
-
         // Calculate the overall score as a percentage
-        $overallScore = $totalQuestions > 0 ? (($totalScore / $maxGrade) * 100) : 0;
+        $overallScore = $totalScore != 0 ? ($totalScore / $maxGrade) * 100 : 0;
 
         return $overallScore;
     }
