@@ -116,10 +116,12 @@ class QuizAttemptController extends BaseController
         $maxGrade = 0;
         $grade = 0;
         $answer = "";
+        $image = null;
         foreach ($answers as $questionId => $studentAnswerIndex) {
+
             // Replace this logic with your grading criteria
             $dataQuestion = $this->getCorrectAnswerForQuestion($questionId); // Replace with your actual logic
-            $grade = ($studentAnswerIndex == $dataQuestion->correct_option 
+            $grade = ($studentAnswerIndex == $dataQuestion->correct_option
             && $dataQuestion->type != 3) ? $dataQuestion->grade : 0;
             $responses[$questionId] = [
                 'grade' => $grade,
@@ -130,12 +132,14 @@ class QuizAttemptController extends BaseController
             if($dataQuestion->type != 3){
                 $answer = $dataQuestion->options[$studentAnswerIndex];
             }else{
-                $answer = $this->uploadService->uploadImage('answers', $studentAnswerIndex);
+                $image = $this->uploadService->uploadImage('answers', $studentAnswerIndex);
+                $answer = "";
             }
 
             $attempt->answers()->create([
                 'question_id' => $questionId,
                 'answer' =>  $answer,
+                'image' =>  $image,
                 'grade' => $grade,
             ]);
             $maxGrade += $dataQuestion->grade;
@@ -143,7 +147,9 @@ class QuizAttemptController extends BaseController
         // Calculate overall score based on grades
         $score = $this->calculateScore($responses, $maxGrade);
 
-        $attempt->update(['score'=>$score]);
+        $attempt->update([
+            'score'=>$score,
+        ]);
 
         return $this->sendResponse("Quiz Created Successfully");
     }

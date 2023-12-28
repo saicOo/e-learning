@@ -9,13 +9,6 @@ trait PermissionsUser
         switch ($role) {
             case 'teacher':
                 return [
-                    // 'assistants_update',
-                    // 'assistants_delete',
-                    // 'assistants_create',
-                    // 'assistants_approve',
-                    // 'students_create',
-                    // 'students_update',
-                    // 'courses_create',
                     'teachers_update',
                     'courses_update',
                     'lessons_create',

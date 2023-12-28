@@ -6,13 +6,13 @@ use App\Models\Course;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Services\UploadService;
 use App\Http\Controllers\BaseController as BaseController;
-use Illuminate\Support\Facades\Validator;
 
 class CourseController extends BaseController
 {

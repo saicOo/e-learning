@@ -1660,25 +1660,16 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "name": {
+                                    "note": {
                                         "type": "string",
                                         "example": "string"
                                     },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
-                                    "video": {
-                                        "type": "file",
-                                        "example": "path file"
-                                    },
-                                    "attached": {
-                                        "type": "file",
-                                        "example": "path file"
-                                    },
-                                    "course_id": {
-                                        "type": "integer",
-                                        "example": "integer"
+                                    "answers": {
+                                        "type": "object",
+                                        "example": {
+                                            "10": 0,
+                                            "25": 1
+                                        }
                                     }
                                 },
                                 "type": "object"

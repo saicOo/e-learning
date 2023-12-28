@@ -7,9 +7,10 @@ use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;
 
-class QuizAttemptController extends Controller
+class QuizAttemptController extends BaseController
 {
     public function __construct()
     {
@@ -35,8 +36,6 @@ class QuizAttemptController extends Controller
      */
     public function index(Quiz $quiz)
     {
-        // $attempts = $quiz->attempts;
-        $attempts->student;
         $attempts = QuizAttempt::query();
         $attempts->with('student:id,name,email');
         $attempts->where('quiz_id', $quiz->id);
@@ -90,11 +89,9 @@ class QuizAttemptController extends Controller
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="name", type="string", example="string"),
-     *             @OA\Property(property="description", type="string", example="string"),
-     *             @OA\Property(property="video", type="file", example="path file"),
-     *             @OA\Property(property="attached", type="file", example="path file"),
-     *             @OA\Property(property="course_id", type="integer", example="integer"),
+     *             @OA\Property(property="note", type="string", example="string"),
+     *             @OA\Property(property="answers", type="object",example={"10":0,"25":1}
+     *            ),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -104,12 +101,10 @@ class QuizAttemptController extends Controller
      */
     public function update(Request $request, QuizAttempt $quizAttempt)
     {
-
-        return $this->sendResponse("test this api");
-
         //Validated
         $validate = Validator::make($request->all(),
         [
+            'note' => 'required|string|max:255',
             'grades' => 'required|array|min:1',
             'grades.*' => 'required|integer',
         ]);
@@ -135,7 +130,10 @@ class QuizAttemptController extends Controller
         // Calculate overall score based on grades
         $score = $this->calculateScore($responses, $maxGrade);
 
-        $quizAttempt->update(['score'=>$score]);
+        $quizAttempt->update([
+            'score'=>$score,
+            'status'=> $score >= 50 ? "successful" : "failed",
+        ]);
 
         return $this->sendResponse("Quiz Grades Update Successfully");
         }

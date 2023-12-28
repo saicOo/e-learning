@@ -18,6 +18,7 @@ class CreateQuizAttemptsTable extends Migration
             $table->foreignId('student_id')->constrained();
             $table->foreignId('quiz_id')->constrained();
             $table->float('score',8,2)->nullable();
+            $table->string('note')->nullable();
             $table->enum('status',['failed','successful'])->default('failed');
             $table->timestamps();
         });
