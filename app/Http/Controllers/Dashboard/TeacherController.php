@@ -67,7 +67,7 @@ class TeacherController extends BaseController
         }
         // Filter by course name
         if ($request->has('search')) {
-            $search = $request->has('search');
+            $search = $request->input('search');
             $teachers->where(function($query) use ($search) {
                 return $query->where('name', 'LIKE', '%'.$search.'%')
                     ->orWhere('phone', 'LIKE', '%'.$search.'%')

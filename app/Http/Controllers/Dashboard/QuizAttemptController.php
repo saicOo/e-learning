@@ -64,11 +64,9 @@ class QuizAttemptController extends BaseController
      */
     public function show(QuizAttempt $quizAttempt)
     {
-        $quizAttempt->quiz;
-        $quizAttempt->student;
-        foreach ($quizAttempt->answers as $answer) {
-            $answer->question;
-        }
+        $attempt = $quizAttempt;
+        $attempt->student;
+        $attempt->questions;
 
         return $this->sendResponse("",['attempt' => $attempt]);
     }
@@ -90,7 +88,7 @@ class QuizAttemptController extends BaseController
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="note", type="string", example="string"),
-     *             @OA\Property(property="answers", type="object",example={"10":0,"25":1}
+     *             @OA\Property(property="grades", type="object",example={"10":0,"25":1}
      *            ),
      *         ),
      *     ),
@@ -112,44 +110,42 @@ class QuizAttemptController extends BaseController
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+        $answers = $quizAttempt->answers;
         $grades = $request->input('grades');
-        $responses = [];
+        $totalScore = 0;
         $maxGrade = 0;
-        foreach ($grades as $questionId => $grade) {
+        foreach ($answers as $index => $answer) {
+            $questionId = $answer->question_id;
+            $question = $answer->question;
+            $grade = $answer->grade;
 
-            $responses[$questionId] = [
-                'grade' => $grade,
-            ];
+            if (isset($grades[$questionId]) && $question->type == 3) {
+                $grade = $grades[$questionId];
+            }
+            $totalScore += $grade;
 
-            $quizAttempt->answers()->update([
+            $answer->update([
                 'grade' => $grade,
             ]);
 
-            $maxGrade += $grade;
+            $maxGrade += $question->grade;
         }
         // Calculate overall score based on grades
-        $score = $this->calculateScore($responses, $maxGrade);
+        $score = $this->calculateScore($totalScore, $maxGrade);
 
         $quizAttempt->update([
             'score'=>$score,
             'status'=> $score >= 50 ? "successful" : "failed",
         ]);
 
-        return $this->sendResponse("Quiz Grades Update Successfully");
+        return $this->sendResponse("Quiz Grades Update Successfully", ['attempt' => $quizAttempt]);
         }
 
-        private function calculateScore($responses ,$maxGrade = 10)
+        private function calculateScore($totalScore ,$maxGrade = 10)
         {
-        $totalQuestions = count($responses);
-        $totalScore = 0;
-        foreach ($responses as $response) {
-            // Add each grade to the total score
-            $totalScore += $response['grade'];
-        }
+            // Calculate the overall score as a percentage
+            $overallScore = $totalScore != 0 ? ($totalScore / $maxGrade) * 100 : 0;
 
-        // Calculate the overall score as a percentage
-        $overallScore = $totalQuestions > 0 ? (($totalScore / $maxGrade) * 100) : 0;
-
-        return $overallScore;
+            return $overallScore;
         }
 }

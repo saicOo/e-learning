@@ -114,9 +114,8 @@ class CategoryController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $category->update([
-            'name'=>$request->name,
-        ]);
+        $category->update($validate->validated());
+        
         return $this->sendResponse("Category Updated Successfully",['category' => $category]);
     }
 

@@ -76,7 +76,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     Route::controller(QuizAttemptController::class)->group(function () {
         Route::get('/quizzes/{quiz}/quiz-attempts', 'index');
         Route::get('/quiz-attempts/{quizAttempt}', 'show');
-        Route::put('/quiz-attempts/{quizAttempt}', 'store');
+        Route::put('/quiz-attempts/{quizAttempt}', 'update');
     });
     Route::controller(QuizController::class)->group(function () {
         Route::get('/courses/{course}/quizzes', 'index');

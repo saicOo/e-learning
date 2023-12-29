@@ -139,7 +139,7 @@ class QuizController extends BaseController
             }
         }
 
-        return $this->sendResponse("Quiz Created Successfully");
+        return $this->sendResponse("Quiz Created Successfully",['quiz' => $quiz]);
 
     }
 

@@ -31,7 +31,7 @@ class CheckSubscription
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
-                'message' => 'Not authorized.'
+                'message' => 'You are not a subscriber !'
               ], 200);
         }
 

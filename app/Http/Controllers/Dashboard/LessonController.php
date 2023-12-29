@@ -246,7 +246,7 @@ class LessonController extends BaseController
         if($request->video_type == 'file'){
             $validate = Validator::make($request->all(),
             [
-                'video' => 'required|mimes:mp4|max:8192',
+                'video' => 'required|mimes:mp4|max:122880',
                 'video_type' => 'required|in:file',
             ]);
         }else{

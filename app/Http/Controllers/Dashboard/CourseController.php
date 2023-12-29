@@ -196,7 +196,7 @@ class CourseController extends BaseController
          $request_data = $validate->validated();
          $request_data['user_id'] = $teacher_id;
          $course = Course::create($request_data);
-         return $this->sendResponse("Course Created Successfully");
+         return $this->sendResponse("Course Created Successfully",['course' => $course]);
     }
 
     /**

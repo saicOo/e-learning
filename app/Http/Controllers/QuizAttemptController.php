@@ -122,14 +122,16 @@ class QuizAttemptController extends BaseController
             $grade = 0;
             $questionId = $question->id;
 
-            if($question->type == 3){
-                $image = $this->uploadService->uploadImage('answers', $answers[$questionId]);
-            }else{
-                if(isset($answers[$questionId]) && $answers[$questionId] == $question->correct_option){
-                        $grade = $question->grade;
-                        $answer = $question->options[$answers[$questionId]];
-                        $totalScore += $grade;
-                    }
+            if (isset($answers[$questionId])) {
+                if($question->type == 3){
+                    $image = $this->uploadService->uploadImage('answers', $answers[$questionId]);
+                }else{
+                    if($answers[$questionId] == $question->correct_option){
+                            $grade = $question->grade;
+                            $answer = $question->options[$answers[$questionId]];
+                            $totalScore += $grade;
+                        }
+                }
             }
 
             $attempt->questions()->attach($questionId,[
@@ -146,7 +148,7 @@ class QuizAttemptController extends BaseController
             'score'=>$score,
         ]);
 
-        return $this->sendResponse("Quiz Created Successfully");
+        return $this->sendResponse("Quiz Created Successfully", ['attempt' => $attempt]);
     }
 
     // Add helper methods as needed

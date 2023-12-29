@@ -13,7 +13,7 @@ class QuizAttempt extends Model
 
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->select('students.id','students.name','students.email');
     }
 
     public function quiz()
