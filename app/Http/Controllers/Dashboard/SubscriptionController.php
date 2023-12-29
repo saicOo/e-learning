@@ -54,7 +54,7 @@ class SubscriptionController extends BaseController
     {
         $user = $request->user();
         $subscriptions = Subscription::query();
-
+        $subscriptions->with(['student','course']);
         // Filter by course name
         if ($request->has('student_id')) {
             $subscriptions->where('student_id', $request->input('student_id'));
@@ -139,6 +139,8 @@ class SubscriptionController extends BaseController
      */
     public function show(Subscription $subscription)
     {
+        $subscription->student;
+        $subscription->course;
         return $this->sendResponse("",['subscription' => $subscription]);
     }
 

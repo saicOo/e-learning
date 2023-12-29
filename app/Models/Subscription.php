@@ -19,11 +19,11 @@ class Subscription extends Model
 
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class)->select('courses.id', 'courses.name', 'courses.image');
     }
 
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->select('students.id','students.name','students.email');
     }
 }
