@@ -19,7 +19,7 @@ class CourseSeeder extends Seeder
     {
         $faker = Factory::create();
         $semester = ['first semester' , 'second semester' , 'full semester'];
-        for ($i=0; $i < 20; $i++) {
+        for ($i=0; $i < 6; $i++) {
             Course::create([
                 'name'=>$faker->sentence(2),
                 'description'=>$faker->sentence(20),

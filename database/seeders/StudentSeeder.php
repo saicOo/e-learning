@@ -15,7 +15,7 @@ class StudentSeeder extends Seeder
     public function run()
     {
         $attendance_type = ['online','offline'];
-        for ($i=1; $i < 50; $i++) {
+        for ($i=1; $i < 30; $i++) {
             Student::create([
                 'name' => 'st'.$i,
                 'email' => $i.'st@app.com',

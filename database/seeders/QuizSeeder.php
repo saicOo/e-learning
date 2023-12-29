@@ -17,11 +17,14 @@ class QuizSeeder extends Seeder
     {
         $types = ['course','lesson'];
         $faker = Factory::create();
-        for ($i=0; $i < 30; $i++) {
+        for ($i=0; $i < 150; $i++) {
             $course = Course::inRandomOrder()->first();
-            $lesson_id = $course->lessons[0] ? $course->lessons[0]->id : null;
-            $questions_count =  $course->lessons[0]->questions()->count();
-            $questions =  $course->lessons[0]->questions()->pluck('id');
+            $lessons = $course->lessons;
+            $lesson_count = $lessons->count();
+            $lesson_index = rand(0,$lesson_count - 1);
+            $lesson_id = $lessons[$lesson_index] ? $lessons[$lesson_index]->id : null;
+            $questions_count =  $lessons[$lesson_index]->questions()->count();
+            $questions =  $lessons[$lesson_index]->questions()->pluck('id');
 
 
             $quiz = $course->quizzes()->create([

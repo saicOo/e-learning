@@ -16,7 +16,7 @@ class QuestionSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-        for ($i=0; $i < 30; $i++) {
+        for ($i=0; $i < 60; $i++) {
             $options = [];
             $type = rand(1,2); //1=>TrueFalse, 2=>Choice,3 =>Article'
             $optionCount = 2;

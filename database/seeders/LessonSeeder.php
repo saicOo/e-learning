@@ -16,7 +16,7 @@ class LessonSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-        for ($i=0; $i < 80; $i++) {
+        for ($i=0; $i < 40; $i++) {
             Lesson::create([
                 'name'=>$faker->sentence(2),
                 'description'=>$faker->sentence(20),

@@ -48,7 +48,7 @@ class LessonController extends BaseController
 
         $lessons = Lesson::query();
         $lessons->select(["id","name","description"]);
-        $lessons->with("quizzes:id,title,publish,questions_count,lesson_id");
+        $lessons->with(["quizzes:id,title,publish,questions_count,lesson_id","progress"]);
 
         $lessons->where('course_id', $course->id);
         // Filter by course name
