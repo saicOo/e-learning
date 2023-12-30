@@ -19,7 +19,7 @@ class QuizAttemptController extends BaseController
 
     public function __construct(UploadService $uploadService)
     {
-        $this->middleware(['checkSubscription','checkQuizProgress'])->only('submitQuiz');
+        $this->middleware(['checkSubscription','checkSubmitQuiz'])->only('submitQuiz');
         $this->uploadService = $uploadService;
     }
     /**

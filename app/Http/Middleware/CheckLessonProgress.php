@@ -26,12 +26,16 @@ class CheckLessonProgress
             // Handle edge case for the first lesson
             return $next($request);
         }
+        $previousLesson = $course->lessons()
+        ->where('id', '<', $currentLesson->id)
+        ->orderBy('id', 'desc')
+        ->first();
 
 
-        $previousLesson = Lesson::find($currentLesson->id - 1); // Get the previous lesson
-        dd($previousLesson);
-        $user = $request->user();
-        $previousLessonProgress = StudentLessonProgress::where('student_id', $user->id)
+        // $previousLesson = Lesson::find($currentLesson->id - 1); // Get the previous lesson
+        // dd($previousLesson);
+        $student = $request->user();
+        $previousLessonProgress = StudentLessonProgress::where('student_id', $student->id)
             ->where('lesson_id', $previousLesson->id)
             ->first();
 

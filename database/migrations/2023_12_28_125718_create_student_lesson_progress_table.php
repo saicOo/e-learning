@@ -17,9 +17,12 @@ class CreateStudentLessonProgressTable extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('lesson_id');
+            $table->unsignedBigInteger('quiz_id')->nullable();
             $table->boolean('is_passed')->default(false);
+            $table->enum('status',['started','repetition','stoped'])->default("started");
             $table->timestamps();
 
+            $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('set null');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
         });

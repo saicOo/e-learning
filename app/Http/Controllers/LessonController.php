@@ -60,7 +60,25 @@ class LessonController extends BaseController
 
         $lessons = $lessons->get();
 
-        return $this->sendResponse("",['lessons' => $lessons]);
+        $lessonsData = [];
+        foreach ($lessons as $lesson) {
+            $quiz = $lesson->quizzes()->inRandomOrder()->first();
+            $progres = $lesson->progress()->where('student_id', $request->user()->id)->first();
+
+            $lessonData = [
+                'id' => $lesson->id,
+                'name' => $lesson->name,
+                'description' => $lesson->description,
+                'progres' => $progres ? [
+                    'is_passed' => $progres->is_passed,
+                    'status' => $progres->status
+                    ] : null,
+                'quiz' => $quiz ?  : null,
+            ];
+            $lessonsData[] = $lessonData;
+        }
+
+        return $this->sendResponse("",['lessons' => $lessonsData]);
 
     }
 

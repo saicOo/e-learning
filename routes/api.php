@@ -24,6 +24,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
     Route::get('/quiz-attempts/{quizAttempt}', 'QuizAttemptController@show');
     Route::get('/quizzes/{quiz}', 'QuizController@show');
     Route::get('/lessons/{lesson}', 'LessonController@show');
+    Route::get('/courses/{course}/lessons', 'LessonController@index');
 });
 
 Route::controller(CourseController::class)->group(function () {
@@ -31,7 +32,6 @@ Route::controller(CourseController::class)->group(function () {
     Route::get('/courses/{course}', 'show');
 });
 
-Route::get('/courses/{course}/lessons', 'LessonController@index');
 Route::get('/categories','CategoryController@index');
 Route::get('/levels','LevelController@index');
 Route::post('/contacts','ContactController@store');

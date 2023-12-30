@@ -19,4 +19,9 @@ class StudentLessonProgress extends Model
     {
         return $this->belongsTo(Lesson::class);
     }
+
+    public function quiz()
+    {
+        return $this->belongsTo(Quiz::class);
+    }
 }

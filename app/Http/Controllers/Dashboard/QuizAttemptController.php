@@ -7,6 +7,7 @@ use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Models\StudentLessonProgress;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;
 
@@ -107,13 +108,23 @@ class QuizAttemptController extends BaseController
             'grades.*' => 'required|integer',
         ]);
 
+
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        $lessonProgress = StudentLessonProgress::where('student_id', $quizAttempt->student_id)
+            ->where('quiz_id', $quizAttempt->quiz_id)->first();
+
+        if(!$lessonProgress){
+            return $this->sendError('You can no longer add grades for this quiz' ,[], 403);
+        }
+
         $answers = $quizAttempt->answers;
         $grades = $request->input('grades');
         $totalScore = 0;
         $maxGrade = 0;
+
         foreach ($answers as $index => $answer) {
             $questionId = $answer->question_id;
             $question = $answer->question;
@@ -133,9 +144,11 @@ class QuizAttemptController extends BaseController
         // Calculate overall score based on grades
         $score = $this->calculateScore($totalScore, $maxGrade);
 
+        $status = $this->quizProgress($score, $lessonProgress);
+
         $quizAttempt->update([
-            'score'=>$score,
-            'status'=> $score >= 50 ? "successful" : "failed",
+            'score'=> $score,
+            'status'=> $status,
         ]);
 
         return $this->sendResponse("Quiz Grades Update Successfully", ['attempt' => $quizAttempt]);
@@ -147,5 +160,30 @@ class QuizAttemptController extends BaseController
             $overallScore = $totalScore != 0 ? ($totalScore / $maxGrade) * 100 : 0;
 
             return $overallScore;
+        }
+
+        private function quizProgress($score ,StudentLessonProgress $lessonProgress)
+        {
+            $status = "";
+
+            if($score >= 50){
+
+                $status = "successful";
+                $lessonProgress->update([
+                    'status' => 'stoped',
+                    'is_passed' => true,
+                ]);
+
+            }else{
+
+                $status = "failed";
+                $lessonProgress->update([
+                    'status' => 'repetition',
+                    'is_passed' => false,
+                ]);
+
+            }
+
+            return $status;
         }
 }
