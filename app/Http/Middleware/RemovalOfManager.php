@@ -17,10 +17,10 @@ class RemovalOfManager
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        if ($user->roles[0]->name != 'manager') {
+        if (!$user->hasRole('manager')) {
             return $next($request);
         }
-        
+
         return response()->json([
             'status_code' => 403,
             'success' => false,

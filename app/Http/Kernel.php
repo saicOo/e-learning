@@ -43,6 +43,7 @@ class Kernel extends HttpKernel
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\HandlePutFormData::class,
         ],
     ];
 
@@ -71,5 +72,6 @@ class Kernel extends HttpKernel
         'checkLessonProgress' => \App\Http\Middleware\CheckLessonProgress::class,
         'checkQuizProgress' => \App\Http\Middleware\CheckQuizProgress::class,
         'checkSubmitQuiz' => \App\Http\Middleware\CheckSubmitQuiz::class,
+        'checkAssistantAccess' => \App\Http\Middleware\CheckAssistantAccess::class,
     ];
 }

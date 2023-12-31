@@ -16,12 +16,13 @@ class CheckApiAffiliationMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+
         $user = $request->user();
-        if ($user->roles[0]->name == 'manager') {
+        if ($user->hasRole('manager')) {
             return $next($request);
         }
 
-        if ($user->roles[0]->name == 'teacher') {
+        if ($user->hasRole('teacher')) {
             if (
                 ($request->route('course') && $request->user()->id == $request->route('course')->user_id) ||
                  ($request->route('quiz') && $request->user()->id == $request->route('quiz')->course->user_id) ||
@@ -34,7 +35,7 @@ class CheckApiAffiliationMiddleware
             }
         }
 
-        if ($user->roles[0]->name == 'assistant') {
+        if ($user->hasRole('assistant')) {
             if ($request->route('course') && $request->user()->user_id == $request->route('course')->user_id ||
             ($request->route('quiz') && $request->user()->user_id == $request->route('quiz')->course->user_id) ||
                  ($request->route('lesson') && $request->user()->user_id == $request->route('lesson')->course->user_id) ||

@@ -24,7 +24,8 @@ class AssistantController extends BaseController
         $this->middleware(['permission:assistants_delete'])->only('destroy');
         $this->middleware(['permission:assistants_create'])->only('store');
         $this->middleware(['permission:assistants_approve'])->only('approve');
-        $this->middleware(['checkApiAffiliation']);
+        $this->middleware(['checkAssistantAccess'])->only(['update','destroy','show']);
+        $this->middleware(['checkApiAffiliation'])->only('index');
         $this->userService = $userService;
         $this->uploadService = $uploadService;
     }
@@ -160,12 +161,8 @@ class AssistantController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function show($assistant_id)
+    public function show($assistant)
     {
-        $assistant = User::whereRoleIs('assistant')->where('id',$assistant_id)->first();
-        if(!$assistant){
-            return $this->sendError('The Assistant Not Fount');
-        }
         $assistant->teacher;
         return $this->sendResponse("",['assistant' => $assistant]);
     }
@@ -200,19 +197,16 @@ class AssistantController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function update(Request $request,$assistant_id)
+    public function update(Request $request,$assistant)
     {
-        $assistant = User::whereRoleIs('assistant')->where('id',$assistant_id)->first();
-        if(!$assistant){
-            return $this->sendError('The Assistant Not Fount');
-        }
+        // $assistant = User::whereRoleIs('assistant')->where('id',$assistant_id)->first();
         //Validated
         $validate = Validator::make($request->all(),[
             'name' => 'nullable|string|max:255',
-            'email' => 'nullable|string|email|max:255|unique:assistants,email,'.$assistant->id,
-            'phone' => 'nullable|numeric|digits:11|unique:assistants,phone,'.$assistant->id,
-            'permissions' => 'nullable|array|min:1',
-            'permissions.*' => 'nullable|exists:permissions,name',
+            'email' => 'nullable|string|email|max:255|unique:users,email,'.$assistant->id,
+            'phone' => 'nullable|numeric|digits:11|unique:users,phone,'.$assistant->id,
+            // 'permissions' => 'nullable|array|min:1',
+            // 'permissions.*' => 'nullable|exists:permissions,name',
         ]);
 
         if($validate->fails()){
@@ -221,10 +215,10 @@ class AssistantController extends BaseController
 
 
         $request_data = $validate->validated();
-        if ($request->permissions){
-            unset($request_data['permissions']);
-            $assistant->syncPermissions($request->permissions);
-        }
+        // if ($request->permissions){
+        //     unset($request_data['permissions']);
+        //     $assistant->syncPermissions($request->permissions);
+        // }
         $assistant->update($request_data);
 
         return $this->sendResponse("Assistant Updated Successfully",["assistant" =>$assistant]);

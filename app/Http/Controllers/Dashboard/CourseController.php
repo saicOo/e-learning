@@ -123,15 +123,15 @@ class CourseController extends BaseController
             $courses->where('publish', $request->input('publish'));
         }
 
-        if($user->roles[0]->name == "teacher"){
+        if($user->hasRole('teacher')){
             $courses->where('user_id', $user->id);
         }
 
-        if($user->roles[0]->name == "assistant"){
+        if($user->hasRole('assistant')){
             $courses->where('user_id', $user->user_id);
         }
 
-        if($user->roles[0]->name == "manager" && $request->has('user_id')){
+        if($user->hasRole('manager') && $request->has('user_id')){
             $courses->where('user_id', $request->input('user_id'));
         }
 
@@ -184,7 +184,7 @@ class CourseController extends BaseController
          ]);
 
         //  $user = $request->user();
-        //  if($user->roles[0]->name == 'teacher'){
+        //  if($user->hasRole('teacher')){
         //     $request_data['user_id'] = $user->id;
         //     }else{
         //         $request_data['user_id'] = $user->user_id;
