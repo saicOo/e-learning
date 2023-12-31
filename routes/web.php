@@ -28,8 +28,10 @@ Route::get('/clear', function() {
 
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
-    Artisan::call('config:cache');
     Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    // Artisan::call('route:cache');
+    Artisan::call('config:cache');
 
     return "Cleared!";
 

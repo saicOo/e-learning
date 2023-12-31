@@ -166,7 +166,7 @@ class AssistantController extends BaseController
         if(!$assistant){
             return $this->sendError('The Assistant Not Fount');
         }
-        $assistant->assistants;
+        $assistant->teacher;
         return $this->sendResponse("",['assistant' => $assistant]);
     }
 
@@ -227,7 +227,7 @@ class AssistantController extends BaseController
         }
         $assistant->update($request_data);
 
-        return $this->sendResponse("Assistant Updated Successfully");
+        return $this->sendResponse("Assistant Updated Successfully",["assistant" =>$assistant]);
     }
 
     /**
