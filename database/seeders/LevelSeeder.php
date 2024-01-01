@@ -20,6 +20,5 @@ class LevelSeeder extends Seeder
                 'name' => $level,
             ]);
         }
-
     }
 }

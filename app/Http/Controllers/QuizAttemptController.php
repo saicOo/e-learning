@@ -128,9 +128,9 @@ class QuizAttemptController extends BaseController
                 }else{
                     if($answers[$questionId] == $question->correct_option){
                             $grade = $question->grade;
-                            $answer = $question->options[$answers[$questionId]];
                             $totalScore += $grade;
                         }
+                        $answer = $question->options[$answers[$questionId]];
                 }
             }
 
