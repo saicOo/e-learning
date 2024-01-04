@@ -6,7 +6,6 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController as BaseController;
 
 class CategoryController extends BaseController
@@ -115,7 +114,7 @@ class CategoryController extends BaseController
         }
 
         $category->update($validate->validated());
-        
+
         return $this->sendResponse("Category Updated Successfully",['category' => $category]);
     }
 

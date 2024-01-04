@@ -18,11 +18,13 @@ class CourseSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
+        $courses_name = ["كورس كيمياء","كورس رياضات","كورس جولوجيا","كورس علوم"
+        ,"كورس برمجة","كورس رسم","كورس دراسات","كورس اللغة العربية","كورس اللغة الانجليزية","كورس اللغة الفرنسية"];
         $semester = ['first semester' , 'second semester' , 'full semester'];
-        for ($i=0; $i < 6; $i++) {
+        for ($i=0; $i < 9; $i++) {
             Course::create([
-                'name'=>$faker->sentence(2),
-                'description'=>$faker->sentence(20),
+                'name'=>$courses_name[rand(0,count($courses_name) - 1)],
+                'description'=>$semester[rand(0,count($semester) - 1)],
                 'price'=>rand(50,800),
                 'semester'=>$semester[rand(0,2)],
                 'user_id'=>User::whereRoleIs('teacher')->inRandomOrder()->first()->id,

@@ -15,6 +15,7 @@ class QuizSeeder extends Seeder
      */
     public function run()
     {
+        $quizzes_name = ['نموذج أ','نموذج ب','نموذج ج','نموذج د','اختبار علي الوحدة الاولي','اختبار علي الوحدة الثانية'];
         $types = ['course','lesson'];
         $faker = Factory::create();
         for ($i=0; $i < 150; $i++) {
@@ -25,13 +26,13 @@ class QuizSeeder extends Seeder
             $lesson_id = $lessons[$lesson_index] ? $lessons[$lesson_index]->id : null;
             $questions_count =  $lessons[$lesson_index]->questions()->count();
             $questions =  $lessons[$lesson_index]->questions()->pluck('id');
-
+            $type = $types[rand(0,1)];
 
             $quiz = $course->quizzes()->create([
-                "title" => $faker->sentence(rand(2,8)),
-                "type" => $lesson_id != null ? $types[1] : $types[0],
+                "title" => $quizzes_name[rand(0,count($quizzes_name) - 1)],
+                "type" => $type,
                 "questions_count" => $questions_count,
-                "lesson_id" =>$lesson_id,
+                "lesson_id" => $type == "lesson" ? $lesson_id : null,
                 'publish'=>"publish"
             ]);
 

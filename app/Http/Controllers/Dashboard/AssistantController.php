@@ -8,9 +8,7 @@ use App\Services\UserService;
 use Illuminate\Http\Response;
 use App\Services\UploadService;
 use App\Traits\PermissionsUser;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController as BaseController;
 

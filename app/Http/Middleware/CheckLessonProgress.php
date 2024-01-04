@@ -31,9 +31,6 @@ class CheckLessonProgress
         ->orderBy('id', 'desc')
         ->first();
 
-
-        // $previousLesson = Lesson::find($currentLesson->id - 1); // Get the previous lesson
-        // dd($previousLesson);
         $student = $request->user();
         $previousLessonProgress = StudentLessonProgress::where('student_id', $student->id)
             ->where('lesson_id', $previousLesson->id)
@@ -45,13 +42,8 @@ class CheckLessonProgress
                 'status_code' => 403,
                 'success' => false,
                 'message' => 'Please complete the previous lesson quiz.'
-                // 'message' => 'Not authorized.'
               ], 200);
         }
         return $next($request);
     }
 }
-// if (!$previousLesson) {
-        //     // Handle edge case for the first lesson or lesson not found
-        //     return redirect()->back()->with('error', 'No previous lesson found.');
-        // }

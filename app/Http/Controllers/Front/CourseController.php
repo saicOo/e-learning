@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
@@ -118,8 +118,11 @@ class CourseController extends BaseController
         if ($course->publish != "publish") {
             return $this->sendError('Record not found.');
         }
-
-        return $this->sendResponse("",['course' => $course]);
+        $course->user;
+        $course->level;
+        $course->category;
+        $quiz = $course->quizzes()->where("type","course")->inRandomOrder()->first();
+        return $this->sendResponse("",['course' => $course,'quiz'=>$quiz]);
     }
 
 }

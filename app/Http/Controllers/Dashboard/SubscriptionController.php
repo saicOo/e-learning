@@ -9,7 +9,6 @@ use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Rules\ValidSubscription;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
 

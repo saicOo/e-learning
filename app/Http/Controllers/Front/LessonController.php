@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use App\Models\Course;
 use App\Models\Lesson;
@@ -106,6 +106,7 @@ class LessonController extends BaseController
         if ($lesson->publish != "publish") {
             return $this->sendError('Record not found.');
         }
-        return $this->sendResponse("",['lesson' => $lesson]);
+        $quiz = $lesson->quizzes()->inRandomOrder()->first();
+        return $this->sendResponse("",['lesson' => $lesson,'quiz'=> $quiz ]);
     }
 }

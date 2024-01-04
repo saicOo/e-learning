@@ -7,7 +7,6 @@ use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController as BaseController;
 
 class QuizController extends BaseController

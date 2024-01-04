@@ -6,7 +6,6 @@ use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
 use App\Models\StudentLessonProgress;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;

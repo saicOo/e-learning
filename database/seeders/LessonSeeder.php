@@ -15,10 +15,12 @@ class LessonSeeder extends Seeder
      */
     public function run()
     {
+        $lessons_name = ["الدرس الاول","الدرس الثاني","الدرس الثالث","الدرس الرابع","الدرس الخامس","الدرس السادس"
+        ,"مراجعة الفصل الاول","مراجعة الفصل الثاني","مراجعة الفصل الثالث"];
         $faker = Factory::create();
-        for ($i=0; $i < 40; $i++) {
+        for ($i=0; $i < 30; $i++) {
             Lesson::create([
-                'name'=>$faker->sentence(2),
+                'name'=>$lessons_name[rand(0,count($lessons_name) - 1)],
                 'description'=>$faker->sentence(20),
                 'video'=>'video/zSsEJPGdHgCgYqQNqV27S2mouiQAbFpl8r01QSbW.mp4',
                 'attached'=>'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf',

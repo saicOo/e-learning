@@ -6,258 +6,6 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/login": {
-            "post": {
-                "tags": [
-                    "Front Api Auth Student"
-                ],
-                "summary": "Login Student in Front",
-                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "1st@app.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "1234"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/logout": {
-            "post": {
-                "tags": [
-                    "Front Api Auth Student"
-                ],
-                "summary": "Auth Logout",
-                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    }
-                }
-            }
-        },
-        "/api/profile": {
-            "get": {
-                "tags": [
-                    "Front Api Auth Student"
-                ],
-                "summary": "Show Data Student",
-                "operationId": "d32e56b6274eb68e980da6d91fbe9fd8",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/student/upload-image": {
-            "post": {
-                "tags": [
-                    "Front Api Auth Student"
-                ],
-                "summary": "upload image Student",
-                "operationId": "5fbef366b6c630293c78b04d0603b910",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "image": {
-                                        "type": "file",
-                                        "example": "path image"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "404": {
-                        "description": "Resource Not Found"
-                    }
-                }
-            }
-        },
-        "/api/categories": {
-            "get": {
-                "tags": [
-                    "Front Api Categories"
-                ],
-                "summary": "Get All Categories",
-                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/contacts": {
-            "post": {
-                "tags": [
-                    "Front Api Contact"
-                ],
-                "summary": "Add New Contact",
-                "operationId": "a3b0baf957a16c1ed505f2e8985c254c",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
-                                    "phone": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
-                                    "subject": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
-                                    "message": {
-                                        "type": "string",
-                                        "example": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/courses": {
-            "get": {
-                "tags": [
-                    "Front Api Courses"
-                ],
-                "summary": "get all courses",
-                "operationId": "02eeda67042dba2d22a517f26fb8eaf1",
-                "parameters": [
-                    {
-                        "name": "user_id",
-                        "in": "query",
-                        "description": "filter courses with user",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "level_id",
-                        "in": "query",
-                        "description": "filter courses with level",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "category_id",
-                        "in": "query",
-                        "description": "filter courses with category",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "semester",
-                        "in": "query",
-                        "description": "filter courses with semester (first semester , second semester , full semester)",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "description": "filter search name or description courses",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/courses/{course_id}": {
-            "get": {
-                "tags": [
-                    "Front Api Courses"
-                ],
-                "summary": "show course",
-                "operationId": "f507f69de30e73b038b9d68c035cbc4f",
-                "parameters": [
-                    {
-                        "name": "course_id",
-                        "in": "path",
-                        "required": true,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "404": {
-                        "description": "Resource Not Found"
-                    }
-                }
-            }
-        },
         "/api/dashboard/teachers/{teacher_id}/assistants": {
             "get": {
                 "tags": [
@@ -2731,13 +2479,265 @@
                 }
             }
         },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Front Api Auth Student"
+                ],
+                "summary": "Login Student in Front",
+                "operationId": "b173e51ba1ffd183727862d81368f64c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "1st@app.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Front Api Auth Student"
+                ],
+                "summary": "Auth Logout",
+                "operationId": "eb6d063b7e81641a82b0b1f02b18a5cc",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "Front Api Auth Student"
+                ],
+                "summary": "Show Data Student",
+                "operationId": "33c8b56a6360e38a9070e7056df8c067",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/student/upload-image": {
+            "post": {
+                "tags": [
+                    "Front Api Auth Student"
+                ],
+                "summary": "upload image Student",
+                "operationId": "8d6e04550f111e0239a9a18074e55d5d",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "file",
+                                        "example": "path image"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Front Api Categories"
+                ],
+                "summary": "Get All Categories",
+                "operationId": "2e4021fd8e0f47248fafcdc00ba868e5",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/contacts": {
+            "post": {
+                "tags": [
+                    "Front Api Contact"
+                ],
+                "summary": "Add New Contact",
+                "operationId": "24e62e8bbd2f8ea63668be2daebed4b6",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/courses": {
+            "get": {
+                "tags": [
+                    "Front Api Courses"
+                ],
+                "summary": "get all courses",
+                "operationId": "4d2b332408486c69d28f1200eed63bc8",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "filter courses with user",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "level_id",
+                        "in": "query",
+                        "description": "filter courses with level",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "filter courses with category",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "semester",
+                        "in": "query",
+                        "description": "filter courses with semester (first semester , second semester , full semester)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description courses",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Courses"
+                ],
+                "summary": "show course",
+                "operationId": "b5b271252699d2d16e54cf845a7847b6",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/courses/{course_id}/lessons": {
             "get": {
                 "tags": [
                     "Front Api Lessons"
                 ],
                 "summary": "get all lessons",
-                "operationId": "9e8c31359f1488b233ee39247866f092",
+                "operationId": "b253c99d55efba21db724353b865f900",
                 "parameters": [
                     {
                         "name": "course_id",
@@ -2776,7 +2776,7 @@
                     "Front Api Lessons"
                 ],
                 "summary": "show lesson",
-                "operationId": "3022a3acb64299e66eaa0e1a8b5f4e52",
+                "operationId": "98ac784bf520d416c74b2cc5019d45cb",
                 "parameters": [
                     {
                         "name": "lesson_id",
@@ -2807,7 +2807,7 @@
                     "Front Api Levels"
                 ],
                 "summary": "Get All Levels",
-                "operationId": "b21200cd0ebde08419a3347af27dcad7",
+                "operationId": "475692fd2ed64ada4de580d12b92054b",
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -2821,7 +2821,7 @@
                     "Front Api Attempts"
                 ],
                 "summary": "get all attempts of student",
-                "operationId": "658d32c955e557d8adf4d6a38dc5aa65",
+                "operationId": "c6c0e827f5c77e08dbabef1f70cf412b",
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -2838,7 +2838,7 @@
                     "Front Api Attempts"
                 ],
                 "summary": "show quiz attempt and answers",
-                "operationId": "9edd51182d00cc1168d7d69fd2113afe",
+                "operationId": "59574a461f03d16af8c13661902d5fb5",
                 "parameters": [
                     {
                         "name": "quizAttempt_id",
@@ -2869,7 +2869,7 @@
                     "Front Api Quiz Attempt"
                 ],
                 "summary": "update user",
-                "operationId": "95b3ec632dc73ce278d84caa1b6e8d95",
+                "operationId": "a556d1e91e9da83e759196275d510074",
                 "parameters": [
                     {
                         "name": "quiz_id",
@@ -2917,7 +2917,7 @@
                     "Front Api Quizzes"
                 ],
                 "summary": "show quiz",
-                "operationId": "058145d57f85ef63f769f05c605244ca",
+                "operationId": "80ae73dd2a0d7af1c36dc59aac1ee1db",
                 "parameters": [
                     {
                         "name": "quiz_id",
