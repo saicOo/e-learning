@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\StudentLessonProgress;
+use App\Models\QuizProcess;
 
-class CheckQuizProgress
+class CheckQuizProcess
 {
     /**
      * Handle an incoming request.
@@ -22,24 +22,35 @@ class CheckQuizProgress
         $studentId = auth()->user()->id;
         $quiz = $request->route('quiz');
         $lessonId =  $quiz->lesson_id;
-        $lessonProgress = StudentLessonProgress::where('student_id', $studentId)
-        ->where('lesson_id', $lessonId)
-        ->first();
-        if ($lessonProgress) {
+        $courseId =  $quiz->course_id;
+
+        $quizProcess = QuizProcess::query();
+        $quizProcess->where('student_id', $studentId);
+
+        if($quiz->type == "lesson"){
+            $quizProcess->where('lesson_id', $lessonId);
+        }else{
+            $quizProcess->whereNull('lesson_id')->where('course_id', $courseId);
+
+        }
+
+        $quizProcess = $quizProcess->first();
+
+        if ($quizProcess) {
             // اذا تم بدء الاختبار
-            if($lessonProgress->status == "started"){
-                $request->route()->setParameter('quiz', $lessonProgress->quiz);
+            if($quizProcess->status == "started"){
+                $request->route()->setParameter('quiz', $quizProcess->quiz);
             }
 
-            if($lessonProgress->status == "repetition"){
+            if($quizProcess->status == "repetition"){
                 // اذا تم اعادة الاختبار
-                $lessonProgress->update([
+                $quizProcess->update([
                     'status' => 'started',
                     'quiz_id' => $quiz->id,
                 ]);
             }
 
-            if($lessonProgress->status == "stoped"){
+            if($quizProcess->status == "stoped"){
             // اذا تم انهاء الاختبار
                 return response()->json([
                     'status_code' => 403,
@@ -49,10 +60,11 @@ class CheckQuizProgress
             }
         }
 
-        if(!$lessonProgress){
-            StudentLessonProgress::create([
+        if(!$quizProcess){
+            QuizProcess::create([
                 'student_id' => $studentId,
-                'lesson_id' => $lessonId,
+                'lesson_id' => $lessonId ? $lessonId : null,
+                'course_id' => $quiz->course_id,
                 'quiz_id' => $quiz->id,
             ]);
         }

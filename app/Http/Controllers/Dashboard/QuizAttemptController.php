@@ -6,7 +6,7 @@ use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\StudentLessonProgress;
+use App\Models\QuizProcess;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;
 
@@ -112,10 +112,10 @@ class QuizAttemptController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $lessonProgress = StudentLessonProgress::where('student_id', $quizAttempt->student_id)
+        $quizProcess = QuizProcess::where('student_id', $quizAttempt->student_id)
             ->where('quiz_id', $quizAttempt->quiz_id)->first();
 
-        if(!$lessonProgress){
+        if(!$quizProcess){
             return $this->sendError('You can no longer add grades for this quiz' ,[], 403);
         }
 
@@ -143,7 +143,7 @@ class QuizAttemptController extends BaseController
         // Calculate overall score based on grades
         $score = $this->calculateScore($totalScore, $maxGrade);
 
-        $status = $this->quizProgress($score, $lessonProgress);
+        $status = $this->quizProcess($score, $quizProcess);
 
         $quizAttempt->update([
             'score'=> $score,
@@ -162,26 +162,24 @@ class QuizAttemptController extends BaseController
             return $overallScore;
         }
 
-        private function quizProgress($score ,StudentLessonProgress $lessonProgress)
+        private function quizProcess($score ,QuizProcess $quizProcess)
         {
             $status = "";
 
             if($score >= 50){
 
                 $status = "successful";
-                $lessonProgress->update([
+                $quizProcess->update([
                     'status' => 'stoped',
                     'is_passed' => true,
                 ]);
 
             }else{
-
                 $status = "failed";
-                $lessonProgress->update([
+                $quizProcess->update([
                     'status' => 'repetition',
                     'is_passed' => false,
                 ]);
-
             }
 
             return $status;

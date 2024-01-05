@@ -6,7 +6,7 @@ use Closure;
 use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
-use App\Models\StudentLessonProgress;
+use App\Models\QuizProcess;
 
 class CheckLessonProgress
 {
@@ -32,7 +32,7 @@ class CheckLessonProgress
         ->first();
 
         $student = $request->user();
-        $previousLessonProgress = StudentLessonProgress::where('student_id', $student->id)
+        $previousLessonProgress = QuizProcess::where('student_id', $student->id)
             ->where('lesson_id', $previousLesson->id)
             ->first();
 

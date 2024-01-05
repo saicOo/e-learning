@@ -70,7 +70,7 @@ class Kernel extends HttpKernel
         'removalOfManager' => \App\Http\Middleware\RemovalOfManager::class,
         'checkSubscription' => \App\Http\Middleware\CheckSubscription::class,
         'checkLessonProgress' => \App\Http\Middleware\CheckLessonProgress::class,
-        'checkQuizProgress' => \App\Http\Middleware\CheckQuizProgress::class,
+        'checkQuizProcess' => \App\Http\Middleware\CheckQuizProcess::class,
         'checkSubmitQuiz' => \App\Http\Middleware\CheckSubmitQuiz::class,
         'checkAssistantAccess' => \App\Http\Middleware\CheckAssistantAccess::class,
     ];

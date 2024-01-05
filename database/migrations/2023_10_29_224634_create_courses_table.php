@@ -18,10 +18,10 @@ class CreateCoursesTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->text('image')->nullable();
-            // $table->text('image')->default('courses/default.webp');
             $table->double('price',10, 2);
             $table->enum('semester',['first semester','second semester','full semester']);
             $table->enum('publish',['publish','unpublish'])->default("unpublish");
+            $table->enum('type',['online','offline'])->default("online");
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('level_id');

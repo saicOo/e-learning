@@ -90,6 +90,8 @@ class CourseController extends BaseController
             $courses->where('semester', $request->input('semester'));
         }
 
+        $courses->where('type', "online");
+        
         $courses = $courses->withCount(['lessons','students'])->get();
 
         return $this->sendResponse("",['courses' => $courses]);

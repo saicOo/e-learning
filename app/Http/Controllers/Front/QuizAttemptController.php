@@ -8,7 +8,7 @@ use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\UploadService;
-use App\Models\StudentLessonProgress;
+use App\Models\QuizProcess;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController as BaseController;
 
@@ -143,12 +143,20 @@ class QuizAttemptController extends BaseController
         }
         // Calculate overall score based on grades
         $score = $this->calculateScore($totalScore, $maxGrade);
-
         $attempt->update([
             'score'=>$score,
         ]);
 
-        return $this->sendResponse("Quiz Created Successfully", ['attempt' => $attempt]);
+        $status = "pending";
+        $questionIsArticle = $quiz->questions()->where("type", 3)->first();
+        $quizProcess = QuizProcess::where('student_id', $studentId)
+        ->where('quiz_id', $quiz->id)->first();
+        
+        if(!$questionIsArticle && $quizProcess){
+            $status = $this->quizProcess($score, $quizProcess);
+        }
+
+        return $this->sendResponse("Quiz Created Successfully", ['attempt' => $attempt,'status'=> $status]);
     }
 
     // Add helper methods as needed
@@ -158,5 +166,28 @@ class QuizAttemptController extends BaseController
         $overallScore = $totalScore != 0 ? ($totalScore / $maxGrade) * 100 : 0;
 
         return $overallScore;
+    }
+
+    private function quizProcess($score ,QuizProcess $quizProcess)
+    {
+            $status = "";
+
+            if($score >= 50){
+
+                $status = "successful";
+                $quizProcess->update([
+                    'status' => 'stoped',
+                    'is_passed' => true,
+                ]);
+
+            }else{
+                $status = "failed";
+                $quizProcess->update([
+                    'status' => 'repetition',
+                    'is_passed' => false,
+                ]);
+            }
+
+            return $status;
     }
 }

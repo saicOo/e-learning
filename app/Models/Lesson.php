@@ -53,6 +53,6 @@ class Lesson extends Model
 
     public function progress()
     {
-        return $this->hasMany(StudentLessonProgress::class);
+        return $this->hasMany(QuizProcess::class);
     }
 }

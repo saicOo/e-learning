@@ -6,7 +6,7 @@ use App\Models\Student;
 use App\Models\Question;
 use App\Models\QuizAttempt;
 use Illuminate\Database\Seeder;
-use App\Models\StudentLessonProgress;
+use App\Models\QuizProcess;
 
 class AttemptSeeder extends Seeder
 {
@@ -22,7 +22,11 @@ class AttemptSeeder extends Seeder
             foreach ($student->courses as $course) {
                 foreach ($course->lessons as $lesson) {
                     foreach ($lesson->quizzes as $quiz) {
-                        $this->createAttemptStudent($quiz,$student->id);
+                        if(rand(0,1) == 1){
+                            $this->createAttemptStudent($quiz,$student->id);
+                        }else{
+                            $this->quizProcess($quiz,$student->id);
+                        }
                     }
                 }
             }
@@ -62,24 +66,10 @@ class AttemptSeeder extends Seeder
         $score = $this->calculateScore($totalScore, $maxGrade);
 
         $attempt->update([
-            'score'=>$score,
+            'score'=> $score,
         ]);
-        $lessonProgress = StudentLessonProgress::where('student_id', $studentId)
-        ->where('lesson_id', $quiz->lesson_id)
-        ->first();
-        if($lessonProgress){
-            $lessonProgress->update([
-                'quiz_id' => $quiz->id,
-            ]);
-        }else{
-            StudentLessonProgress::create([
-                'student_id' => $studentId,
-                'lesson_id' => $quiz->lesson_id,
-                'quiz_id' => $quiz->id,
-                'status' => "started",
-            ]);
-        }
 
+        $this->quizProcess($quiz, $studentId, $score);
     }
 
     private function calculateScore($totalScore ,$maxGrade = 10)
@@ -88,5 +78,36 @@ class AttemptSeeder extends Seeder
         $overallScore = $totalScore != 0 ? ($totalScore / $maxGrade) * 100 : 0;
 
         return $overallScore;
+    }
+
+    private function quizProcess($quiz ,$studentId, $score = null)
+    {
+        $quizProcess = QuizProcess::where('student_id', $studentId)
+        ->where('lesson_id', $quiz->lesson_id)
+        ->first();
+        if($quizProcess){
+            $quizProcess->update([
+                'quiz_id' => $quiz->id,
+            ]);
+        }else{
+            if($score != null){
+
+                if($score < 30) $status = "repetition";
+
+                if($score > 30) $status = "stoped";
+
+            }else{
+                $status = "started";
+            }
+
+
+            QuizProcess::create([
+                'student_id' => $studentId,
+                'lesson_id' => $quiz->lesson_id,
+                'course_id' => $quiz->course_id,
+                'quiz_id' => $quiz->id,
+                'status' => $status,
+            ]);
+        }
     }
 }

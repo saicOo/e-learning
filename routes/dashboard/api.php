@@ -91,6 +91,8 @@ Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
     Route::apiResource('categories', 'CategoryController')->only(['index','store','update','destroy']);
     // routes subscriptions
     Route::apiResource('subscriptions', 'SubscriptionController')->only(['index','store','show','destroy']);
+    // routes attendances
+    Route::apiResource('attendances', 'AttendanceController')->only(['index','store','show','destroy']);
     // routes levels
     Route::get('/levels','LevelController@index');
 

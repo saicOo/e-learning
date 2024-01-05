@@ -274,6 +274,185 @@
                 }
             }
         },
+        "/api/dashboard/courses/{course_id}/attendances": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Attendances"
+                ],
+                "summary": "get all attendances",
+                "operationId": "e1a2517cd068f486864e3725d9ab121c",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "description": "filter attendances with course",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter attendances with publish (publish , unpublish)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Attendances"
+                ],
+                "summary": "Add New Attendances",
+                "operationId": "c1c93a2ae4321f51f9f6a71130a4b50f",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "student_id": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/attendances/{attendance_id}": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Attendances"
+                ],
+                "summary": "Updated attendance",
+                "operationId": "6d245f1627a9ed84eefbfc316ad1f416",
+                "parameters": [
+                    {
+                        "name": "attendance_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "student_id": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Attendances"
+                ],
+                "summary": "Delete attendance",
+                "operationId": "a27639d196833cf32c60e79f25d3d82e",
+                "parameters": [
+                    {
+                        "name": "attendance_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/dashboard/login": {
             "post": {
                 "tags": [

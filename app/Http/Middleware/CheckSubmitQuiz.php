@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\StudentLessonProgress;
+use App\Models\QuizProcess;
 
 class CheckSubmitQuiz
 {
@@ -21,22 +21,29 @@ class CheckSubmitQuiz
         $studentId = auth()->user()->id;
         $quiz = $request->route('quiz');
         $lessonId =  $quiz->lesson_id;
-        $lessonProgress = StudentLessonProgress::where('student_id', $studentId)
-        ->where('lesson_id', $lessonId)
-        ->first();
+        $courseId =  $quiz->course_id;
 
-        if(!$lessonProgress || ($lessonProgress && $lessonProgress->status != "started") ||
-            ($lessonProgress && $lessonProgress->quiz_id != $quiz->id)){
+        $quizProcess = QuizProcess::query();
+        $quizProcess->where('student_id', $studentId);
+
+        if($quiz->type == "lesson"){
+            $quizProcess->where('lesson_id', $lessonId);
+        }else{
+            $quizProcess->whereNull('lesson_id')->where('course_id', $courseId);
+        }
+
+        $quizProcess = $quizProcess->first();
+
+        if(!$quizProcess || ($quizProcess && $quizProcess->status != "started") ||
+            ($quizProcess && $quizProcess->quiz_id != $quiz->id)){
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
                 'message' => 'This quiz cannot be accessed at this time !'
               ], 200);
         }
-
-        // if($lessonProgress && $lessonProgress->status == "started"){
-        // }
-        $lessonProgress->update([
+        
+        $quizProcess->update([
             'status' => 'stoped',
         ]);
 
