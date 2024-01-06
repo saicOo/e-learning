@@ -39,11 +39,11 @@ class AttemptSeeder extends Seeder
 
         $attempt = $quiz->attempts()->create([
             'student_id' => $studentId,
+            'images'=> ["answers/57.jpg","answers/57.jpg","answers/57.jpg"],
         ]);
 
-
         foreach ($quiz->questions as $index => $question) {
-            $image = $question->type != 3 ? null : "answers/57.jpg";
+            // $images = $question->type != 3 ? null : ["answers/57.jpg","answers/57.jpg","answers/57.jpg"];
             $answer = $question->type != 3 ? rand(0,1) : null ;
             $grade = 0;
             $questionId = $question->id;
@@ -57,7 +57,6 @@ class AttemptSeeder extends Seeder
 
             $attempt->questions()->attach($questionId,[
                 'answer' =>  $answer,
-                'image' =>  $image,
                 'grade' => $grade,
             ]);
             $maxGrade += $question->grade;

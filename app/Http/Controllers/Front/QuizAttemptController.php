@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Front;
 use App\Models\Quiz;
 use App\Models\Question;
 use App\Models\QuizAttempt;
+use App\Models\QuizProcess;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\UploadService;
-use App\Models\QuizProcess;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController as BaseController;
+
 
 class QuizAttemptController extends BaseController
 {
@@ -85,6 +89,9 @@ class QuizAttemptController extends BaseController
      *             type="object",
      *             @OA\Property(property="answers", type="object",example={"10":0,"25":1}
      *            ),
+     *          @OA\Property(property="images", type="array", @OA\Items(
+     *               type="integer",example="source file data form",
+     *              ),),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -100,12 +107,25 @@ class QuizAttemptController extends BaseController
         //Validated
         $validate = Validator::make($request->all(),
         [
-            'answers' => 'required|array|min:1',
+            'answers' => 'nullable|array|min:1',
+            'images' => 'nullable|array|min:1',
         ]);
 
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+        $images = [];
+        if ($request->file('images')) {
+            $path = "answers";
+                foreach($request->file('images') as $image){
+                    $imageName = Str::random(20) . uniqid()  . '.webp';
+                        Image::make($image)->encode('webp', 65)->resize(600, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            })->save(Storage::disk('public')->path($path.'/'.$imageName));
+                            array_push($images, $path.'/'.$imageName);
+                }
+        }
+
         $studentId = auth()->user()->id;
         $answers = $request->input('answers');
         $totalScore = 0;
@@ -113,6 +133,7 @@ class QuizAttemptController extends BaseController
 
         $attempt = $quiz->attempts()->create([
             'student_id' => $studentId,
+            'images'=>$images,
         ]);
 
 
@@ -122,27 +143,21 @@ class QuizAttemptController extends BaseController
             $grade = 0;
             $questionId = $question->id;
 
-            if (isset($answers[$questionId])) {
-                if($question->type == 3){
-                    $image = $this->uploadService->uploadImage('answers', $answers[$questionId]);
-                }else{
-                    if($answers[$questionId] == $question->correct_option){
-                            $grade = $question->grade;
-                            $totalScore += $grade;
-                        }
-                        $answer = $question->options[$answers[$questionId]];
+            if(isset($answers[$questionId]) && $answers[$questionId] == $question->correct_option){
+                    $grade = $question->grade;
+                    $totalScore += $grade;
+                    $answer = $question->options[$answers[$questionId]];
                 }
-            }
 
             $attempt->questions()->attach($questionId,[
                 'answer' =>  $answer,
-                'image' =>  $image,
                 'grade' => $grade,
             ]);
             $maxGrade += $question->grade;
         }
         // Calculate overall score based on grades
         $score = $this->calculateScore($totalScore, $maxGrade);
+
         $attempt->update([
             'score'=>$score,
         ]);
@@ -151,7 +166,9 @@ class QuizAttemptController extends BaseController
         $questionIsArticle = $quiz->questions()->where("type", 3)->first();
         $quizProcess = QuizProcess::where('student_id', $studentId)
         ->where('quiz_id', $quiz->id)->first();
-        
+        $quizProcess->update([
+            'status' => 'stoped',
+        ]);
         if(!$questionIsArticle && $quizProcess){
             $status = $this->quizProcess($score, $quizProcess);
         }

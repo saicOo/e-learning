@@ -42,10 +42,10 @@ class CheckSubmitQuiz
                 'message' => 'This quiz cannot be accessed at this time !'
               ], 200);
         }
-        
-        $quizProcess->update([
-            'status' => 'stoped',
-        ]);
+
+        // $quizProcess->update([
+        //     'status' => 'stoped',
+        // ]);
 
         return $next($request);
     }

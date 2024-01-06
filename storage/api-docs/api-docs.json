@@ -3109,6 +3109,13 @@
                                             "10": 0,
                                             "25": 1
                                         }
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": "source file data form"
+                                        }
                                     }
                                 },
                                 "type": "object"

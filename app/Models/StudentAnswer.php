@@ -11,17 +11,8 @@ class StudentAnswer extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $appends = ['image_url'];
-    protected $hidden = [
-        'image',
-    ];
-
-    public function getImageUrlAttribute(){
-        if($this->image){
-            return Storage::disk('public')->url($this->image);
-        }
-        return null;
-    }
+    public $timestamps = false;
+    
     public function attempt()
     {
         return $this->belongsTo(QuizAttempt::class);

@@ -16,7 +16,7 @@ class UploadService
         $imageName = Str::random(20) . uniqid()  . '.webp';
             Image::make($newImage)->encode('webp', 65)->resize(600, null, function ($constraint) {
                 $constraint->aspectRatio();
-                })->save( Storage::disk('public')->path($path.'/'.$imageName));
+                })->save(Storage::disk('public')->path($path.'/'.$imageName));
 
         return $path.'/'.$imageName;
     }
