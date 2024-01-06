@@ -63,4 +63,9 @@ class Student extends Authenticatable
         return $this->belongsToMany(Course::class, 'subscriptions')->select('courses.id', 'courses.name', 'courses.image')
         ->withPivot('start_date', 'end_date')->where('end_date', '>', now());
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

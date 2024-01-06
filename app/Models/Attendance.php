@@ -10,10 +10,11 @@ class Attendance extends Model
     use HasFactory;
 
     protected $guarded = [];
+    public $timestamps = false;
 
-    public function course()
+    public function session()
     {
-        return $this->belongsTo(Course::class)->select('courses.id', 'courses.name', 'courses.image');
+        return $this->belongsTo(Session::class);
     }
 
     public function student()

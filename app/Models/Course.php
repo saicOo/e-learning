@@ -63,4 +63,9 @@ class Course extends Model
         ->withPivot('start_date', 'end_date')
         ->where('end_date', '>', now());
     }
+
+    public function sessions()
+    {
+        return $this->hasMany(Session::class);
+    }
 }

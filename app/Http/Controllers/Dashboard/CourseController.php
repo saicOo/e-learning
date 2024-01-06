@@ -228,6 +228,7 @@ class CourseController extends BaseController
         $course->category;
         $course->user;
         $course->students;
+        $course->sessions;
         return $this->sendResponse("",['course' => $course]);
     }
 

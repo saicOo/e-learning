@@ -85,14 +85,19 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
         Route::delete('/quizzes/{quiz}', 'destroy');
         Route::put('/quizzes/{quiz}/approve', 'approve');
     });
+    Route::controller(SessionController::class)->group(function () {
+        Route::get('/courses/{course}/sessions', 'index');
+        Route::post('/courses/{course}/sessions', 'store');
+        Route::get('/sessions/{session}', 'show');
+        Route::put('/sessions/{session}', 'update');
+        Route::delete('/sessions/{session}', 'destroy');
+    });
     // routes contacts
 Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
     // routes category
     Route::apiResource('categories', 'CategoryController')->only(['index','store','update','destroy']);
     // routes subscriptions
     Route::apiResource('subscriptions', 'SubscriptionController')->only(['index','store','show','destroy']);
-    // routes attendances
-    Route::apiResource('attendances', 'AttendanceController')->only(['index','store','show','destroy']);
     // routes levels
     Route::get('/levels','LevelController@index');
 
