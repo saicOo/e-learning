@@ -6,9 +6,15 @@ use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Pion\Laravel\ChunkUpload\Save\ChunkSave;
+use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use App\Http\Controllers\BaseController as BaseController;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
 class LessonController extends BaseController
 {
@@ -72,7 +78,7 @@ class LessonController extends BaseController
         }
         $lessons->where('course_id', $course->id);
 
-        $lessons = $lessons->get();
+        $lessons = $lessons->orderBy('order')->get();
 
         return $this->sendResponse("",['lessons' => $lessons]);
     }
@@ -82,6 +88,15 @@ class LessonController extends BaseController
      *     path="/api/dashboard/courses/{course_id}/lessons",
      *      tags={"Dashboard Api Lessons"},
      *     summary="Add New Lessons",
+     * @OA\Parameter(
+     *         name="course_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
@@ -106,9 +121,10 @@ class LessonController extends BaseController
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
+        $lastLesson = Lesson::latest("order")->first();
         $request_data = $validate->validated();
         $request_data['course_id'] = $course->id;
+        $request_data['order'] = $lastLesson ? $lastOrderLesson->order + 1 : 1;
         $lesson = Lesson::create($request_data);
 
         return $this->sendResponse("Lesson Created Successfully",['lesson' => $lesson]);
@@ -156,6 +172,8 @@ class LessonController extends BaseController
      *             type="object",
      *             @OA\Property(property="name", type="string", example="string"),
      *             @OA\Property(property="description", type="string", example="string"),
+     *             @OA\Property(property="order", type="integer", example=1),
+     *
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -170,6 +188,14 @@ class LessonController extends BaseController
         [
             'name' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
+            'order' => [
+                'nullable',
+                'integer',
+                'max:500',
+                Rule::unique('lessons')->ignore($lesson->id)->where(function ($query) use ($lesson) {
+                    return $query->where('course_id', $lesson->course_id);
+                }),
+            ],
         ]);
 
         if($validate->fails()){
@@ -260,17 +286,28 @@ class LessonController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        if($lesson->type == 'file' && $lesson->video != null){
-            Storage::disk('public')->delete($lesson->video);
+        $receiver = new FileReceiver('video', $request, HandlerFactory::classFromRequest($request));
+        if ($receiver->isUploaded() === false) {
+            throw new UploadMissingFileException();
         }
-        $path_video = $request->file('video')->store('video',['disk' => 'public']);
 
-        $lesson->update([
-            'publish'=> "unpublish",
-            'video'=> $path_video,
-        ]);
+        $save = $receiver->receive();
 
-        return $this->sendResponse("The video has been uploaded successfully",['lesson' => $lesson]);
+        if ($save->isFinished()) {
+            if($lesson->type == 'file' && $lesson->video != null){
+                Storage::disk('public')->delete($lesson->video);
+            }
+            $file = $save->getFile();
+            $path_video = $file->store('video',['disk' => 'public']);
+            $lesson->update([
+                'publish'=> "unpublish",
+                'video'=> $path_video,
+            ]);
+        }
+
+        $handler = $save->handler();
+
+        return $this->sendResponse("The video has been uploaded successfully",["done" => $handler->getPercentageDone(),'lesson' => $lesson]);
     }
 
     /**
@@ -310,17 +347,28 @@ class LessonController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $receiver = new FileReceiver('attached', $request, HandlerFactory::classFromRequest($request));
+        if ($receiver->isUploaded() === false) {
+            throw new UploadMissingFileException();
+        }
+
+        $save = $receiver->receive();
+
+        if ($save->isFinished()) {
             if($lesson->attached != 'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf' || $lesson->attached != null){
                 Storage::disk('public')->delete($lesson->attached);
             }
-            $path_attached = $request->file('attached')->store('attached',['disk' => 'public']);
+            $file = $save->getFile();
+            $path_attached = $file->store('attached',['disk' => 'public']);
+            $lesson->update([
+                'publish'=> "unpublish",
+                'attached'=> $path_attached,
+            ]);
+        }
 
+        $handler = $save->handler();
 
-        $lesson->update([
-            'publish'=> "unpublish",
-            'attached'=> $path_attached,
-        ]);
-        return $this->sendResponse("The file has been uploaded successfully",['lesson' => $lesson]);
+        return $this->sendResponse("The file has been uploaded successfully",["done" => $handler->getPercentageDone(),'lesson' => $lesson]);
     }
 
     /**

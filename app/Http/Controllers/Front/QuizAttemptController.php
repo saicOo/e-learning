@@ -139,14 +139,14 @@ class QuizAttemptController extends BaseController
 
         foreach ($quiz->questions as $index => $question) {
             $image = null;
-            $answer = "";
+            $answer = null;
             $grade = 0;
             $questionId = $question->id;
 
             if(isset($answers[$questionId]) && $answers[$questionId] == $question->correct_option){
                     $grade = $question->grade;
                     $totalScore += $grade;
-                    $answer = $question->options[$answers[$questionId]];
+                    $answer = isset($question->options[$answers[$questionId]]) ? $question->options[$answers[$questionId]] : null;
                 }
 
             $attempt->questions()->attach($questionId,[
@@ -158,10 +158,6 @@ class QuizAttemptController extends BaseController
         // Calculate overall score based on grades
         $score = $this->calculateScore($totalScore, $maxGrade);
 
-        $attempt->update([
-            'score'=>$score,
-        ]);
-
         $status = "pending";
         $questionIsArticle = $quiz->questions()->where("type", 3)->first();
         $quizProcess = QuizProcess::where('student_id', $studentId)
@@ -172,6 +168,11 @@ class QuizAttemptController extends BaseController
         if(!$questionIsArticle && $quizProcess){
             $status = $this->quizProcess($score, $quizProcess);
         }
+
+        $attempt->update([
+            'score'=>$score,
+            'status'=>$status,
+        ]);
 
         return $this->sendResponse("Quiz Created Successfully", ['attempt' => $attempt,'status'=> $status]);
     }

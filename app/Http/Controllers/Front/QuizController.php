@@ -13,7 +13,7 @@ class QuizController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware(['checkSubscription','checkQuizProcess'])->only('show');
+        $this->middleware(['checkSubscription','checkLessonProgress','checkQuizProcess'])->only('show');
     }
     /**
      * @OA\Get(

@@ -168,6 +168,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
         L5Swagger\L5SwaggerServiceProvider::class,
+        Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider::class,
         /*
          * Application Service Providers...
          */

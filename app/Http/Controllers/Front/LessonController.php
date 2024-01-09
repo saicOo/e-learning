@@ -58,7 +58,7 @@ class LessonController extends BaseController
 
         $lessons->where('publish', "publish");
 
-        $lessons = $lessons->get();
+        $lessons = $lessons->orderBy('order')->get();
 
         $lessonsData = [];
         foreach ($lessons as $lesson) {

@@ -940,6 +940,17 @@
                 ],
                 "summary": "Add New Lessons",
                 "operationId": "2e578165eab0167e3f5d49bb36dff4be",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1027,6 +1038,10 @@
                                     "description": {
                                         "type": "string",
                                         "example": "string"
+                                    },
+                                    "order": {
+                                        "type": "integer",
+                                        "example": 1
                                     }
                                 },
                                 "type": "object"

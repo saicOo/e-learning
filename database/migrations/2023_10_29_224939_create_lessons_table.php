@@ -20,6 +20,7 @@ class CreateLessonsTable extends Migration
             $table->text('video')->nullable();
             $table->text('attached')->nullable();
             $table->text('description');
+            $table->integer('order')->nullable();
             $table->enum('publish',['publish','unpublish'])->default("unpublish");
             $table->unsignedBigInteger('course_id');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');

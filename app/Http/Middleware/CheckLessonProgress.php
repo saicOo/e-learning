@@ -19,16 +19,18 @@ class CheckLessonProgress
      */
     public function handle(Request $request, Closure $next)
     {
-        $currentLesson = $request->route('lesson'); // Get the current lesson ID from the route
+
+        $currentLesson = $request->route('lesson') ? $request->route('lesson') : $request->route('quiz')->lesson;
         $course = Course::find($currentLesson->course_id);
 
-        if($course->lessons[0]->id == $currentLesson->id){
+        // if($course->lessons[0]->id == $currentLesson->id){
+        if($course->lessons()->orderBy('order')->first()->id == $currentLesson->id){
             // Handle edge case for the first lesson
             return $next($request);
         }
         $previousLesson = $course->lessons()
-        ->where('id', '<', $currentLesson->id)
-        ->orderBy('id', 'desc')
+        ->where('order', '<', $currentLesson->order)
+        ->orderBy('order', 'desc')
         ->first();
 
         $student = $request->user();
