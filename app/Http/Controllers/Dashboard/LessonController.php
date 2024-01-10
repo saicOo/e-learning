@@ -124,7 +124,7 @@ class LessonController extends BaseController
         $lastLesson = Lesson::latest("order")->first();
         $request_data = $validate->validated();
         $request_data['course_id'] = $course->id;
-        $request_data['order'] = $lastLesson ? $lastOrderLesson->order + 1 : 1;
+        $request_data['order'] = $lastLesson ? $lastLesson->order + 1 : 1;
         $lesson = Lesson::create($request_data);
 
         return $this->sendResponse("Lesson Created Successfully",['lesson' => $lesson]);

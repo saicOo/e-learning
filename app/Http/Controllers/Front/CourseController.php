@@ -91,7 +91,7 @@ class CourseController extends BaseController
         }
 
         $courses->where('type', "online");
-        
+
         $courses = $courses->withCount(['lessons','students'])->get();
 
         return $this->sendResponse("",['courses' => $courses]);
@@ -123,8 +123,9 @@ class CourseController extends BaseController
         $course->user;
         $course->level;
         $course->category;
+        $lessons = $course->lessons()->select(["id","name","description"])->orderBy('order')->get();
         $quiz = $course->quizzes()->where("type","course")->inRandomOrder()->first();
-        return $this->sendResponse("",['course' => $course,'quiz'=>$quiz]);
+        return $this->sendResponse("",['course' => $course,'lessons'=>$lessons,'quiz'=>$quiz]);
     }
 
 }

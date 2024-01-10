@@ -35,6 +35,7 @@ class SubscriptionSeeder extends Seeder
             $subscription = Subscription::create([
                 'student_id' => $student->id,
                 'course_id' => $course->id,
+                'price' => $course->price,
                 'start_date' => $current,
                 'end_date' => $current->copy()->addMonth()
             ]);

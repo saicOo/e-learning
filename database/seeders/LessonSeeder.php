@@ -15,18 +15,21 @@ class LessonSeeder extends Seeder
      */
     public function run()
     {
-        $lessons_name = ["الدرس الاول","الدرس الثاني","الدرس الثالث","الدرس الرابع","الدرس الخامس","الدرس السادس"
-        ,"مراجعة الفصل الاول","مراجعة الفصل الثاني","مراجعة الفصل الثالث"];
+        $lessons_name = [1=>"الدرس الاول",2=>"الدرس الثاني",3=>"الدرس الثالث",
+        4=>"الدرس الرابع",5=>"الدرس الخامس",6=>"الدرس السادس"];
         $faker = Factory::create();
-        for ($i=0; $i < 30; $i++) {
-            Lesson::create([
-                'name'=>$lessons_name[rand(0,count($lessons_name) - 1)],
-                'description'=>$faker->sentence(20),
-                'video'=>'video/zSsEJPGdHgCgYqQNqV27S2mouiQAbFpl8r01QSbW.mp4',
-                'attached'=>'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf',
-                'course_id'=>Course::inRandomOrder()->first()->id,
-                'publish'=>"publish"
-             ]);
+        $courses = Course::all();
+        foreach ($courses as $course) {
+            foreach ($lessons_name as $key => $lesson_name) {
+                $course->lessons()->create([
+                    'name'=>$lesson_name,
+                    'description'=>$faker->sentence(20),
+                    'video'=>'video/zSsEJPGdHgCgYqQNqV27S2mouiQAbFpl8r01QSbW.mp4',
+                    'attached'=>'attached/hasjhRZGDGT8ptnIBfyo4voFTFHvcOsnr5FRSlJA.pdf',
+                    'order'=>$key,
+                    'publish'=>"publish"
+                ]);
+            }
         }
     }
 }

@@ -106,7 +106,8 @@ class LessonController extends BaseController
         if ($lesson->publish != "publish") {
             return $this->sendError('Record not found.');
         }
+        $progres = $lesson->progress()->where('student_id', auth()->user()->id)->first();
         $quiz = $lesson->quizzes()->inRandomOrder()->first();
-        return $this->sendResponse("",['lesson' => $lesson,'quiz'=> $quiz ]);
+        return $this->sendResponse("",['lesson' => $lesson,'progres'=> $progres, 'quiz'=> $quiz ]);
     }
 }

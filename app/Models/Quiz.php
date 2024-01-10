@@ -20,10 +20,10 @@ class Quiz extends Model
         return $this->hasMany(QuizAttempt::class);
     }
 
-    // public function beforQuiz()
-    // {
-    //     return $this->belongsTo(Quiz::class);
-    // }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 
     public function lesson()
     {

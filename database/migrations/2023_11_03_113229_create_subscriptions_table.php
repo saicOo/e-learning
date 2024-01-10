@@ -17,6 +17,7 @@ class CreateSubscriptionsTable extends Migration
             $table->id();
             $table->date('start_date');
             $table->date('end_date');
+            $table->decimal('price', 8, 2);
             $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('student_id');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
