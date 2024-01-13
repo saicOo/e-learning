@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Controllers\BaseController as BaseController;
 
-class TeacherController extends Controller
+class TeacherController extends BaseController
 {
+
     /**
      * @OA\Get(
      *     path="/api/teachers",

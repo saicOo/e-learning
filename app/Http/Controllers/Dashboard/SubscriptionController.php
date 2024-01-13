@@ -20,6 +20,7 @@ class SubscriptionController extends BaseController
         $this->middleware(['permission:subscriptions_create'])->only('store');
         $this->middleware(['permission:subscriptions_delete'])->only('destroy');
     }
+
     /**
      * @OA\Get(
      *     path="/api/dashboard/subscriptions",
@@ -59,7 +60,7 @@ class SubscriptionController extends BaseController
             $subscriptions->where('student_id', $request->input('student_id'));
         }
         // Filter by course name
-        if ($request->has('course_id')) {
+        if ($user->hasRole('manager') && $request->has('course_id')) {
             $subscriptions->where('course_id', $request->input('course_id'));
         }else {
             if($user->hasRole('teacher')){

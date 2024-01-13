@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
 
     // routes teachers teachers
-    // Route::resource('teachers', 'TeacherController')->except(['edit','create']);
     Route::controller(TeacherController::class)->group(function () {
         Route::get('/teachers', 'index');
         Route::post('/teachers', 'store');
@@ -100,10 +99,15 @@ Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
     Route::apiResource('subscriptions', 'SubscriptionController')->only(['index','store','show','destroy']);
     // routes levels
     Route::get('/levels','LevelController@index');
-
+    
+    Route::group(["prefix"=>'report',"namespace"=>'Reports',],function(){
+        Route::get('/subscriptions','SubscriptionController@subscriptionReport');
+        });
 
     Route::post('/logout', 'AuthController@logout');
+
 });
+
 
 // Route::post('/register','AuthController@register');
 Route::post('/login','AuthController@login');

@@ -32,7 +32,13 @@ Route::controller(CourseController::class)->group(function () {
     Route::get('/courses/{course}', 'show');
 });
 
+Route::controller(TeacherController::class)->group(function () {
+    Route::get('/teachers', 'index');
+    Route::get('/teachers/{teacher}', 'show');
+});
+
 Route::get('/categories','CategoryController@index');
+Route::get('/students-highest-scores','StudentController@studentsHighestScores');
 Route::get('/levels','LevelController@index');
 Route::post('/contacts','ContactController@store');
 Route::post('/login','AuthController@login');

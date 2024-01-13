@@ -7,15 +7,22 @@ use App\Models\Student;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Services\UploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BaseController as BaseController;
 
 class AuthController extends BaseController
 {
+    protected $uploadService;
+
+    public function __construct(UploadService $uploadService)
+    {
+        $this->uploadService = $uploadService;
+    }
     /**
      * @OA\Post(
      *     path="/api/login",
@@ -140,18 +147,12 @@ class AuthController extends BaseController
         }
         $student = $request->user();
         $request_data = $validate->validate();
-        if($request->image){
-            if($student->image != 'students/default.webp' || $student->image){
-                Storage::disk('public')->delete($student->image);
-            }
-            $imageName = Str::random(20) . uniqid()  . '.webp';
-                Image::make($request->image)->encode('webp', 65)->resize(600, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    })->save( Storage::disk('public')->path('students/'.$imageName));
-            $request_data['image']  = 'students/'.$imageName;
-        }
 
-        $student->update($request_data);
+        $image = $this->uploadService->uploadImage('students', $request->image, $student->image);
+
+        $student->update([
+            "image"=> $image,
+        ]);
 
         return response()->json([
             'success' => true,
