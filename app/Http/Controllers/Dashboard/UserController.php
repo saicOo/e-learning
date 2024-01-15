@@ -15,18 +15,27 @@ class UserController extends BaseController
     protected $uploadService;
     public function __construct(UploadService $uploadService)
     {
+        $this->middleware(['userAccess']);
         $this->uploadService = $uploadService;
     }
 
     /**
      * @OA\Put(
-     *     path="/api/dashboard/users/change-password",
+     *     path="/api/dashboard/users/change-password/{user_id}",
      *      tags={"Dashboard Api Users"},
      *     summary="change password user",
+     * @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="old_password", type="string", example="string"),
      *             @OA\Property(property="new_password", type="string", example="string"),
      *             @OA\Property(property="new_password_confirmation", type="string", example="string"),
      *         ),
@@ -36,29 +45,20 @@ class UserController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function changePassword(Request $request)
+    public function changePassword(Request $request, User $user)
     {
             //Validated
         $validate = Validator::make($request->all(),
         [
-            'old_password' => 'required',
-            'new_password' => 'required|confirmed',
+            'new_password' => 'required|string|min:4|max:14|confirmed',
         ]);
-
-
-        #Match The Old Password
-        if(!Hash::check($request->old_password, $request->user()->password)){
-            $validate->after(function($validate) {
-                $validate->errors()->add('old_password', "Old Password Doesn't match!");
-              });
-        }
 
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         #Update the new Password
-        $request->user()->update([
+        $user->update([
             'password' => Hash::make($request->new_password)
         ]);
 
@@ -70,9 +70,18 @@ class UserController extends BaseController
 
     /**
      * @OA\Post(
-     *     path="/api/dashboard/users/upload-image",
+     *     path="/api/dashboard/users/upload-image/{user_id}",
      *      tags={"Dashboard Api Users"},
      *     summary="upload file User",
+     * @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
@@ -84,7 +93,7 @@ class UserController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      *    )
      */
-    public function uploadImage(Request $request)
+    public function uploadImage(Request $request, User $user)
     {
         //Validated
         $validate = Validator::make($request->all(),
@@ -97,9 +106,9 @@ class UserController extends BaseController
         }
         $request_data = $validate->validate();
 
-        $image = $this->uploadService->uploadImage('users', $request->image, $request->user()->image);
+        $image = $this->uploadService->uploadImage('users', $request->image, $user->image);
 
-        $request->user()->update([
+        $user->update([
             "image"=> $image,
         ]);
 

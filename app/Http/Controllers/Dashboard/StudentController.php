@@ -223,7 +223,6 @@ class StudentController extends BaseController
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="old_password", type="string", example="string"),
      *             @OA\Property(property="new_password", type="string", example="string"),
      *             @OA\Property(property="new_password_confirmation", type="string", example="string"),
      *         ),
@@ -238,17 +237,8 @@ class StudentController extends BaseController
             //Validated
         $validate = Validator::make($request->all(),
         [
-            'old_password' => 'required',
             'new_password' => 'required|confirmed',
         ]);
-
-
-        #Match The Old Password
-        if(!Hash::check($request->old_password, $student->password)){
-            $validate->after(function($validate) {
-                $validate->errors()->add('old_password', "Old Password Doesn't match!");
-              });
-        }
 
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);

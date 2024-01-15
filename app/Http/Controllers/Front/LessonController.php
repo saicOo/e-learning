@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
 
@@ -62,9 +63,12 @@ class LessonController extends BaseController
 
         $lessonsData = [];
         foreach ($lessons as $lesson) {
+            $quizAttempt = null;
             $quiz = $lesson->quizzes()->inRandomOrder()->first();
-            $progres = $lesson->progress()->where('student_id', $request->user()->id)->first();
-
+            $progres = $lesson->progress()->where('student_id', $request->user()->id)->latest()->first();
+            if($progres){
+                $quizAttempt = QuizAttempt::where("quiz_id",$progres->quiz_id)->where('student_id', $request->user()->id)->latest()->first();
+            }
             $lessonData = [
                 'id' => $lesson->id,
                 'name' => $lesson->name,
@@ -73,7 +77,15 @@ class LessonController extends BaseController
                     'is_passed' => $progres->is_passed,
                     'status' => $progres->status
                     ] : null,
-                'quiz' => $quiz ?  : null,
+                'quiz_attempt' => $quizAttempt ? [
+                    'id' => $quizAttempt->id ,
+                    'score' => $quizAttempt->score,
+                    'note' => $quizAttempt->note,
+                    'is_visited' => $quizAttempt->is_visited,
+                    'status' => $quizAttempt->status,
+                    'created_at' => $quizAttempt->created_at
+                    ] : null,
+                'quiz' => $quiz ? $quiz : null,
             ];
             $lessonsData[] = $lessonData;
         }

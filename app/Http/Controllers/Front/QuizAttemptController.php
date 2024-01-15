@@ -64,9 +64,6 @@ class QuizAttemptController extends BaseController
     {
         $attempt = $quizAttempt;
         $attempt->questions;
-        // foreach ($attempt->answers as $answer) {
-        //     $answer->question;
-        // }
 
         return $this->sendResponse("",['attempt' => $attempt]);
     }
@@ -107,8 +104,8 @@ class QuizAttemptController extends BaseController
         //Validated
         $validate = Validator::make($request->all(),
         [
-            'answers' => 'nullable|array|min:1',
-            'images' => 'nullable|array|min:1',
+            'answers' => 'nullable|array',
+            'images' => 'nullable|array',
         ]);
 
         if($validate->fails()){
@@ -158,7 +155,8 @@ class QuizAttemptController extends BaseController
         // Calculate overall score based on grades
         $score = $this->calculateScore($totalScore, $maxGrade);
 
-        $status = "pending";
+        $statusQuiz = "pending";
+        $status = "failed";
         $questionIsArticle = $quiz->questions()->where("type", 3)->first();
         $quizProcess = QuizProcess::where('student_id', $studentId)
         ->where('quiz_id', $quiz->id)->first();
@@ -167,6 +165,7 @@ class QuizAttemptController extends BaseController
         ]);
         if(!$questionIsArticle && $quizProcess){
             $status = $this->quizProcess($score, $quizProcess);
+            $statusQuiz = $status;
         }
 
         $attempt->update([

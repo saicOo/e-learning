@@ -2194,10 +2194,6 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "old_password": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
                                     "new_password": {
                                         "type": "string",
                                         "example": "string"
@@ -2663,22 +2659,29 @@
                 }
             }
         },
-        "/api/dashboard/users/change-password": {
+        "/api/dashboard/users/change-password/{user_id}": {
             "put": {
                 "tags": [
                     "Dashboard Api Users"
                 ],
                 "summary": "change password user",
-                "operationId": "0efad2e6fa0cab3195e4278c7329612d",
+                "operationId": "fa03557535103cc487c42c27d2cdd7c3",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "old_password": {
-                                        "type": "string",
-                                        "example": "string"
-                                    },
                                     "new_password": {
                                         "type": "string",
                                         "example": "string"
@@ -2706,13 +2709,24 @@
                 }
             }
         },
-        "/api/dashboard/users/upload-image": {
+        "/api/dashboard/users/upload-image/{user_id}": {
             "post": {
                 "tags": [
                     "Dashboard Api Users"
                 ],
                 "summary": "upload file User",
-                "operationId": "4a4689dd18a8a9445e1fd0e71ab43a7a",
+                "operationId": "701d1c4cbe1cdf926a11aff357bc3939",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {

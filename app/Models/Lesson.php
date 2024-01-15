@@ -55,4 +55,9 @@ class Lesson extends Model
     {
         return $this->hasMany(QuizProcess::class);
     }
+
+    public function attempt()
+    {
+        return $this->hasManyThrough(QuizAttempt::class, Quiz::class);
+    }
 }

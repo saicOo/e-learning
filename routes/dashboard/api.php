@@ -38,8 +38,8 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
         Route::put('/assistants/{assistant}/approve', 'approve');
     });
     // routes users
-    Route::put('/users/change-password', 'UserController@changePassword');
-    Route::post('/users/upload-image', 'UserController@uploadImage');
+    Route::put('/users/change-password/{user}', 'UserController@changePassword');
+    Route::post('/users/upload-image/{user}', 'UserController@uploadImage');
     // routes students
     Route::apiResource('students', 'StudentController')->except(['edit','create']);
     Route::put('/students/{student}/change-password', 'StudentController@changePassword');
@@ -99,7 +99,7 @@ Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
     Route::apiResource('subscriptions', 'SubscriptionController')->only(['index','store','show','destroy']);
     // routes levels
     Route::get('/levels','LevelController@index');
-    
+
     Route::group(["prefix"=>'report',"namespace"=>'Reports',],function(){
         Route::get('/subscriptions','SubscriptionController@subscriptionReport');
         });

@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class RemovalOfManager
+class CheckUserAccess
 {
     /**
      * Handle an incoming request.
@@ -16,8 +16,10 @@ class RemovalOfManager
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = $request->user();
-        if (!$user->hasRole('manager')) {
+        $authUser = $request->user();
+        $user = $request->route('user');
+        if ($authUser->hasRole('manager') || ($authUser->hasRole('teacher') && $authUser->id == $user->id) ||
+        ($authUser->hasRole('assistant') && $authUser->id == $user->id)) {
             return $next($request);
         }
 

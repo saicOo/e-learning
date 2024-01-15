@@ -67,7 +67,7 @@ class Kernel extends HttpKernel
         'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
         'checkApiAffiliation' => \App\Http\Middleware\CheckApiAffiliationMiddleware::class,
-        'removalOfManager' => \App\Http\Middleware\RemovalOfManager::class,
+        'userAccess' => \App\Http\Middleware\CheckUserAccess::class,
         'checkSubscription' => \App\Http\Middleware\CheckSubscription::class,
         'checkLessonProgress' => \App\Http\Middleware\CheckLessonProgress::class,
         'checkQuizProcess' => \App\Http\Middleware\CheckQuizProcess::class,

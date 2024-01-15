@@ -68,6 +68,7 @@ class LessonController extends BaseController
     public function index(Request $request, Course $course)
     {
         $lessons = Lesson::query();
+        $lessons->with('quizzes');
         // Filter by course name
         if ($request->has('search')) {
             $lessons->where('name', 'like', '%' . $request->input('search') . '%');
@@ -151,6 +152,7 @@ class LessonController extends BaseController
      */
     public function show(Lesson $lesson)
     {
+        $lesson->attempt;
         return $this->sendResponse("",['lesson' => $lesson]);
     }
 
