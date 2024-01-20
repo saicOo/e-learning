@@ -20,8 +20,9 @@ return [
             'subscriptions' => 'c,d',
             'contacts' => 'r,d',
             'categories' => 'c,u,d',
-            'quizzes' => 'c,d,a',
+            'quizzes' => 'c,d,a,rev',
             'questions' => 'c,d',
+            'sessions' => 'r,c,u,d',
         ],
         'teacher' => [],
         'assistant' => [],
@@ -32,6 +33,7 @@ return [
         'u' => 'update',
         'd' => 'delete',
         'a' => 'approve',
+        'rev' => 'revision',
     ]
     // 'permission_structure' => [
     //     'cru_user' => [

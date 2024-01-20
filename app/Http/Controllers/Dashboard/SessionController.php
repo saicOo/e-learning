@@ -13,6 +13,13 @@ use App\Http\Controllers\BaseController as BaseController;
 
 class SessionController extends BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:sessions_read'])->only(['store','show']);
+        $this->middleware(['permission:sessions_create'])->only('store');
+        $this->middleware(['permission:sessions_update'])->only('update');
+        $this->middleware(['permission:sessions_delete'])->only('destroy');
+    }
     /**
      * @OA\Get(
      *     path="/api/dashboard/courses/{course_id}/sessions",
@@ -29,16 +36,6 @@ class SessionController extends BaseController
      *         ),
      *     ),
      * @OA\Parameter(
-     *         name="publish",
-     *         in="query",
-     *         description="filter sessions with publish (publish , unpublish)",
-     *         required=false,
-     *         explode=true,
-     *         @OA\Schema(
-     *             type="string",
-     *         ),
-     *     ),
-     * @OA\Parameter(
      *         name="search",
      *         in="query",
      *         description="filter search name or description",
@@ -52,13 +49,17 @@ class SessionController extends BaseController
      *       @OA\Response(response=401, description="Unauthenticated"),
      * )
      */
-    public function index(Course $course)
+    public function index(Request $request, Course $course)
     {
         $sessions = Session::query();
 
-        $sessions->with(["course"]);
+        $sessions->with(["course","students"]);
 
         $sessions->where('course_id', $course->id);
+
+        if ($request->has('session_date')) {
+            $lessons->date('session_date', $request->input('session_date'));
+        }
 
         $sessions = $sessions->get();
 
@@ -107,7 +108,7 @@ class SessionController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         $request_data = $validate->validated();
-        $request_data["session_date"] = Carbon::createFromFormat('Y/m/d', $request_data["session_date"]);
+        // $request_data["session_date"] = Carbon::createFromFormat('Y/m/d', $request_data["session_date"]);
         $session = Session::create([
             "session_date" => $request_data["session_date"],
             "details" => isset($request_data["details"]) ? $request_data["details"] : "",
@@ -195,7 +196,7 @@ class SessionController extends BaseController
         }
 
         $request_data = $validate->validated();
-        $request_data["session_date"] = Carbon::createFromFormat('Y/m/d', $request_data["session_date"]);
+        // $request_data["session_date"] = Carbon::createFromFormat('Y/m/d', $request_data["session_date"]);
         $session->update([
             "session_date" => $request_data["session_date"],
             "details" => isset($request_data["details"]) ? $request_data["details"] : $session->details,

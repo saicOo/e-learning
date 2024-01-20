@@ -68,7 +68,7 @@ class LessonController extends BaseController
     public function index(Request $request, Course $course)
     {
         $lessons = Lesson::query();
-        $lessons->with('quizzes');
+        $lessons->with('quizzes.questions');
         // Filter by course name
         if ($request->has('search')) {
             $lessons->where('name', 'like', '%' . $request->input('search') . '%');
@@ -152,7 +152,9 @@ class LessonController extends BaseController
      */
     public function show(Lesson $lesson)
     {
-        $lesson->attempt;
+        foreach ($lesson->attempts as $attempt) {
+            $attempt->quiz;
+        }
         return $this->sendResponse("",['lesson' => $lesson]);
     }
 
@@ -273,7 +275,7 @@ class LessonController extends BaseController
         if($request->video_type == 'file'){
             $validate = Validator::make($request->all(),
             [
-                'video' => 'required|mimes:mp4|max:1024000',
+                'video' => 'required|mimes:mp4|max:4024000',
                 'video_type' => 'required|in:file',
             ]);
         }else{
@@ -342,7 +344,7 @@ class LessonController extends BaseController
         //Validated
         $validate = Validator::make($request->all(),
         [
-            'attached' => 'required|mimes:pdf|max:122880',
+            'attached' => 'required|file|max:4024000',
         ]);
 
         if($validate->fails()){

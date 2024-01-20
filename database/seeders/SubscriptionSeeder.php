@@ -37,7 +37,7 @@ class SubscriptionSeeder extends Seeder
                 'course_id' => $course->id,
                 'price' => $course->price,
                 'start_date' => $current,
-                'end_date' => $current->copy()->addMonth()
+                'end_date' => $current->copy()->addYear()
             ]);
         }
     }

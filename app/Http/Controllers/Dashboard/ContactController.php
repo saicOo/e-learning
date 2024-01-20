@@ -38,7 +38,7 @@ class ContactController extends BaseController
         $contacts = Contact::when($request->search,function ($query) use ($request){ // if search
             return $query->where('name','Like','%'.$request->search.'%')->OrWhere('email','Like','%'.$request->search.'%')
             ->OrWhere('phone','Like','%'.$request->search.'%');
-        })->get();
+        })->latest('created_at')->get();
 
             return $this->sendResponse("",['contacts' => $contacts]);
     }

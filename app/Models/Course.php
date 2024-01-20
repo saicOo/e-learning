@@ -68,4 +68,9 @@ class Course extends Model
     {
         return $this->hasMany(Session::class);
     }
+
+    public function progress()
+    {
+        return $this->hasOne(QuizProcess::class);
+    }
 }

@@ -106,13 +106,12 @@ class SubscriptionController extends BaseController
         }
 
         $current = Carbon::now();
-        $end_date = $current->addMonth(1);
 
         $subscription = Subscription::create([
             'student_id' => $request->student_id,
             'course_id' => $request->course_id,
-            'start_date' => now(),
-            'end_date' => $end_date
+            'start_date' => $current,
+            'end_date' => $current->copy()->addYear()
         ]);
 
         return $this->sendResponse("Student Is Subscription Successfully",['subscription' => $subscription]);

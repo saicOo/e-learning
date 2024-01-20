@@ -42,6 +42,16 @@ class QuizController extends BaseController
      *             type="integer",
      *         ),
      *     ),
+     *   @OA\Parameter(
+     *         name="type",
+     *         in="query",
+     *         description="filter quizzes with type",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
      * @OA\Parameter(
      *         name="search",
      *         in="query",

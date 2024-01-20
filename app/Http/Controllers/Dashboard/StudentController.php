@@ -62,7 +62,8 @@ class StudentController extends BaseController
             $students->where(function($query) use ($search) {
                 return $query->where('name', 'LIKE', '%'.$search.'%')
                     ->orWhere('phone', 'LIKE', '%'.$search.'%')
-                    ->orWhere('email', 'LIKE', '%'.$search.'%');
+                    ->orWhere('email', 'LIKE', '%'.$search.'%')
+                    ->orWhere('id', $search);
             });
         }
 

@@ -56,8 +56,8 @@ class Lesson extends Model
         return $this->hasMany(QuizProcess::class);
     }
 
-    public function attempt()
+    public function attempts()
     {
-        return $this->hasManyThrough(QuizAttempt::class, Quiz::class);
+        return $this->hasManyThrough(QuizAttempt::class, Quiz::class)->latest('created_at');
     }
 }

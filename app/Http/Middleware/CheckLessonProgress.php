@@ -19,8 +19,10 @@ class CheckLessonProgress
      */
     public function handle(Request $request, Closure $next)
     {
-
         $currentLesson = $request->route('lesson') ? $request->route('lesson') : $request->route('quiz')->lesson;
+        if(!$currentLesson){
+            return $next($request);
+        }
         $course = Course::find($currentLesson->course_id);
 
         // if($course->lessons[0]->id == $currentLesson->id){
@@ -28,6 +30,7 @@ class CheckLessonProgress
             // Handle edge case for the first lesson
             return $next($request);
         }
+        
         $previousLesson = $course->lessons()
         ->where('order', '<', $currentLesson->order)
         ->orderBy('order', 'desc')

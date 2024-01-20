@@ -1531,6 +1531,16 @@
                         }
                     },
                     {
+                        "name": "type",
+                        "in": "query",
+                        "description": "filter quizzes with type",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "search",
                         "in": "query",
                         "description": "filter search name or description",
@@ -1766,16 +1776,6 @@
                         "explode": true,
                         "schema": {
                             "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "publish",
-                        "in": "query",
-                        "description": "filter sessions with publish (publish , unpublish)",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "string"
                         }
                     },
                     {
@@ -2922,13 +2922,13 @@
                 "operationId": "4d2b332408486c69d28f1200eed63bc8",
                 "parameters": [
                     {
-                        "name": "user_id",
+                        "name": "search",
                         "in": "query",
-                        "description": "filter courses with user",
+                        "description": "filter search name or description courses",
                         "required": false,
                         "explode": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     },
                     {
@@ -2939,36 +2939,6 @@
                         "explode": true,
                         "schema": {
                             "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "category_id",
-                        "in": "query",
-                        "description": "filter courses with category",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "semester",
-                        "in": "query",
-                        "description": "filter courses with semester (first semester , second semester , full semester)",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "description": "filter search name or description courses",
-                        "required": false,
-                        "explode": true,
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 ],
@@ -2986,6 +2956,34 @@
                 ],
                 "summary": "show course",
                 "operationId": "b5b271252699d2d16e54cf845a7847b6",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course_id}/progress": {
+            "get": {
+                "tags": [
+                    "Front Api Courses"
+                ],
+                "summary": "progress course",
+                "operationId": "c288388f88a022543083449fee5916c3",
                 "parameters": [
                     {
                         "name": "course_id",

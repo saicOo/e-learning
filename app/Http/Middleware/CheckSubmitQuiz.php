@@ -39,7 +39,7 @@ class CheckSubmitQuiz
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
-                'message' => 'This quiz cannot be accessed at this time !'
+                'message' => 'This test is not accessible at this time. Please re-enter later !'
               ], 200);
         }
 

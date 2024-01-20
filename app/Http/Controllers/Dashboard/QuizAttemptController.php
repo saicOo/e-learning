@@ -14,6 +14,8 @@ class QuizAttemptController extends BaseController
 {
     public function __construct()
     {
+
+        $this->middleware(['permission:quizzes_revision'])->only('store');
         $this->middleware(['checkApiAffiliation'])->only("index");
     }
     /**
@@ -39,7 +41,7 @@ class QuizAttemptController extends BaseController
         $attempts = QuizAttempt::query();
         $attempts->with('student:id,name,email');
         $attempts->where('quiz_id', $quiz->id);
-        $attempts = $attempts->get();
+        $attempts = $attempts->latest('created_at')->get();
         return $this->sendResponse("",['attempts' => $attempts]);
     }
 

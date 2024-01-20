@@ -134,7 +134,7 @@ class CourseController extends BaseController
             $courses->where('user_id', $request->input('user_id'));
         }
 
-        $courses = $courses->withCount(['lessons','students'])->get();
+        $courses = $courses->withCount(['lessons','students'])->latest('created_at')->get();
 
         return $this->sendResponse("",['courses' => $courses]);
     }

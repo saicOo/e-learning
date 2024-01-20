@@ -173,7 +173,7 @@ class QuizAttemptController extends BaseController
             'status'=>$status,
         ]);
 
-        return $this->sendResponse("Quiz Created Successfully", ['attempt' => $attempt,'status'=> $status]);
+        return $this->sendResponse("Quiz Created Successfully", ['attempt' => $attempt,'status'=> $statusQuiz]);
     }
 
     // Add helper methods as needed

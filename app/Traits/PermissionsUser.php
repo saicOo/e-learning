@@ -16,9 +16,9 @@ trait PermissionsUser
                     'lessons_delete',
                     'questions_create',
                     'questions_delete',
-                    'questions_delete',
                     'quizzes_create',
                     'quizzes_delete',
+                    'quizzes_revision',
                 ];
                 break;
             case 'assistant':
@@ -27,6 +27,10 @@ trait PermissionsUser
                     'students_create',
                     'students_update',
                     'subscriptions_create',
+                    'sessions_read',
+                    'sessions_create',
+                    'sessions_update',
+                    'sessions_delete',
                 ];
                 break;
 
