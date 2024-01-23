@@ -18,7 +18,7 @@ class QuizSeeder extends Seeder
         $quizzes_name = ['نموذج أ','نموذج ب','نموذج ج','نموذج د','اختبار علي الوحدة الاولي','اختبار علي الوحدة الثانية'];
         $types = ['course','lesson'];
         $faker = Factory::create();
-        for ($i=0; $i < 150; $i++) {
+        for ($i=0; $i < 100; $i++) {
             $course = Course::inRandomOrder()->first();
             $lessons = $course->lessons;
             $lesson_count = $lessons->count();

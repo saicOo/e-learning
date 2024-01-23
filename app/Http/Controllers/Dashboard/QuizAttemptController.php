@@ -39,7 +39,7 @@ class QuizAttemptController extends BaseController
     public function index(Quiz $quiz)
     {
         $attempts = QuizAttempt::query();
-        $attempts->with('student:id,name,email');
+        $attempts->with('student');
         $attempts->where('quiz_id', $quiz->id);
         $attempts = $attempts->latest('created_at')->get();
         return $this->sendResponse("",['attempts' => $attempts]);

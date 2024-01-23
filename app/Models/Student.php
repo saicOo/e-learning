@@ -60,7 +60,7 @@ class Student extends Authenticatable
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'subscriptions')->select('courses.id', 'courses.name', 'courses.image')
+        return $this->belongsToMany(Course::class, 'subscriptions')->select('courses.id', 'courses.name', 'courses.image', 'courses.user_id')
         ->withPivot('start_date', 'end_date')->where('end_date', '>', now());
     }
 

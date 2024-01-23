@@ -28,6 +28,7 @@ class CheckApiAffiliationMiddleware
                  ($request->route('quiz') && $request->user()->id == $request->route('quiz')->course->user_id) ||
                  ($request->route('lesson') && $request->user()->id == $request->route('lesson')->course->user_id) ||
                  ($request->route('question') && $request->user()->id == $request->route('question')->course->user_id) ||
+                 ($request->route('session') && $request->user()->id == $request->route('session')->course->user_id) ||
                  ($request->route('teacher') && $request->user()->id == $request->route('teacher')) ||
                  ($user->assistants->find($request->route('assistant')))
                  ) {
@@ -40,6 +41,7 @@ class CheckApiAffiliationMiddleware
             ($request->route('quiz') && $request->user()->user_id == $request->route('quiz')->course->user_id) ||
                  ($request->route('lesson') && $request->user()->user_id == $request->route('lesson')->course->user_id) ||
                  ($request->route('question') && $request->user()->user_id == $request->route('question')->course->user_id) ||
+                 ($request->route('session') && $request->user()->user_id == $request->route('session')->course->user_id) ||
                  ($request->route('teacher') && $request->user()->user_id == $request->route('teacher')) ||
                  ($request->route('assistant') && $request->user()->id == $request->route('assistant'))
                  ) {

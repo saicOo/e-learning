@@ -63,11 +63,23 @@ class SubscriptionController extends BaseController
         if ($user->hasRole('manager') && $request->has('course_id')) {
             $subscriptions->where('course_id', $request->input('course_id'));
         }else {
+
             if($user->hasRole('teacher')){
-                $subscriptions->whereIn('course_id', $user->courses->pluck("id"));
+                $course_id = $user->courses->pluck("id")->toArray();
+                if($request->has('course_id') &&
+                in_array($request->input('course_id'),$user->courses->pluck("id")->toArray())){
+                    $course_id = [$request->input('course_id')];
+                }
+                $subscriptions->whereIn('course_id', $course_id);
             }
+
             if($user->hasRole('assistant')){
-                $subscriptions->whereIn('course_id', $user->teacher->courses->pluck("id"));
+                $course_id = $user->teacher->courses->pluck("id")->toArray();
+                if($request->has('course_id') &&
+                in_array($request->input('course_id'), $user->teacher->courses->pluck("id")->toArray())){
+                    $course_id = [$request->input('course_id')];
+                }
+                $subscriptions->whereIn('course_id', $course_id);
             }
         }
 

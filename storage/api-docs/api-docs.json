@@ -577,6 +577,16 @@
                         }
                     },
                     {
+                        "name": "type",
+                        "in": "query",
+                        "description": "filter courses with type (online, offline)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "search",
                         "in": "query",
                         "description": "filter search name or description courses",
@@ -1819,7 +1829,7 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "date": {
+                                    "session_date": {
                                         "type": "string",
                                         "example": "2020/10/8"
                                     },
@@ -1855,7 +1865,7 @@
                 "tags": [
                     "Dashboard Api Sessions"
                 ],
-                "summary": "Delete session",
+                "summary": "Show Session",
                 "operationId": "956ea29185ba72f0a80cc689392c66f2",
                 "parameters": [
                     {
@@ -1901,7 +1911,7 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "date": {
+                                    "session_date": {
                                         "type": "string",
                                         "example": "2020/10/8"
                                     },

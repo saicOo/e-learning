@@ -17,28 +17,28 @@ class SubscriptionSeeder extends Seeder
     public function run()
     {
         for ($i=0; $i < 100; $i++) {
-            $student = Student::where('attendance_type','online')->inRandomOrder()->first();
+            $student = Student::inRandomOrder()->first();
             $course = Course::inRandomOrder()->first();
             $current = Carbon::today()->subDays(rand(0, 50));
             // $addMonth = $current;
 
             $check = Subscription::where('student_id',$student->id)
-            ->where('course_id',$course->id)->where('start_date',$current)->first();
-            // if($check){
-            //     dd('false');
+            ->where('course_id',$course->id)->first();
+
+            // while ($check) {
+            //     $check = Subscription::where('student_id',$student->id)
+            //     ->where('course_id',$course->id)->where('start_date',$current)->first();
+            //     $current = Carbon::today()->subDays(rand(0, 100));
             // }
-            while ($check) {
-                $check = Subscription::where('student_id',$student->id)
-                ->where('course_id',$course->id)->where('start_date',$current)->first();
-                $current = Carbon::today()->subDays(rand(0, 100));
+            if(!$check){
+                $subscription = Subscription::create([
+                    'student_id' => $student->id,
+                    'course_id' => $course->id,
+                    'price' => $course->price,
+                    'start_date' => $current,
+                    'end_date' => $current->copy()->addYear()
+                ]);
             }
-            $subscription = Subscription::create([
-                'student_id' => $student->id,
-                'course_id' => $course->id,
-                'price' => $course->price,
-                'start_date' => $current,
-                'end_date' => $current->copy()->addYear()
-            ]);
         }
     }
 }

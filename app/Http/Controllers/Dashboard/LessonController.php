@@ -154,6 +154,7 @@ class LessonController extends BaseController
     {
         foreach ($lesson->attempts as $attempt) {
             $attempt->quiz;
+            $attempt->student;
         }
         return $this->sendResponse("",['lesson' => $lesson]);
     }

@@ -19,6 +19,9 @@ class SessionController extends BaseController
         $this->middleware(['permission:sessions_create'])->only('store');
         $this->middleware(['permission:sessions_update'])->only('update');
         $this->middleware(['permission:sessions_delete'])->only('destroy');
+
+        $this->middleware(['checkApiAffiliation','checkCourseOffline'])->only(['index','store']);
+
     }
     /**
      * @OA\Get(
@@ -82,7 +85,7 @@ class SessionController extends BaseController
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="date", type="string", example="2020/10/8"),
+     *             @OA\Property(property="session_date", type="string", example="2020/10/8"),
      *             @OA\Property(property="details", type="string", example="string"),
      *             @OA\Property(property="students", type="array", @OA\Items(
      *               type="integer",example="1",
@@ -120,7 +123,7 @@ class SessionController extends BaseController
             if(in_array($student_id,$request_data["students"])){
                 $status = "present";
             }
-            $session->students()->attach([$student_id => ['status' => $status]]);
+            $session->students()->sync([$student_id => ['status' => $status]],false);
         }
 
         return $this->sendResponse("Session Created Successfully",['session' => $session]);
@@ -130,7 +133,7 @@ class SessionController extends BaseController
      * @OA\Get(
      *     path="/api/dashboard/sessions/{session_id}",
      *      tags={"Dashboard Api Sessions"},
-     *     summary="Delete session",
+     *     summary="Show Session",
      *     @OA\Parameter(
      *         name="session_id",
      *         in="path",
@@ -167,7 +170,7 @@ class SessionController extends BaseController
      * @OA\RequestBody(
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="date", type="string", example="2020/10/8"),
+     *             @OA\Property(property="session_date", type="string", example="2020/10/8"),
      *             @OA\Property(property="details", type="string", example="string"),
      *             @OA\Property(property="students", type="array", @OA\Items(
      *               type="integer",example="1",
@@ -208,7 +211,8 @@ class SessionController extends BaseController
             if(in_array($student_id,$request_data["students"])){
                 $status = "present";
             }
-            $session->students()->updateExistingPivot($student_id , ['status' => $status]);
+            $session->students()->sync([$student_id => ['status' => $status]],false);
+            // $session->students()->updateExistingPivot($student_id , ['status' => $status]);
         }
 
         return $this->sendResponse("Session Updated Successfully",['session' => $session]);

@@ -9,7 +9,7 @@ class Session extends Model
 {
     use HasFactory;
     public $guarded = [];
-    public $timestamps = false;
+    // public $timestamps = false;
     public function course()
     {
         return $this->belongsTo(Course::class)->select('courses.id', 'courses.name', 'courses.image');

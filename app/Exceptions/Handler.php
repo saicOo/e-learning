@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Auth\AuthenticationException;
+use Laravel\Sanctum\Exceptions\MissingAbilityException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -56,5 +57,27 @@ class Handler extends ExceptionHandler
                                 ], 200);
                 }
             });
+
+    }
+
+     /**
+     * Render an exception into an HTTP response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Throwable $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function render($request, Throwable $e)
+    {
+        if ($request->user() && $e instanceof MissingAbilityException) {
+            return response()->json(
+                [
+                    'status_code'=>403,
+                    'success' => false,
+                    'message' => 'You are not authorized to perform this action.'
+                ], 200);
+        }
+
+        return parent::render($request, $e);
     }
 }

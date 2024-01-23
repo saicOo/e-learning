@@ -114,7 +114,7 @@ class QuizAttemptController extends BaseController
         $images = [];
         if ($request->file('images')) {
             $path = "answers";
-                foreach($request->file('images') as $image){
+            foreach($request->file('images') as $image){
                     $imageName = Str::random(20) . uniqid()  . '.webp';
                         Image::make($image)->encode('webp', 65)->resize(600, null, function ($constraint) {
                             $constraint->aspectRatio();
@@ -135,22 +135,25 @@ class QuizAttemptController extends BaseController
 
 
         foreach ($quiz->questions as $index => $question) {
-            $image = null;
-            $answer = null;
-            $grade = 0;
-            $questionId = $question->id;
 
-            if(isset($answers[$questionId]) && $answers[$questionId] == $question->correct_option){
-                    $grade = $question->grade;
-                    $totalScore += $grade;
+                $answer = null;
+                $grade = 0;
+                $questionId = $question->id;
+
+                if(isset($answers[$questionId])){
+                    if($answers[$questionId] == $question->correct_option){
+                        $grade = $question->grade;
+                        $totalScore += $grade;
+                    }
                     $answer = isset($question->options[$answers[$questionId]]) ? $question->options[$answers[$questionId]] : null;
                 }
 
-            $attempt->questions()->attach($questionId,[
-                'answer' =>  $answer,
-                'grade' => $grade,
-            ]);
-            $maxGrade += $question->grade;
+                $attempt->questions()->attach($questionId,[
+                    'answer' =>  $answer,
+                    'grade' => $grade,
+                ]);
+                $maxGrade += $question->grade;
+
         }
         // Calculate overall score based on grades
         $score = $this->calculateScore($totalScore, $maxGrade);

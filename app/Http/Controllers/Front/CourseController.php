@@ -93,10 +93,11 @@ class CourseController extends BaseController
         if ($course->publish != "publish") {
             return $this->sendError('Record not found.');
         }
+
         $course->user;
         $course->level;
         $course->category;
-        $lessons = $course->lessons()->select(["id","name","description"])->orderBy('order')->get();
+        $lessons = $course->lessons()->select(["id","name","description","order"])->orderBy('order')->get();
         $quiz = $course->quizzes()->where("type","course")->inRandomOrder()->first();
         return $this->sendResponse("",['course' => $course,'lessons'=>$lessons,'quiz'=>$quiz]);
     }

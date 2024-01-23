@@ -83,6 +83,16 @@ class CourseController extends BaseController
      *         ),
      *     ),
      * @OA\Parameter(
+     *         name="type",
+     *         in="query",
+     *         description="filter courses with type (online, offline)",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="string",
+     *         ),
+     *     ),
+     * @OA\Parameter(
      *         name="search",
      *         in="query",
      *         description="filter search name or description courses",
@@ -121,6 +131,10 @@ class CourseController extends BaseController
         if ($request->has('publish')) {
             $courses->where('publish', $request->input('publish'));
         }
+        // Filter by status
+        if ($request->has('type')) {
+            $courses->where('type', $request->input('type'));
+        }
 
         if($user->hasRole('teacher')){
             $courses->where('user_id', $user->id);
@@ -134,7 +148,7 @@ class CourseController extends BaseController
             $courses->where('user_id', $request->input('user_id'));
         }
 
-        $courses = $courses->withCount(['lessons','students'])->latest('created_at')->get();
+        $courses = $courses->withCount(['lessons','students','sessions'])->latest('created_at')->get();
 
         return $this->sendResponse("",['courses' => $courses]);
     }

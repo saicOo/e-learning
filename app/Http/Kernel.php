@@ -70,8 +70,10 @@ class Kernel extends HttpKernel
         'userAccess' => \App\Http\Middleware\CheckUserAccess::class,
         'checkSubscription' => \App\Http\Middleware\CheckSubscription::class,
         'checkLessonProgress' => \App\Http\Middleware\CheckLessonProgress::class,
+        'checkCourseProgress' => \App\Http\Middleware\CheckCourseProgress::class,
         'checkQuizProcess' => \App\Http\Middleware\CheckQuizProcess::class,
         'checkSubmitQuiz' => \App\Http\Middleware\CheckSubmitQuiz::class,
         'checkAssistantAccess' => \App\Http\Middleware\CheckAssistantAccess::class,
+        'checkCourseOffline' => \App\Http\Middleware\CheckCourseOffline::class,
     ];
 }
