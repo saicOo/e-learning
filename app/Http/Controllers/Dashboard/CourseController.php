@@ -277,7 +277,6 @@ class CourseController extends BaseController
      */
     public function update(Request $request, Course $course)
     {
-        return $request->all();
         //Validated
         $validate = Validator::make($request->all(),
         [
