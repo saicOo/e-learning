@@ -19,6 +19,7 @@ class Lesson extends Model
         'attached',
     ];
 
+
     public function getVideoUrlAttribute(){
         if ($this->video) {
             if ($this->video_type == 'file') {
@@ -59,5 +60,20 @@ class Lesson extends Model
     public function attempts()
     {
         return $this->hasManyThrough(QuizAttempt::class, Quiz::class)->latest('created_at');
+    }
+
+    public function reorderLessons($newOrder, $oldOrder)
+    {
+        if ($oldOrder < $newOrder) {
+            Lesson::where('course_id', $this->course_id)
+                ->where('id', '!=', $this->id)
+                ->whereBetween('order', [$oldOrder, $newOrder])
+                ->decrement('order');
+        } elseif ($oldOrder > $newOrder) {
+            Lesson::where('course_id', $this->course_id)
+                ->where('id', '!=', $this->id)
+                ->whereBetween('order', [$newOrder, $oldOrder])
+                ->increment('order');
+        }
     }
 }

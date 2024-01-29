@@ -75,5 +75,6 @@ class Kernel extends HttpKernel
         'checkSubmitQuiz' => \App\Http\Middleware\CheckSubmitQuiz::class,
         'checkAssistantAccess' => \App\Http\Middleware\CheckAssistantAccess::class,
         'checkCourseOffline' => \App\Http\Middleware\CheckCourseOffline::class,
+        'checkRevisionQuiz' => \App\Http\Middleware\CheckRevisionQuiz::class,
     ];
 }

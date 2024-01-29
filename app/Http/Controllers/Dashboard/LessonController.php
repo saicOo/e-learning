@@ -188,6 +188,9 @@ class LessonController extends BaseController
      */
     public function update(Request $request, Lesson $lesson)
     {
+        $course = Course::find($lesson->course_id);
+        $old_order = $lesson->order;
+        $last_order = $course->lessons()->latest("order")->first()->order;
         //Validated
         $validate = Validator::make($request->all(),
         [
@@ -196,10 +199,11 @@ class LessonController extends BaseController
             'order' => [
                 'nullable',
                 'integer',
-                'max:500',
-                Rule::unique('lessons')->ignore($lesson->id)->where(function ($query) use ($lesson) {
-                    return $query->where('course_id', $lesson->course_id);
-                }),
+                'min:1',
+                'max:'. $last_order,'not_in:'.$old_order
+                // Rule::unique('lessons')->ignore($lesson->id)->where(function ($query) use ($lesson) {
+                //     return $query->where('course_id', $lesson->course_id);
+                // }),
             ],
         ]);
 
@@ -208,9 +212,12 @@ class LessonController extends BaseController
         }
 
         $request_data = $validate->validated();
-
+         // اعادة ترتيب الدروس حسب الاوردر
         $request_data['publish'] = "unpublish";
         $lesson->update($request_data);
+        if($request->has('order')){
+            $lesson->reorderLessons($request->input('order'),$old_order);
+        }
 
         return $this->sendResponse("Lesson Updated Successfully",['lesson' => $lesson]);
     }
@@ -307,6 +314,10 @@ class LessonController extends BaseController
             $lesson->update([
                 'publish'=> "unpublish",
                 'video'=> $path_video,
+            ]);
+            $lesson->progress()->update([
+                'status'=>'repetition',
+                'is_passed'=>false
             ]);
         }
 

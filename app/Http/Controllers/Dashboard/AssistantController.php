@@ -107,6 +107,7 @@ class AssistantController extends BaseController
      *             @OA\Property(property="password", type="string", example="string"),
      *             @OA\Property(property="password_confirmation", type="string", example="string"),
      *             @OA\Property(property="image", type="file", example="path image"),
+     *             @OA\Property(property="user_id", type="integer", example="2"),
      *         ),
      *     ),
      *     @OA\Response(response=200, description="OK"),
@@ -123,8 +124,16 @@ class AssistantController extends BaseController
             'password' => 'required|string|max:255|confirmed',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
             'phone' => 'required|numeric|digits:11|unique:users,phone',
+            'user_id' => 'required|exists:users,id',
         ]);
 
+        $check_teacher = User::whereRoleIs('teacher')->where('id', $request->user_id)->first();
+        if(!$check_teacher){
+            $validate->after(function($validate) {
+                $validate->errors()->add('user_id', 'You have chosen the wrong reference teacher');
+              });
+        }
+        
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -133,7 +142,7 @@ class AssistantController extends BaseController
         if($request->image){
             $request_data['image'] = $this->uploadService->uploadImage('users', $request->image);
         }
-        $request_data['user_id'] = $request->user()->id;
+
         $assistant = $this->userService->createUser($request_data);
         $assistant->attachRole('assistant');
         $assistant->syncPermissions($this->createPermissionsUser($assistant, 'assistant'));

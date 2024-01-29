@@ -323,6 +323,14 @@ class CourseController extends BaseController
         if($course->image){
             Storage::disk('public')->delete($course->image);
         }
+        foreach ($course->lessons as $lesson) {
+            if($lesson->type == 'file' && $lesson->video != null){
+                Storage::disk('public')->delete($lesson->video);
+            }
+            if($lesson->attached != null){
+                Storage::disk('public')->delete($lesson->attached);
+            }
+        }
         $course->delete();
          return $this->sendResponse("Deleted Data Successfully");
     }

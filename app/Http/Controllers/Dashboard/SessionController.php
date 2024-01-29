@@ -98,14 +98,13 @@ class SessionController extends BaseController
      */
     public function store(Request $request, Course $course)
     {
-        //Validated
+        //Validated |unique:sessions,session_date
         $validate = Validator::make($request->all(),
         [
-            'session_date' => 'required|date|unique:sessions,session_date',
+            'session_date' => 'required|date',
             'details' => 'nullable|string|max:255',
             'students' => 'required|array|min:1',
         ]);
-
 
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);

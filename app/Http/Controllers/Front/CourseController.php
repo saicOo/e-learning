@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Course;
 use App\Models\QuizAttempt;
+use App\Models\QuizProcess;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
 
@@ -125,17 +126,22 @@ class CourseController extends BaseController
         if ($course->publish != "publish") {
             return $this->sendError('Record not found.');
         }
+        $student = $request->user();
         $course->user;
         $course->level;
         $course->category;
         $quizAttempt = null;
-        $progres = $course->progress()->where('student_id', $request->user()->id)->latest()->first();
+        $previousLesson = $course->lessons()->select(["id","name","description","order"])->orderBy('order', 'DESC')->first();
+        $previousLessonProgress = QuizProcess::where('student_id', $student->id)
+        ->where('lesson_id', $previousLesson->id)
+        ->first();
+        $progres = $course->progress()->whereNull('lesson_id')->where('student_id', $student->id)->latest()->first();
             if($progres){
-                $quizAttempt = QuizAttempt::where("quiz_id",$progres->quiz_id)->where('student_id', $request->user()->id)->latest()->first();
+                $quizAttempt = QuizAttempt::where("quiz_id",$progres->quiz_id)->where('student_id', $student->id)->latest()->first();
             }
-        $lessons = $course->lessons()->select(["id","name","description"])->orderBy('order')->get();
         $quiz = $course->quizzes()->where("type","course")->inRandomOrder()->first();
-        return $this->sendResponse("",['course' => $course,'quiz'=>$quiz,'progres'=>$progres,'quizAttempt'=>$quizAttempt]);
+        return $this->sendResponse("",['course' => $course,'quiz'=>$quiz,'progres'=>$progres,
+        'previousLessonProgress'=>$previousLessonProgress,'quizAttempt'=>$quizAttempt]);
     }
 
 

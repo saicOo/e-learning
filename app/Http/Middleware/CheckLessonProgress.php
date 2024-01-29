@@ -30,19 +30,22 @@ class CheckLessonProgress
             // Handle edge case for the first lesson
             return $next($request);
         }
-        
+
         $previousLesson = $course->lessons()
         ->where('order', '<', $currentLesson->order)
         ->orderBy('order', 'desc')
         ->first();
 
         $student = $request->user();
+        $currentLessonProgress = QuizProcess::where('student_id', $student->id)
+            ->where('lesson_id', $currentLesson->id)
+            ->first();
         $previousLessonProgress = QuizProcess::where('student_id', $student->id)
             ->where('lesson_id', $previousLesson->id)
             ->first();
 
         // في حالة اذا كان الدرس السابق لم يتم النجاح في اختباره
-        if (!$previousLessonProgress || !$previousLessonProgress->is_passed) {
+        if ((!$previousLessonProgress || !$previousLessonProgress->is_passed) || (!$currentLessonProgress || !$currentLessonProgress->is_passed)) {
             return response()->json([
                 'status_code' => 403,
                 'success' => false,

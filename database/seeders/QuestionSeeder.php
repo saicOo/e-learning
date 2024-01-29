@@ -20,8 +20,18 @@ class QuestionSeeder extends Seeder
         $questions_name = ['لماذا السؤال الاول','لماذا السؤال الثاني','لماذا السؤال الثالث'
         ,'لماذا السؤال الرابع','هل السؤال الاول','هل السؤال الثاني',];
         for ($i=0; $i < 150; $i++) {
+            $course = Course::inRandomOrder()->first();
+            $lessons = $course->lessons;
+            $lesson_count = $lessons->count();
+            $lesson_index = rand(0,$lesson_count - 1);
+            $lesson = $lessons[$lesson_index];
+            $lesson_id = $lesson ? $lesson->id : null;
             $options = [];
-            $type = rand(1,3); //1=>TrueFalse, 2=>Choice,3 =>Article'
+            if($lesson->order = 1){
+                $type = rand(1,2); //1=>TrueFalse, 2=>Choice,3 =>Article' //3
+            }else{
+                $type = rand(1,3); //1=>TrueFalse, 2=>Choice,3 =>Article'
+            }
             $optionCount = 2;
             $correct_option = rand(0,1);
             if ($type == 2) {
@@ -32,11 +42,6 @@ class QuestionSeeder extends Seeder
                 array_push($options,$options_name[rand(0,count($options_name) - 1)]);
             }
 
-            $course = Course::inRandomOrder()->first();
-            $lessons = $course->lessons;
-            $lesson_count = $lessons->count();
-            $lesson_index = rand(0,$lesson_count - 1);
-            $lesson_id = $lessons[$lesson_index] ? $lessons[$lesson_index]->id : null;
             $question = $course->questions()->create([
                 "title" => $questions_name[rand(0,count($questions_name) - 1)],
                 "grade" => rand(1,10),

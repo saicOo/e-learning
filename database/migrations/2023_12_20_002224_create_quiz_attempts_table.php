@@ -15,13 +15,15 @@ class CreateQuizAttemptsTable extends Migration
     {
         Schema::create('quiz_attempts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained();
-            $table->foreignId('quiz_id')->constrained();
             $table->float('score',8,2)->nullable();
             $table->string('note')->nullable();
             $table->json('images')->nullable();
             $table->boolean('is_visited')->default(false);
             $table->enum('status',['failed','successful'])->default('failed');
+            $table->unsignedBigInteger('student_id')->nullable();
+            $table->unsignedBigInteger('quiz_id')->nullable();
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
             $table->timestamps();
         });
     }

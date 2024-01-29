@@ -174,6 +174,7 @@ class QuizAttemptController extends BaseController
         $attempt->update([
             'score'=>$score,
             'status'=>$status,
+            'is_visited'=> $status == "successful" ? true : false,
         ]);
 
         return $this->sendResponse("Quiz Created Successfully", ['attempt' => $attempt,'status'=> $statusQuiz]);

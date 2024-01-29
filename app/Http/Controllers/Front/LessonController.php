@@ -47,6 +47,10 @@ class LessonController extends BaseController
     public function index(Request $request, Course $course)
     {
 
+        if ($course->publish != "publish") {
+            return $this->sendError('Record not found.');
+        }
+
         $lessons = Lesson::query();
         $lessons->select(["id","name","description"]);
         $lessons->with(["quizzes:id,title,publish,questions_count,lesson_id","progress"]);
@@ -115,7 +119,7 @@ class LessonController extends BaseController
      */
     public function show(Lesson $lesson)
     {
-        if ($lesson->publish != "publish") {
+        if ($lesson->publish != "publish" || $lesson->course->publish != "publish") {
             return $this->sendError('Record not found.');
         }
         $progres = $lesson->progress()->where('student_id', auth()->user()->id)->first();

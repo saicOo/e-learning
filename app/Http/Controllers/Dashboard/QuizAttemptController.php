@@ -17,6 +17,7 @@ class QuizAttemptController extends BaseController
 
         $this->middleware(['permission:quizzes_revision'])->only('store');
         $this->middleware(['checkApiAffiliation'])->only("index");
+        $this->middleware(['checkRevisionQuiz'])->only('store');
     }
     /**
      * @OA\Get(
@@ -104,7 +105,7 @@ class QuizAttemptController extends BaseController
         //Validated
         $validate = Validator::make($request->all(),
         [
-            'note' => 'required|string|max:255',
+            'note' => 'nullable|string|max:255',
             'grades' => 'required|array|min:1',
             'grades.*' => 'required|integer',
         ]);
