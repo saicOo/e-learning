@@ -96,7 +96,7 @@ class QuizAttemptController extends BaseController
      *      @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function submitQuiz(Request $request, Lesson $lesson)
+    public function submitQuiz(Request $request, Quiz $quiz)
     {
         if ($quiz->publish != "publish") {
             return $this->sendError('Record not found.');
