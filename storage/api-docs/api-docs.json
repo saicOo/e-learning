@@ -1,0 +1,3358 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "E-Learning Rest API DOCUMENTATION",
+        "description": "L5 Swagger OpenApi description",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/dashboard/teachers/{teacher_id}/assistants": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "get all Assistants",
+                "operationId": "b5892a28526106dce30c9fc4d6c465b2",
+                "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter assistants with publish (publish , unpublish)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name , email or phone",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/assistants": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "Add New assistant",
+                "operationId": "1c95960880c2b926c2dbbe0dcb87da82",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "image": {
+                                        "type": "file",
+                                        "example": "path image"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/assistants/{assistant_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "show assistant",
+                "operationId": "a0bce9b466f85966c85ff7ffccc82f4a",
+                "parameters": [
+                    {
+                        "name": "assistant_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "update assistant",
+                "operationId": "b205ed0ff9987f7176b7741f5b960a2a",
+                "parameters": [
+                    {
+                        "name": "assistant_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "integer"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "assistant_create"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "Delete assistant",
+                "operationId": "66054b3fdcb2f81c6305d96336d04e71",
+                "parameters": [
+                    {
+                        "name": "assistant_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/assistants/{assistant_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Assistants"
+                ],
+                "summary": "Approve Assistants",
+                "operationId": "60af47d40729763e0d02bb3112b3b22a",
+                "parameters": [
+                    {
+                        "name": "assistant_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/login": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Auth User"
+                ],
+                "summary": "Login User in Dashboard",
+                "operationId": "authLogin",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email",
+                                        "example": "manager@app.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/logout": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Auth User"
+                ],
+                "summary": "Auth Logout",
+                "operationId": "d6f680d7d577dd7b278a44570b76d707",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/categories": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Categories"
+                ],
+                "summary": "get all Category",
+                "operationId": "91df637024d05c8e9272f2e3f329f0cb",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name categories",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Categories"
+                ],
+                "summary": "Add New Category",
+                "operationId": "95a1bdb853b7d982e7f3f6ce945dc8b2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "level_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/categories/{category_id}": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Categories"
+                ],
+                "summary": "Updated Category",
+                "operationId": "66da321d6325e139f82cbe8c9a4d22b9",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Categories"
+                ],
+                "summary": "Delete Category",
+                "operationId": "815787fb8dac8e80b1e5185c50f71972",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/contacts": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Contacts"
+                ],
+                "summary": "get all Contacts",
+                "operationId": "c7441b4d84640ab3ccd5837b47a06e14",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or email or phone contacts",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/contacts/{contact_id}": {
+            "delete": {
+                "tags": [
+                    "Dashboard Api Contacts"
+                ],
+                "summary": "Delete Contact",
+                "operationId": "d74931572318860392d74f4c28646220",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Courses"
+                ],
+                "summary": "get all courses",
+                "operationId": "index",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "filter courses with user",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "level_id",
+                        "in": "query",
+                        "description": "filter courses with level",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "filter courses with category",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "semester",
+                        "in": "query",
+                        "description": "filter courses with semester (first semester , second semester , full semester)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter courses with publish (publish, unpublish)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "filter courses with type (online, offline)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description courses",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/teachers/{teacher_id}/courses": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Courses"
+                ],
+                "summary": "Add New Courses",
+                "operationId": "3e2dd5278618f742be978b5901e0ffd5",
+                "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "double",
+                                        "example": "double"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "semester": {
+                                        "type": "enum",
+                                        "example": "string"
+                                    },
+                                    "type": {
+                                        "type": "enum",
+                                        "example": "online , offline"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "example": "path file"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "level_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses/{course_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Courses"
+                ],
+                "summary": "show course",
+                "operationId": "getCourseById",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dashboard Api Courses"
+                ],
+                "summary": "Updated Course",
+                "operationId": "1823ce2d20b273b6a015845a9068d3e3",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "double",
+                                        "example": "double"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "semester": {
+                                        "type": "enum",
+                                        "example": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "example": "https://www.techsmith.com/blog/wp-content/uploads/2022/03/resize-image.png"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Courses"
+                ],
+                "summary": "Delete Course",
+                "operationId": "741f48e3ac415c5a8b85e1649aa6306c",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses/{course_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Courses"
+                ],
+                "summary": "Approve Course",
+                "operationId": "01956be6f79e06e1231912ff9e550bb0",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses/{course_id}/upload-image": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Courses"
+                ],
+                "summary": "Upload Image Course",
+                "operationId": "c65828286b1191ecd75830542e2ddfe3",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "string",
+                                        "example": "path iamge"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses/{course_id}/quizzes": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Course Quizzes"
+                ],
+                "summary": "Add New Quizzes Of Course",
+                "operationId": "c64f7391371ef368ae236d70f221444b",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "duration": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "quiz_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses/{course_id}/lessons": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Lessons"
+                ],
+                "summary": "get all lessons",
+                "operationId": "e3ab064d58b6dc7b08b33c872855848e",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "description": "filter lessons with course",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter lessons with publish (publish , unpublish)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Lessons"
+                ],
+                "summary": "Add New Lessons",
+                "operationId": "2e578165eab0167e3f5d49bb36dff4be",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/lessons/{lesson_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Lessons"
+                ],
+                "summary": "show lesson",
+                "operationId": "b332f079247e05f63d13c9975d4d62be",
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dashboard Api Lessons"
+                ],
+                "summary": "Updated Lesson",
+                "operationId": "aea12d67ce64f8e0214cd874de1c0a6e",
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "order": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Lessons"
+                ],
+                "summary": "Delete Lesson",
+                "operationId": "e8dd049e5c38d1f0f61b559629f86ef3",
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/lessons/{lesson_id}/upload-video": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Lessons"
+                ],
+                "summary": "upload video Lesson",
+                "operationId": "4a7fdcdc12f7610a93533ecaa868fd91",
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "video": {
+                                        "type": "file",
+                                        "example": "path file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/lessons/{lesson_id}/upload-file": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Lessons"
+                ],
+                "summary": "upload file Lesson",
+                "operationId": "cbc7424daba2987631176458532e4dfe",
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "type": "file",
+                                        "example": "path file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/lessons/{lesson_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Lessons"
+                ],
+                "summary": "Approve Lesson",
+                "operationId": "821a9ccb35a507441de6e5f273268956",
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/lessons/{lesson_id}/quizzes": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Lesson Quizzes"
+                ],
+                "summary": "Add New Quizzes Of Lesson",
+                "operationId": "9d117dda0505fdd095e9f4e77d9c5eb2",
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "duration": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "quiz_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/levels": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Levels"
+                ],
+                "summary": "Get All Levels",
+                "operationId": "74a30dac217a8e9e7c641cde17da58b3",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/questions": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Questions"
+                ],
+                "summary": "get all questions",
+                "operationId": "6a822bfe34890f3708b6e3677e06a84d",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "filter questions with lesson",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "filter of 1=>TrueFalse, 2=>Choice,3 =>Article",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Questions"
+                ],
+                "summary": "Add New Question",
+                "operationId": "d4521a7764f5984f992f5f9986a2d33f",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "example": "path file"
+                                    },
+                                    "grade": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "correct_option": {
+                                        "type": "integer",
+                                        "example": "index option : 0, 1, 2, 3"
+                                    },
+                                    "type": {
+                                        "type": "integer",
+                                        "example": "1=>TrueFalse, 2=>Choice,3 =>Article'"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "options": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "option answer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/questions/{question_id}": {
+            "delete": {
+                "tags": [
+                    "Dashboard Api Questions"
+                ],
+                "summary": "Delete Question",
+                "operationId": "064eaf0fff88eb395573d1fd02f02862",
+                "parameters": [
+                    {
+                        "name": "question_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/quizzes/{quiz_id}/quiz-attempts": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Attempts"
+                ],
+                "summary": "get all attempts of student",
+                "operationId": "6f2daf8ff299da28a0eaa7382e75ccd4",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/quiz-attempts/{quizAttempt_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Attempts"
+                ],
+                "summary": "show quiz attempt and answers",
+                "operationId": "ca6c5904f48ac5b20c90d9477554feb9",
+                "parameters": [
+                    {
+                        "name": "quizAttempt_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dashboard Api Attempts"
+                ],
+                "summary": "Updated Attempts",
+                "operationId": "c6a48088fbdc35e6daf5c6be855d75ca",
+                "parameters": [
+                    {
+                        "name": "quizAttempt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "note": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "grades": {
+                                        "type": "object",
+                                        "example": {
+                                            "10": 0,
+                                            "25": 1
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/quizzes": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "get all quizzes",
+                "operationId": "e63a7fd7fdcb440f6dc654e8a1c07732",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "Add New Quizzes",
+                "operationId": "2e21782637c90fed80446ec9ea49ddbd",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "questions_count": {
+                                        "type": "integer",
+                                        "example": "integer"
+                                    },
+                                    "questions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/quizzes/{quiz_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "show quiz",
+                "operationId": "47d35e04b0492ccd0e5a713a1a116670",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "Delete Quizzes",
+                "operationId": "7272f07736dd44731ceb6b8ecb45b9b9",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/quizzes/{quiz_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Quizzes"
+                ],
+                "summary": "Approve Quizzes",
+                "operationId": "d20605dff637f962095da086301b0bf9",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/report/subscriptions": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Report Subscription"
+                ],
+                "summary": "get monthly total subscriptions",
+                "operationId": "974d779ce671e0967bd8975189251ec9",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "filter subscriptions with user",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/courses/{course_id}/sessions": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Sessions"
+                ],
+                "summary": "get all sessions",
+                "operationId": "4a4a1ed456fd511c66fc1f2cf1a03c02",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "description": "filter sessions with course",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Sessions"
+                ],
+                "summary": "Add New Sessions",
+                "operationId": "cb49e1f714f7351d3227a34fcb518fdf",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "session_date": {
+                                        "type": "string",
+                                        "example": "2020/10/8"
+                                    },
+                                    "details": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "students": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/sessions/{session_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Sessions"
+                ],
+                "summary": "Show Session",
+                "operationId": "956ea29185ba72f0a80cc689392c66f2",
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dashboard Api Sessions"
+                ],
+                "summary": "Updated Session",
+                "operationId": "284ab9d9aa1fc5c97b3830eba0b2e7cf",
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "session_date": {
+                                        "type": "string",
+                                        "example": "2020/10/8"
+                                    },
+                                    "details": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "students": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Sessions"
+                ],
+                "summary": "Delete session",
+                "operationId": "c852d71262c0b88bdcf000f2905fff94",
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/students": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Students"
+                ],
+                "summary": "get all students",
+                "operationId": "359e9e7951c9acd498620fc0ebde7614",
+                "parameters": [
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter students with publish (publish , unpublish)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name , email or phone",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Students"
+                ],
+                "summary": "Add New Student",
+                "operationId": "f74080828d5ca634e2f56082f4748b2c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "attendance_type": {
+                                        "type": "enum",
+                                        "example": "online , offline"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/students/{student_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Students"
+                ],
+                "summary": "show student",
+                "operationId": "93a3135975f47e8e6b961fa1b4c2d871",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dashboard Api Students"
+                ],
+                "summary": "update student",
+                "operationId": "1e7744ccb0c663971403d0bbcc06eb05",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "attendance_type": {
+                                        "type": "enum",
+                                        "example": "online , offline"
+                                    },
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Students"
+                ],
+                "summary": "Delete Student",
+                "operationId": "0a8cb805064ed43783ae70206714fa3c",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/students/{student_id}/change-password": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Students"
+                ],
+                "summary": "change password student",
+                "operationId": "d9535c55b7fcc0a590abf8f2128a9b0a",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "new_password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/students/{student_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Students"
+                ],
+                "summary": "Approve Students",
+                "operationId": "16b5f55fa2bda7aaa0410cc7efaa2a05",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/subscriptions": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Subscriptions"
+                ],
+                "summary": "get all subscriptions",
+                "operationId": "e9a5ca4981bb9d815e49022ccf0795ed",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "query",
+                        "description": "filter subscriptions with student",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "description": "filter subscriptions with course",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Subscriptions"
+                ],
+                "summary": "Automatically subscribe students' to courses for a month",
+                "operationId": "f1afcc51349f49530b208869cc2d51ed",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "student_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/subscriptions/{subscription_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Subscriptions"
+                ],
+                "summary": "show subscription",
+                "operationId": "01984d3b02e82bcf916009628966b20b",
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/subscription/{subscription_id}": {
+            "delete": {
+                "tags": [
+                    "Dashboard Api Subscriptions"
+                ],
+                "summary": "Delete Subscription",
+                "operationId": "1fc08c991b558f34d0de36c201e0f849",
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/teachers": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Teachers"
+                ],
+                "summary": "get all teachers",
+                "operationId": "095c9eacc2d4a574d2558effda4e1121",
+                "parameters": [
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter teachers with publish (publish , unpublish)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name , email or phone",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Teachers"
+                ],
+                "summary": "Add New Teacher",
+                "operationId": "a4174eb70d4cc7447bfdac5c59366e17",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "image": {
+                                        "type": "file",
+                                        "example": "path image"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/teachers/{teacher_id}": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Teachers"
+                ],
+                "summary": "show teacher",
+                "operationId": "37091fd84dd80a7ab3dc59f7fd882f30",
+                "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dashboard Api Teachers"
+                ],
+                "summary": "update teacher",
+                "operationId": "6b64ed9a5fdc77c6d03d5733cd8cdf8e",
+                "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "integer"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "user_create"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dashboard Api Teachers"
+                ],
+                "summary": "Delete Teacher",
+                "operationId": "bde696a6336081d023c9fec539c849c1",
+                "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/teachers/{teacher_id}/approve": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Teachers"
+                ],
+                "summary": "Approve Teachers",
+                "operationId": "ac592cea25e22757e40d1b5d64f86af7",
+                "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "publish": {
+                                        "type": "boolen",
+                                        "example": "publish or unpublish"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/users/change-password/{user_id}": {
+            "put": {
+                "tags": [
+                    "Dashboard Api Users"
+                ],
+                "summary": "change password user",
+                "operationId": "fa03557535103cc487c42c27d2cdd7c3",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "new_password": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/users/upload-image/{user_id}": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Users"
+                ],
+                "summary": "upload file User",
+                "operationId": "701d1c4cbe1cdf926a11aff357bc3939",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "file",
+                                        "example": "path image"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Front Api Auth Student"
+                ],
+                "summary": "Login Student in Front",
+                "operationId": "b173e51ba1ffd183727862d81368f64c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "1st@app.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Front Api Auth Student"
+                ],
+                "summary": "Auth Logout",
+                "operationId": "eb6d063b7e81641a82b0b1f02b18a5cc",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "Front Api Auth Student"
+                ],
+                "summary": "Show Data Student",
+                "operationId": "33c8b56a6360e38a9070e7056df8c067",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/student/upload-image": {
+            "post": {
+                "tags": [
+                    "Front Api Auth Student"
+                ],
+                "summary": "upload image Student",
+                "operationId": "8d6e04550f111e0239a9a18074e55d5d",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "file",
+                                        "example": "path image"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Front Api Categories"
+                ],
+                "summary": "Get All Categories",
+                "operationId": "2e4021fd8e0f47248fafcdc00ba868e5",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/contacts": {
+            "post": {
+                "tags": [
+                    "Front Api Contact"
+                ],
+                "summary": "Add New Contact",
+                "operationId": "24e62e8bbd2f8ea63668be2daebed4b6",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/courses": {
+            "get": {
+                "tags": [
+                    "Front Api Courses"
+                ],
+                "summary": "get all courses",
+                "operationId": "4d2b332408486c69d28f1200eed63bc8",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description courses",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "level_id",
+                        "in": "query",
+                        "description": "filter courses with level",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Courses"
+                ],
+                "summary": "show course",
+                "operationId": "b5b271252699d2d16e54cf845a7847b6",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course_id}/progress": {
+            "get": {
+                "tags": [
+                    "Front Api Courses"
+                ],
+                "summary": "progress course",
+                "operationId": "c288388f88a022543083449fee5916c3",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course_id}/lessons": {
+            "get": {
+                "tags": [
+                    "Front Api Lessons"
+                ],
+                "summary": "get all lessons",
+                "operationId": "b253c99d55efba21db724353b865f900",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "description": "filter lessons with course",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name or description",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/lessons/{lesson_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Lessons"
+                ],
+                "summary": "show lesson",
+                "operationId": "98ac784bf520d416c74b2cc5019d45cb",
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/levels": {
+            "get": {
+                "tags": [
+                    "Front Api Levels"
+                ],
+                "summary": "Get All Levels",
+                "operationId": "475692fd2ed64ada4de580d12b92054b",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/quiz-attempts": {
+            "get": {
+                "tags": [
+                    "Front Api Attempts"
+                ],
+                "summary": "get all attempts of student",
+                "operationId": "c6c0e827f5c77e08dbabef1f70cf412b",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/quiz-attempts/{quizAttempt_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Attempts"
+                ],
+                "summary": "show quiz attempt and answers",
+                "operationId": "59574a461f03d16af8c13661902d5fb5",
+                "parameters": [
+                    {
+                        "name": "quizAttempt_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/quiz-attempts/{quiz_id}": {
+            "post": {
+                "tags": [
+                    "Front Api Quiz Attempt"
+                ],
+                "summary": "update user",
+                "operationId": "a556d1e91e9da83e759196275d510074",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "answers": {
+                                        "type": "object",
+                                        "example": {
+                                            "10": 0,
+                                            "25": 1
+                                        }
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": "source file data form"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/quizzes/{quiz_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Quizzes"
+                ],
+                "summary": "show quiz",
+                "operationId": "80ae73dd2a0d7af1c36dc59aac1ee1db",
+                "parameters": [
+                    {
+                        "name": "quiz_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/students-highest-scores": {
+            "get": {
+                "tags": [
+                    "Front Api Students"
+                ],
+                "summary": "Get Students Highest Scores",
+                "operationId": "00b1b125d27d90c1b5d59faff23b5e69",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/teachers": {
+            "get": {
+                "tags": [
+                    "Front Api Teachers"
+                ],
+                "summary": "get all teachers",
+                "operationId": "cd1ee3b2736c7e456323dc894878110a",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "filter search name , email or phone",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/teachers/{teacher_id}": {
+            "get": {
+                "tags": [
+                    "Front Api Teachers"
+                ],
+                "summary": "show teacher",
+                "operationId": "f3051050cd076cd036970bb3d3bb8d62",
+                "parameters": [
+                    {
+                        "name": "teacher_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        }
+    }
+}
