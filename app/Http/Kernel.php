@@ -72,6 +72,7 @@ class Kernel extends HttpKernel
         'checkLessonProgress' => \App\Http\Middleware\CheckLessonProgress::class,
         'checkCourseProgress' => \App\Http\Middleware\CheckCourseProgress::class,
         'checkLessonAttempt' => \App\Http\Middleware\CheckLessonAttempt::class,
+        'checkCourseAttempt' => \App\Http\Middleware\CheckCourseAttempt::class,
         'quizCompleted' => \App\Http\Middleware\QuizCompleted::class,
         'quizRepetition' => \App\Http\Middleware\QuizRepetition::class,
         'quizReview' => \App\Http\Middleware\QuizReview::class,

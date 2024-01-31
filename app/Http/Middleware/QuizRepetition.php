@@ -17,6 +17,7 @@ class QuizRepetition
     public function handle(Request $request, Closure $next)
     {
         $attempt = $request->attributes->get('attempt');
+
         if($attempt && $attempt->status_passed == "repetition"){
             $attempt->delete();
         }

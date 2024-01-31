@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Quiz;
+use App\Models\Course;
 use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\QuizProcess;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,11 +21,11 @@ class QuizAttemptController extends BaseController
     }
     /**
      * @OA\Get(
-     *     path="/api/dashboard/quizzes/{quiz_id}/quiz-attempts",
+     *     path="/api/dashboard/courses/{course_id}/quiz-attempts",
      *      tags={"Dashboard Api Attempts"},
      *     summary="get all attempts of student",
      * @OA\Parameter(
-     *         name="quiz_id",
+     *         name="course_id",
      *         in="path",
      *         required=true,
      *         explode=true,
@@ -33,15 +33,42 @@ class QuizAttemptController extends BaseController
      *             type="integer",
      *         ),
      *     ),
+     * @OA\Parameter(
+     *         name="is_visited",
+     *         in="query",
+     *         description="1=>visited or 0=> not visited",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         description="failed or successful",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="string",
+     *         ),
+     *     ),
      *     @OA\Response(response=200, description="OK"),
      *       @OA\Response(response=401, description="Unauthenticated"),
      * )
      */
-    public function index(Quiz $quiz)
+    public function index(Course $course,Request $request)
     {
         $attempts = QuizAttempt::query();
-        $attempts->with('student');
-        $attempts->where('quiz_id', $quiz->id);
+        $attempts->with(['student','lesson']);
+        if ($request->has('is_visited')) {
+            $attempts->where('is_visited', $request->input('is_visited'));
+        }
+        if ($request->has('status')) {
+            $attempts->where('status', $request->input('status'));
+        }
+        $attempts->where('course_id', $course->id)->where("is_submit",1);
+
         $attempts = $attempts->latest('created_at')->get();
         return $this->sendResponse("",['attempts' => $attempts]);
     }
@@ -115,13 +142,6 @@ class QuizAttemptController extends BaseController
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $quizProcess = QuizProcess::where('student_id', $quizAttempt->student_id)
-            ->where('quiz_id', $quizAttempt->quiz_id)->first();
-
-        if(!$quizProcess){
-            return $this->sendError('You can no longer add grades for this quiz' ,[], 403);
-        }
-
         $answers = $quizAttempt->answers;
         $grades = $request->input('grades');
         $totalScore = 0;
@@ -146,7 +166,7 @@ class QuizAttemptController extends BaseController
         // Calculate overall score based on grades
         $score = $this->calculateScore($totalScore, $maxGrade);
 
-        $status = $this->quizProcess($score, $quizProcess);
+        $status = $this->quizProcess($score);
 
         $quizAttempt->update([
             'score'=> $score,

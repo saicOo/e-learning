@@ -6,9 +6,9 @@ use App\Models\Lesson;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController as BaseController;
 
-class QuizController extends Controller
+class QuizController extends BaseController
 {
     /**
      * @OA\Post(

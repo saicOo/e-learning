@@ -21,16 +21,18 @@ class QuizAttempt extends Model
 
     public function getImagesUrlAttribute(){
         $images = [];
+        if($this->images){
             foreach ($this->images as $image) {
                 $image_url = Storage::disk('public')->url($image);
                 array_push($images , $image_url);
             }
+        }
         return $images;
     }
 
     public function getIsPassedAttribute(){
         $is_passed = false;
-        if($this->score >= 50 && $this->is_visited){
+        if($this->status == "successful" && $this->is_visited){
             $is_passed = true;
         }
         return $is_passed;
@@ -58,6 +60,16 @@ class QuizAttempt extends Model
     public function quiz()
     {
         return $this->belongsTo(Quiz::class);
+    }
+
+    public function lesson()
+    {
+        return $this->belongsTo(Lesson::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 
     public function answers()

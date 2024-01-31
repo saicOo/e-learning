@@ -69,17 +69,28 @@ class Student extends Authenticatable
         return $this->hasMany(Attendance::class);
     }
 
-    // public function hasCompletedCurrentLesson($currentLessonId)
-    // {
-    //     // Get the current lesson
-    //     $currentLesson = Lesson::find($currentLessonId);
+    public function hasCurrentLesson($currentLessonId)
+    {
+        // Check if the user has a attempt for the test associated with the current lesson
+        $attempt = $this->attempts()
+            ->where('lesson_id', $currentLessonId)
+            ->whereNotNull('quiz_id')
+            ->first();
 
-    //     // Check if the user has a attempt for the test associated with the current lesson
-    //     $attempt = $this->attempts()
-    //         ->where('lesson_id', $currentLesson->id)
-    //         ->first();
+        // Check if the attempt exists and the grade is above a passing threshold
+        return $attempt;
+    }
 
-    //     // Check if the attempt exists and the grade is above a passing threshold
-    //     return $attempt && $attempt->grade >= 50;
-    // }
+    public function hasCurrentCourse($currentCourseId)
+    {
+        // Check if the user has a attempt for the test associated with the current lesson
+        $attempt = $this->attempts()
+            ->where('course_id', $currentCourseId)
+            ->whereNull('lesson_id')
+            ->whereNotNull('quiz_id')
+            ->first();
+
+        // Check if the attempt exists and the grade is above a passing threshold
+        return $attempt;
+    }
 }

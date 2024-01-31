@@ -959,7 +959,7 @@
                         "name": "course_id",
                         "in": "path",
                         "description": "filter lessons with course",
-                        "required": false,
+                        "required": true,
                         "explode": true,
                         "schema": {
                             "type": "integer"
@@ -1491,21 +1491,41 @@
                 }
             }
         },
-        "/api/dashboard/quizzes/{quiz_id}/quiz-attempts": {
+        "/api/dashboard/courses/{course_id}/quiz-attempts": {
             "get": {
                 "tags": [
                     "Dashboard Api Attempts"
                 ],
                 "summary": "get all attempts of student",
-                "operationId": "6f2daf8ff299da28a0eaa7382e75ccd4",
+                "operationId": "c0d99593ae3098d07ac015dfe670e86e",
                 "parameters": [
                     {
-                        "name": "quiz_id",
+                        "name": "course_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "is_visited",
+                        "in": "query",
+                        "description": "1=>visited or 0=> not visited",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "failed or successful",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
@@ -3062,6 +3082,92 @@
                 }
             }
         },
+        "/api/courses/{course_id}/start-quiz": {
+            "get": {
+                "tags": [
+                    "Front Api Quizzes"
+                ],
+                "summary": "show course quiz",
+                "operationId": "e12c9e2ac00943bb93ee5a937c5db264",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course_id}/submit-quiz": {
+            "post": {
+                "tags": [
+                    "Front Api Quizzes"
+                ],
+                "summary": "submit course quiz",
+                "operationId": "771cecbb7357410697a45e1f0166fbe0",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "answers": {
+                                        "type": "object",
+                                        "example": {
+                                            "10": 0,
+                                            "25": 1
+                                        }
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": "source file data form"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/courses/{course_id}/lessons": {
             "get": {
                 "tags": [
@@ -3132,47 +3238,16 @@
                 }
             }
         },
-        "/api/levels": {
+        "/api/lessons/{lesson_id}/start-quiz": {
             "get": {
                 "tags": [
-                    "Front Api Levels"
+                    "Front Api Quizzes"
                 ],
-                "summary": "Get All Levels",
-                "operationId": "475692fd2ed64ada4de580d12b92054b",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/quiz-attempts": {
-            "get": {
-                "tags": [
-                    "Front Api Attempts"
-                ],
-                "summary": "get all attempts of student",
-                "operationId": "c6c0e827f5c77e08dbabef1f70cf412b",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    }
-                }
-            }
-        },
-        "/api/quiz-attempts/{quizAttempt_id}": {
-            "get": {
-                "tags": [
-                    "Front Api Attempts"
-                ],
-                "summary": "show quiz attempt and answers",
-                "operationId": "59574a461f03d16af8c13661902d5fb5",
+                "summary": "show lesson quiz",
+                "operationId": "f8616c1f242fb06273e937b134bdec81",
                 "parameters": [
                     {
-                        "name": "quizAttempt_id",
+                        "name": "lesson_id",
                         "in": "path",
                         "required": true,
                         "explode": true,
@@ -3194,16 +3269,16 @@
                 }
             }
         },
-        "/api/quiz-attempts/{quiz_id}": {
+        "/api/lessons/{lesson_id}/submit-quiz": {
             "post": {
                 "tags": [
-                    "Front Api Quiz Attempt"
+                    "Front Api Quizzes"
                 ],
-                "summary": "update user",
-                "operationId": "a556d1e91e9da83e759196275d510074",
+                "summary": "submit lesson quiz",
+                "operationId": "b1c2fec84d2c5163e1cf84a132088372",
                 "parameters": [
                     {
-                        "name": "quiz_id",
+                        "name": "lesson_id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -3249,33 +3324,16 @@
                 }
             }
         },
-        "/api/quizzes/{quiz_id}": {
+        "/api/levels": {
             "get": {
                 "tags": [
-                    "Front Api Quizzes"
+                    "Front Api Levels"
                 ],
-                "summary": "show quiz",
-                "operationId": "80ae73dd2a0d7af1c36dc59aac1ee1db",
-                "parameters": [
-                    {
-                        "name": "quiz_id",
-                        "in": "path",
-                        "required": true,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
+                "summary": "Get All Levels",
+                "operationId": "475692fd2ed64ada4de580d12b92054b",
                 "responses": {
                     "200": {
                         "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "404": {
-                        "description": "Resource Not Found"
                     }
                 }
             }

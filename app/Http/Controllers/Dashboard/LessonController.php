@@ -35,7 +35,7 @@ class LessonController extends BaseController
      *         name="course_id",
      *         in="path",
      *         description="filter lessons with course",
-     *         required=false,
+     *         required=true,
      *         explode=true,
      *         @OA\Schema(
      *             type="integer",
@@ -68,7 +68,7 @@ class LessonController extends BaseController
     public function index(Request $request, Course $course)
     {
         $lessons = Lesson::query();
-        $lessons->with('quizzes.questions');
+        $lessons->with(['quizzes.questions']);
         // Filter by course name
         if ($request->has('search')) {
             $lessons->where('name', 'like', '%' . $request->input('search') . '%');

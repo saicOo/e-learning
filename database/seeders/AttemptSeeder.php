@@ -21,12 +21,10 @@ class AttemptSeeder extends Seeder
         foreach ($students as $student) {
             foreach ($student->courses as $course) {
                 foreach ($course->lessons as $lesson) {
-                    foreach ($lesson->quizzes as $quiz) {
-                        // if(rand(0,1) == 1){
+                    if(!$student->hasCurrentLesson($lesson->id)){
+                        foreach ($lesson->quizzes as $quiz) {
                             $this->createAttemptStudent($quiz,$student->id,$lesson);
-                        // }else{
-                            // $this->quizProcess($quiz,$student->id);
-                        // }
+                        }
                     }
                 }
             }
@@ -41,6 +39,8 @@ class AttemptSeeder extends Seeder
             'student_id' => $studentId,
             'lesson_id' => $lesson->id,
             'course_id' => $lesson->course_id,
+            'is_submit'=> true,
+            'is_visited'=> true,
             'images'=> ["answers/57.jpg","answers/57.jpg","answers/57.jpg"],
         ]);
 
@@ -83,14 +83,14 @@ class AttemptSeeder extends Seeder
 
     private function quizProcess($quiz ,$studentId, $score = null)
     {
-        $quizProcess = QuizProcess::where('student_id', $studentId)
-        ->where('lesson_id', $quiz->lesson_id)
-        ->first();
-        if($quizProcess){
-            $quizProcess->update([
-                'quiz_id' => $quiz->id,
-            ]);
-        }else{
+        // $quizProcess = QuizProcess::where('student_id', $studentId)
+        // ->where('lesson_id', $quiz->lesson_id)
+        // ->first();
+        // if($quizProcess){
+        //     $quizProcess->update([
+        //         'quiz_id' => $quiz->id,
+        //     ]);
+        // }else{
             if($score != null){
 
                 if($score < 30) $status = "repetition";
@@ -102,13 +102,13 @@ class AttemptSeeder extends Seeder
             }
 
 
-            QuizProcess::create([
-                'student_id' => $studentId,
-                'lesson_id' => $quiz->lesson_id,
-                'course_id' => $quiz->course_id,
-                'quiz_id' => $quiz->id,
-                'status' => $status,
-            ]);
-        }
+            // QuizProcess::create([
+            //     'student_id' => $studentId,
+            //     'lesson_id' => $quiz->lesson_id,
+            //     'course_id' => $quiz->course_id,
+            //     'quiz_id' => $quiz->id,
+            //     'status' => $status,
+            // ]);
+        // }
     }
 }

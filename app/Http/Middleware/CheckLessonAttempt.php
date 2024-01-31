@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckLessonAttempt
 {
@@ -18,13 +19,9 @@ class CheckLessonAttempt
     {
         $user = Auth::user();
          $lessonId = $request->route('lesson')->id;
-         // Check if the user has an existing quiz_id for this lesson
-         $attempt = $user->attempts()
-             ->where('lesson_id', $lessonId)
-             ->whereNotNull('quiz_id')
-             ->first();
+        $attempt = $user->hasCurrentLesson($lessonId);
         if($attempt){
-            $request->attributes->add(['attempt' => $attemp]);
+            $request->attributes->add(['attempt' => $attempt]);
         }
         return $next($request);
     }

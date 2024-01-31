@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Course;
 use App\Models\QuizAttempt;
-use App\Models\QuizProcess;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController as BaseController;
 
 class CourseController extends BaseController
@@ -99,8 +99,8 @@ class CourseController extends BaseController
         $course->level;
         $course->category;
         $lessons = $course->lessons()->select(["id","name","description","order"])->orderBy('order')->get();
-        $quiz = $course->quizzes()->where("type","course")->inRandomOrder()->first();
-        return $this->sendResponse("",['course' => $course,'lessons'=>$lessons,'quiz'=>$quiz]);
+        // $quiz = $course->quizzes()->where("type","course")->inRandomOrder()->first();
+        return $this->sendResponse("",['course' => $course,'lessons'=>$lessons]);
     }
 
         /**
@@ -127,22 +127,12 @@ class CourseController extends BaseController
             return $this->sendError('Record not found.');
         }
         $student = $request->user();
-        $course->user;
-        $course->level;
-        $course->category;
-        $quizAttempt = null;
+        $user = Auth::user();
+        $quizAttempt = $user->hasCurrentCourse($course->id);
         $previousLesson = $course->lessons()->select(["id","name","description","order"])->orderBy('order', 'DESC')->first();
-        $previousLessonProgress = QuizProcess::where('student_id', $student->id)
-        ->where('lesson_id', $previousLesson->id)
-        ->first();
-        $progres = $course->progress()->whereNull('lesson_id')->where('student_id', $student->id)->latest()->first();
-            if($progres){
-                $quizAttempt = QuizAttempt::where("quiz_id",$progres->quiz_id)->where('student_id', $student->id)->latest()->first();
-            }
-        $quiz = $course->quizzes()->where("type","course")->inRandomOrder()->first();
-        return $this->sendResponse("",['course' => $course,'quiz'=>$quiz,'progres'=>$progres,
+        $previousLessonProgress = $user->hasCurrentLesson($previousLesson->id);
+        return $this->sendResponse("",['course' => $course,
         'previousLessonProgress'=>$previousLessonProgress,'quizAttempt'=>$quizAttempt]);
     }
-
 
 }

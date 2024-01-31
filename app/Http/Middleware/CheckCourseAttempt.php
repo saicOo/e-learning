@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class QuizCompleted
+class CheckCourseAttempt
 {
     /**
      * Handle an incoming request.
@@ -16,16 +17,12 @@ class QuizCompleted
      */
     public function handle(Request $request, Closure $next)
     {
-        $attempt = $request->attributes->get('attempt');
-        if($attempt && $attempt->status_passed == "compleated"){
-            // اذا تم انهاء الاختبار
-            return response()->json([
-                'status_code' => 403,
-                'success' => false,
-                'message' => 'The quiz has been completed and cannot be repeated'
-              ], 200);
+        $user = Auth::user();
+        $courseId = $request->route('course')->id;
+        $attempt = $user->hasCurrentCourse($courseId);
+        if($attempt){
+            $request->attributes->add(['attempt' => $attempt]);
         }
-
         return $next($request);
     }
 }

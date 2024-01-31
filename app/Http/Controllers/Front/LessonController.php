@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController as BaseController;
 
 class LessonController extends BaseController
@@ -69,21 +70,14 @@ class LessonController extends BaseController
         foreach ($lessons as $lesson) {
             $quizAttempt = null;
             $quiz = $lesson->quizzes()->inRandomOrder()->first();
-            // $progres = $lesson->progress()->where('student_id', $request->user()->id)->latest()->first();
             $quizAttempt = $lesson->attempts()->where('student_id', $request->user()->id)->first();
-            // $quizAttempt = QuizAttempt::where("quiz_id",$progres->quiz_id)->where('student_id', $request->user()->id)->latest()->first();
-            // if($quizAttempt){
-            // }
+
+            $quizAttempt = $request->user()->hasCurrentLesson($lesson->id);
             $lessonData = [
                 'id' => $lesson->id,
                 'name' => $lesson->name,
                 'description' => $lesson->description,
-                'progres' => $quizAttempt ? [
-                    'is_passed' => $quizAttempt->is_passed,
-                    'status' => $quizAttempt->is_passed
-                    ] : null,
                 'quiz_attempt' => $quizAttempt ? $quizAttempt : null,
-                'quiz' => $quiz ? $quiz : null,
             ];
             $lessonsData[] = $lessonData;
         }
@@ -116,8 +110,8 @@ class LessonController extends BaseController
         if ($lesson->publish != "publish" || $lesson->course->publish != "publish") {
             return $this->sendError('Record not found.');
         }
-        $progres = $lesson->progress()->where('student_id', auth()->user()->id)->first();
-        $quiz = $lesson->quizzes()->inRandomOrder()->first();
-        return $this->sendResponse("",['lesson' => $lesson,'progres'=> $progres, 'quiz'=> $quiz ]);
+        $user = Auth::user();
+        $quizAttempt = $user->hasCurrentLesson($lesson->id);
+        return $this->sendResponse("",['lesson' => $lesson,'quizAttempt'=> $quizAttempt]);
     }
 }

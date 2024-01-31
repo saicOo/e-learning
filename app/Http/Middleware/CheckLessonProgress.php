@@ -4,9 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Models\Course;
-use App\Models\Lesson;
 use Illuminate\Http\Request;
-use App\Models\QuizProcess;
 
 class CheckLessonProgress
 {
@@ -19,13 +17,12 @@ class CheckLessonProgress
      */
     public function handle(Request $request, Closure $next)
     {
-        $currentLesson = $request->route('lesson') ? $request->route('lesson') : $request->route('quiz')->lesson;
+        $currentLesson = $request->route('lesson');
         if(!$currentLesson){
             return $next($request);
         }
         $course = Course::find($currentLesson->course_id);
 
-        // if($course->lessons[0]->id == $currentLesson->id){
         if($course->lessons()->orderBy('order')->first()->id == $currentLesson->id){
             // Handle edge case for the first lesson
             return $next($request);
@@ -37,12 +34,8 @@ class CheckLessonProgress
         ->first();
 
         $student = $request->user();
-        $currentLessonProgress = QuizProcess::where('student_id', $student->id)
-            ->where('lesson_id', $currentLesson->id)
-            ->first();
-        $previousLessonProgress = QuizProcess::where('student_id', $student->id)
-            ->where('lesson_id', $previousLesson->id)
-            ->first();
+        $currentLessonProgress = $student->hasCurrentLesson($currentLesson->id);
+        $previousLessonProgress = $student->hasCurrentLesson($previousLesson->id);
 
         // في حالة اذا كان الدرس السابق لم يتم النجاح في اختباره
         if ((!$previousLessonProgress || !$previousLessonProgress->is_passed) || (!$currentLessonProgress || !$currentLessonProgress->is_passed)) {

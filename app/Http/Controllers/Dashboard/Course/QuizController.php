@@ -5,9 +5,9 @@ use App\Models\Course;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController as BaseController;
 
-class QuizController extends Controller
+class QuizController extends BaseController
 {
     /**
      * @OA\Post(
@@ -46,8 +46,7 @@ class QuizController extends Controller
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $quiz = $course->quizzes()->attach($request->input("quiz_id"),["duration"=>$request->input("duration")]);ted();
-
+        $quiz = $course->quizzes()->attach($request->input("quiz_id"),["duration"=>$request->input("duration")]);
         return $this->sendResponse("Quiz Created Successfully",['quiz' => $quiz]);
 
     }

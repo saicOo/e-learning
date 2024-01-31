@@ -73,7 +73,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     });
     // routes QuizAttempt
     Route::controller(QuizAttemptController::class)->group(function () {
-        Route::get('/quizzes/{quiz}/quiz-attempts', 'index');
+        Route::get('/courses/{course}/quiz-attempts', 'index');
         Route::get('/quiz-attempts/{quizAttempt}', 'show');
         Route::put('/quiz-attempts/{quizAttempt}', 'update');
     });
@@ -82,7 +82,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
         Route::post('/quizzes', 'store');
         Route::get('/quizzes/{quiz}', 'show');
         Route::delete('/quizzes/{quiz}', 'destroy');
-        Route::put('/quizzes/{quiz}/approve', 'approve');
+        // Route::put('/quizzes/{quiz}/approve', 'approve');
     });
     Route::controller(SessionController::class)->group(function () {
         Route::get('/courses/{course}/sessions', 'index');
@@ -105,10 +105,10 @@ Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
         });
 
     Route::group(["prefix"=>'courses',"namespace"=>'Course',],function(){
-        Route::get('{course_id}/quizzes','QuizController@store');
+        Route::post('{course_id}/quizzes','QuizController@store');
         });
     Route::group(["prefix"=>'lessons',"namespace"=>'Lesson',],function(){
-        Route::get('{lesson_id}/quizzes','QuizController@store');
+        Route::post('{lesson_id}/quizzes','QuizController@store');
         });
 
     Route::post('/logout', 'AuthController@logout');
