@@ -28,24 +28,8 @@ class Question extends Model
         }
         return null;
     }
-    public function course()
+    public function category()
     {
-        return $this->belongsTo(Course::class);
-    }//end of course
-
-    public function lesson()
-    {
-        return $this->belongsTo(Lesson::class);
-    }//end of lesson
-
-
-    // public function option()
-    // {
-    //     return $this->hasOne(Option::class);
-    // }//end of Option
-
-    // public function quizzes()
-    // {
-    //     return $this->belongsToMany(Quiz::class, 'grades')->withPivot(['score','answer']);
-    // }//end of quizzes
+        return $this->belongsTo(Category::class);
+    }
 }

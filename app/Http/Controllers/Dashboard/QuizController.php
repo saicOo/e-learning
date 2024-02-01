@@ -15,7 +15,6 @@ class QuizController extends BaseController
     {
         $this->middleware(['permission:quizzes_create'])->only('store');
         $this->middleware(['permission:quizzes_delete'])->only('destroy');
-        $this->middleware(['permission:quizzes_approve'])->only('approve');
     }
     /**
      * @OA\Get(
@@ -57,7 +56,7 @@ class QuizController extends BaseController
             $quizzes->where('category_id', $request->input('category_id'));
         }
 
-        $quizzes = $quizzes->get();
+        $quizzes = $quizzes->withCount(['courses','lessons'])->get();
 
         return $this->sendResponse("",['quizzes' => $quizzes]);
     }
@@ -161,48 +160,4 @@ class QuizController extends BaseController
         $quiz->delete();
         return $this->sendResponse("Deleted Data Successfully");
     }
-
-    // /**
-    //  * @OA\Put(
-    //  *     path="/api/dashboard/quizzes/{quiz_id}/approve",
-    //  *      tags={"Dashboard Api Quizzes"},
-    //  *     summary="Approve Quizzes",
-    //  *     @OA\Parameter(
-    //  *         name="quiz_id",
-    //  *         in="path",
-    //  *         required=true,
-    //  *         explode=true,
-    //  *         @OA\Schema(
-    //  *             type="integer",
-    //  *         ),
-    //  *     ),
-    //  * @OA\RequestBody(
-    //  *         @OA\JsonContent(
-    //  *             type="object",
-    //  *             @OA\Property(property="publish", type="boolen", example="publish or unpublish"),
-    //  *         ),
-    //  *     ),
-    //  *       @OA\Response(response=200, description="OK"),
-    //  *       @OA\Response(response=401, description="Unauthenticated"),
-    //  *      @OA\Response(response=404, description="Resource Not Found")
-    //  *    )
-    //  */
-    // public function approve(Request $request, Quiz $quiz)
-    // {
-    //     //Validated
-    //     $validate = Validator::make($request->all(),
-    //     [
-    //         'publish' => 'required|in:publish,unpublish',
-    //     ]);
-
-    //     if($validate->fails()){
-    //         return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-    //     }
-
-    //     $quiz->update([
-    //         'publish'=> $request->publish,
-    //     ]);
-
-    //     return $this->sendResponse("Quiz ".$request->publish." successfully");
-    // }
 }

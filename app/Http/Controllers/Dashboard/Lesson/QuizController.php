@@ -10,6 +10,10 @@ use App\Http\Controllers\BaseController as BaseController;
 
 class QuizController extends BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:quizzes_create'])->only('store');
+    }
     /**
      * @OA\Post(
      *     path="/api/dashboard/lessons/{lesson_id}/quizzes",
@@ -43,7 +47,12 @@ class QuizController extends BaseController
             'quiz_id' => 'required|exists:quizzes,id',
             'duration' => 'required|integer|min:1|max:168',
         ]);
-
+        $check_quiz = $lesson->quizzes()->where('quiz_id', $request->input("quiz_id"))->first();
+        if($check_quiz){
+            $validate->after(function($validate) {
+                $validate->errors()->add('quiz_id', 'This quiz already exists');
+              });
+        }
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }

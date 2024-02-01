@@ -15,18 +15,23 @@ class Quiz extends Model
         return $this->belongsToMany(Question::class, 'quiz_question');
     }
 
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'quiz_course');
+    }
+
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class, 'quiz_lesson');
+    }
+
     public function attempts()
     {
         return $this->hasMany(QuizAttempt::class);
     }
 
-    public function course()
+    public function category()
     {
-        return $this->belongsTo(Course::class);
-    }
-
-    public function lesson()
-    {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsTo(Category::class);
     }
 }

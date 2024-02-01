@@ -105,10 +105,10 @@ Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
         });
 
     Route::group(["prefix"=>'courses',"namespace"=>'Course',],function(){
-        Route::post('{course_id}/quizzes','QuizController@store');
+        Route::post('{course}/quizzes','QuizController@store');
         });
     Route::group(["prefix"=>'lessons',"namespace"=>'Lesson',],function(){
-        Route::post('{lesson_id}/quizzes','QuizController@store');
+        Route::post('{lesson}/quizzes','QuizController@store');
         });
 
     Route::post('/logout', 'AuthController@logout');

@@ -21,6 +21,7 @@ class CheckCourseAttempt
         $courseId = $request->route('course')->id;
         $attempt = $user->hasCurrentCourse($courseId);
         if($attempt){
+            // Add the student's current quiz attempt
             $request->attributes->add(['attempt' => $attempt]);
         }
         return $next($request);

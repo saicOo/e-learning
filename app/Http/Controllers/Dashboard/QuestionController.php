@@ -64,6 +64,7 @@ class QuestionController extends BaseController
     public function index(Request $request, Course $course)
     {
         $questions = Question::query();
+        $questions->with('category:id,name');
         // Filter by course name
         if ($request->has('search')) {
             $questions->where('title', 'like', '%' . $request->input('search') . '%');

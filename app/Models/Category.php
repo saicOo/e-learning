@@ -20,9 +20,13 @@ class Category extends Model
     {
         return $this->hasMany(Question::class);
     }
-    
+
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);
+    }
+
+    public function courses(){
+        return $this->hasMany(Course::class);
     }
 }
