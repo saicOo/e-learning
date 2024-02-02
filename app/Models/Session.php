@@ -20,4 +20,9 @@ class Session extends Model
         return $this->belongsToMany(Student::class, 'attendances')->select('students.id', 'students.name', 'students.email')
         ->withPivot('status');
     }
+
+    public function offlineExam()
+    {
+        return $this->hasOne(OfflineExam::class);
+    }
 }

@@ -316,9 +316,9 @@ class LessonController extends BaseController
                 'publish'=> "unpublish",
                 'video'=> $path_video,
             ]);
-            $lesson->progress()->update([
-                'status'=>'repetition',
-                'is_passed'=>false
+            $lesson->attempts()->update([
+                'status'=>'failed',
+                'is_visited'=>true
             ]);
         }
 

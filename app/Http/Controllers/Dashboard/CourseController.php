@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Course;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Services\UploadService;
@@ -196,13 +196,6 @@ class CourseController extends BaseController
             'category_id'=> 'required|exists:categories,id',
             'level_id'=> 'required|exists:levels,id',
          ]);
-
-        //  $user = $request->user();
-        //  if($user->hasRole('teacher')){
-        //     $request_data['user_id'] = $user->id;
-        //     }else{
-        //         $request_data['user_id'] = $user->user_id;
-        //     }
 
          if($validate->fails()){
                 return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);

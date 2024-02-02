@@ -47,11 +47,6 @@ class Lesson extends Model
         return $this->belongsToMany(Quiz::class, 'quiz_lesson');
     }
 
-    // public function progress()
-    // {
-    //     return $this->hasMany(QuizProcess::class);
-    // }
-
     public function attempts()
     {
         return $this->hasMany(QuizAttempt::class);

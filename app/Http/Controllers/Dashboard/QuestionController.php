@@ -10,6 +10,10 @@ use Illuminate\Http\Response;
 use App\Services\UploadService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Pion\Laravel\ChunkUpload\Save\ChunkSave;
+use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use App\Http\Controllers\BaseController as BaseController;
 
 class QuestionController extends BaseController
@@ -183,5 +187,64 @@ class QuestionController extends BaseController
         }
         $question->delete();
         return $this->sendResponse("Deleted Data Successfully");
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/dashboard/questions/{question_id}/upload-video",
+     *      tags={"Dashboard Api Questions"},
+     *     summary="upload video question",
+     *     @OA\Parameter(
+     *         name="question_id",
+     *         in="path",
+     *         required=true,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     * @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="video", type="file", example="path file"),
+     *         ),
+     *     ),
+     *       @OA\Response(response=200, description="OK"),
+     *       @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=404, description="Resource Not Found")
+     *    )
+     */
+    public function uploadVideo(Request $request, Question $question)
+    {
+        $validate = Validator::make($request->all(),
+        [
+            'video' => 'required|mimes:mp4|max:4024000',
+        ]);
+
+        if($validate->fails()){
+            return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $receiver = new FileReceiver('video', $request, HandlerFactory::classFromRequest($request));
+        if ($receiver->isUploaded() === false) {
+            throw new UploadMissingFileException();
+        }
+
+        $save = $receiver->receive();
+
+        if ($save->isFinished()) {
+            if($question->video != null){
+                Storage::disk('public')->delete($question->video);
+            }
+            $file = $save->getFile();
+            $path_video = $file->store('video',['disk' => 'public']);
+            $question->update([
+                'video'=> $path_video,
+            ]);
+        }
+
+        $handler = $save->handler();
+
+        return $this->sendResponse("The video has been uploaded successfully",["done" => $handler->getPercentageDone(),'question' => $question]);
     }
 }

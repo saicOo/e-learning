@@ -5,7 +5,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 trait QuizProcess
 {
-    private function saveScore($attempt, $quiz){
+    private function saveScore($attempt, $quiz, $score){
         $statusQuiz = "pending";
         $status = "failed";
         $questionIsArticle = $quiz->questions()->where("type", 3)->first();
@@ -24,7 +24,7 @@ trait QuizProcess
         return ['attempt' => $attempt,'status'=> $statusQuiz];
     }
 
-    private function submitAnswers($attempt ,$quiz ,$inputImages){
+    private function submitAnswers($attempt ,$quiz , $answers,$inputImages){
         $images = [];
         if ($inputImages) {
             $path = "answers";
@@ -36,7 +36,6 @@ trait QuizProcess
                             array_push($images, $path.'/'.$imageName);
                 }
         }
-        $answers = $request->input('answers');
         $totalScore = 0;
         $maxGrade = 0;
         $attempt->update([

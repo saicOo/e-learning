@@ -16,15 +16,25 @@ class Question extends Model
         'options' => 'array',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url','video_url'];
 
     protected $hidden = [
-        'image',
+        'image','video'
     ];
 
     public function getImageUrlAttribute(){
         if($this->image){
             return Storage::disk('public')->url($this->image);
+        }
+        return null;
+    }
+    public function getVideoUrlAttribute(){
+        if ($this->video) {
+            if ($this->video_type == 'file') {
+                return Storage::disk('public')->url($this->video);
+            } else {
+                return $this->video;
+            }
         }
         return null;
     }

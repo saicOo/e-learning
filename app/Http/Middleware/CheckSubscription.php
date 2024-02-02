@@ -24,6 +24,9 @@ class CheckSubscription
         if($request->route('quiz')){
             $course_id = $request->route('quiz')->course_id;
         }
+        if($request->route('course')){
+            $course_id = $request->route('course')->id;
+        }
 
         $checkSubscription = Subscription::where('end_date', '>', now())->where('student_id', $user_id)->where('course_id', $course_id)->first();
 

@@ -65,6 +65,12 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
         Route::post('/lessons/{lesson}/upload-video', 'uploadVideo');
         Route::post('/lessons/{lesson}/upload-file', 'uploadFile');
     });
+    // routes offline exams
+    Route::controller(OfflineExamController::class)->group(function () {
+        Route::get('/sessions/{session}/offline-exams', 'index');
+        Route::post('/sessions/{session}/offline-exams', 'store');
+        Route::delete('offline-exams/{offlineExam}', 'destroy');
+    });
     // routes questions
     Route::controller(QuestionController::class)->group(function () {
         Route::get('/questions', 'index');

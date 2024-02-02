@@ -17,6 +17,7 @@ class CreateQuestionsTable extends Migration
             $table->id();
             $table->text('title');
             $table->text('image')->nullable();
+            $table->text('video')->nullable();
             $table->integer('grade');
             $table->json('options')->nullable(); // JSON array of answer options
             $table->integer('correct_option')->nullable(); // Index of the correct option in the 'options' array

@@ -1354,6 +1354,102 @@
                 }
             }
         },
+        "/api/dashboard/sessions/{session_id}/offline-exams": {
+            "get": {
+                "tags": [
+                    "Dashboard Api Offline Exam"
+                ],
+                "summary": "show lesson",
+                "operationId": "084d22e13b17f917a9c5ae99f6420d53",
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dashboard Api Offline Exam"
+                ],
+                "summary": "Add New Offline Exam",
+                "operationId": "416e2c7ca93b0124f30e7c76e3e5cc36",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "images": {
+                                        "type": "string",
+                                        "example": "array files"
+                                    },
+                                    "max_grade": {
+                                        "type": "integer",
+                                        "example": "100"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/offline-exams/{offlineExam_id}": {
+            "delete": {
+                "tags": [
+                    "Dashboard Api Offline Exam"
+                ],
+                "summary": "Delete Offline Exam",
+                "operationId": "fbbc0cd46bffb7645c30eb292a7a6165",
+                "parameters": [
+                    {
+                        "name": "offlineExam_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
         "/api/dashboard/questions": {
             "get": {
                 "tags": [
@@ -1478,6 +1574,52 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/questions/{question_id}/upload-video": {
+            "post": {
+                "tags": [
+                    "Dashboard Api Questions"
+                ],
+                "summary": "upload video question",
+                "operationId": "b939939d6deba212e84dc0d4597cee33",
+                "parameters": [
+                    {
+                        "name": "question_id",
+                        "in": "path",
+                        "required": true,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "video": {
+                                        "type": "file",
+                                        "example": "path file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "OK"

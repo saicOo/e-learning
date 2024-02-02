@@ -23,11 +23,14 @@ Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
     Route::get('/courses/{course}/lessons', 'LessonController@index');
     Route::get('/courses/{course}/progress', 'CourseController@courseProgress');
 
-
-    Route::get('/lessons/{lesson}/start-quiz', 'QuizController@startQuiz');
-    Route::post('/lessons/{lesson}/submit-quiz', 'QuizController@submitQuiz');
-    Route::get('/courses/{course}/start-quiz', 'QuizController@startQuiz');
-    Route::post('/courses/{course}/submit-quiz', 'QuizController@submitQuiz');
+    Route::group(["prefix"=>'courses',"namespace"=>'Course',],function(){
+        Route::get('/{course}/start-quiz', 'QuizController@startQuiz');
+        Route::post('/{course}/submit-quiz', 'QuizController@submitQuiz');
+    });
+    Route::group(["prefix"=>'lessons',"namespace"=>'Lesson',],function(){
+        Route::get('/{lesson}/start-quiz', 'QuizController@startQuiz');
+        Route::post('/{lesson}/submit-quiz', 'QuizController@submitQuiz');
+    });
 });
 
 Route::controller(CourseController::class)->group(function () {
@@ -39,6 +42,7 @@ Route::controller(TeacherController::class)->group(function () {
     Route::get('/teachers', 'index');
     Route::get('/teachers/{teacher}', 'show');
 });
+
 
 Route::get('/categories','CategoryController@index');
 Route::get('/students-highest-scores','StudentController@studentsHighestScores');

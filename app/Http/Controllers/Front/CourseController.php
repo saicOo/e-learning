@@ -10,6 +10,10 @@ use App\Http\Controllers\BaseController as BaseController;
 
 class CourseController extends BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['checkSubscription'])->only('courseProgress');
+    }
     /**
      * @OA\Get(
      *     path="/api/courses",
@@ -99,7 +103,6 @@ class CourseController extends BaseController
         $course->level;
         $course->category;
         $lessons = $course->lessons()->select(["id","name","description","order"])->orderBy('order')->get();
-        // $quiz = $course->quizzes()->where("type","course")->inRandomOrder()->first();
         return $this->sendResponse("",['course' => $course,'lessons'=>$lessons]);
     }
 
@@ -129,10 +132,21 @@ class CourseController extends BaseController
         $student = $request->user();
         $user = Auth::user();
         $quizAttempt = $user->hasCurrentCourse($course->id);
-        $previousLesson = $course->lessons()->select(["id","name","description","order"])->orderBy('order', 'DESC')->first();
-        $previousLessonProgress = $user->hasCurrentLesson($previousLesson->id);
+        $previousLessons = $course->lessons()->select(["id","name","description","order"])->orderBy('order')->get();
+        $previousLessonProgress = true;
+        foreach ($previousLessons as $previousLesson) {
+            if(!$user->hasCurrentLesson($previousLesson->id) ||
+            ($user->hasCurrentLesson($previousLesson->id)->is_passed == false
+            && $previousLessonProgress == true)){
+                $previousLessonProgress = false;
+            }
+        }
+        $is_quiz = false;
+        if($course->quizzes()->first()){
+            $is_quiz = true;
+        }
         return $this->sendResponse("",['course' => $course,
-        'previousLessonProgress'=>$previousLessonProgress,'quizAttempt'=>$quizAttempt]);
+        'previousLessonProgress'=>$previousLessonProgress,'is_quiz'=>$is_quiz,'quizAttempt'=>$quizAttempt]);
     }
 
 }

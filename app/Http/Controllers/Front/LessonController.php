@@ -69,7 +69,11 @@ class LessonController extends BaseController
         $lessonsData = [];
         foreach ($lessons as $lesson) {
             $quizAttempt = null;
-            $quiz = $lesson->quizzes()->inRandomOrder()->first();
+            $is_quiz = false;
+            if($lesson->quizzes()->first()){
+                $is_quiz = true;
+            }
+
             $quizAttempt = $lesson->attempts()->where('student_id', $request->user()->id)->first();
 
             $quizAttempt = $request->user()->hasCurrentLesson($lesson->id);
@@ -77,6 +81,7 @@ class LessonController extends BaseController
                 'id' => $lesson->id,
                 'name' => $lesson->name,
                 'description' => $lesson->description,
+                'is_quiz' => $is_quiz,
                 'quiz_attempt' => $quizAttempt ? $quizAttempt : null,
             ];
             $lessonsData[] = $lessonData;
@@ -112,6 +117,10 @@ class LessonController extends BaseController
         }
         $user = Auth::user();
         $quizAttempt = $user->hasCurrentLesson($lesson->id);
-        return $this->sendResponse("",['lesson' => $lesson,'quizAttempt'=> $quizAttempt]);
+        $is_quiz = false;
+        if($lesson->quizzes()->first()){
+            $is_quiz = true;
+        }
+        return $this->sendResponse("",['lesson' => $lesson,'is_quiz'=>$is_quiz,'quizAttempt'=> $quizAttempt]);
     }
 }

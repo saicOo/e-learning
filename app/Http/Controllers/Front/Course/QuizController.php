@@ -21,7 +21,7 @@ class QuizController extends BaseController
         $this->middleware(['checkSubscription']);
         $this->middleware(['checkCourseProgress','checkCourseAttempt',
         'quizCompleted','quizRepetition','quizReview'])->only('startQuiz');
-        $this->middleware(['checkSubmitQuiz'])->only('submitQuiz');
+        // $this->middleware(['checkSubmitQuiz'])->only('submitQuiz');
         $this->uploadService = $uploadService;
     }
     use QuizProcess;
@@ -50,7 +50,7 @@ class QuizController extends BaseController
         $attempt = $user->hasCurrentCourse($course->id);
          if (!$attempt) {
              // Select a random test associated with the current course for the user
-             $quiz = Course::find($course->id)->quizzes()->with('questions:id,title,options,type')->inRandomOrder()->first();
+             $quiz = Course::find($course->id)->quizzes()->with('questions:id,title,options,type,image')->inRandomOrder()->first();
              $attempt = $user->attempts()->create([
                  'course_id' => $course->id,
                  'quiz_id' => $quiz->id,
@@ -108,7 +108,7 @@ class QuizController extends BaseController
         $attempt = $user->hasCurrentCourse($course->id);
         $quiz = $attempt->quiz;
 
-        $grades = $this->submitAnswers($attempt,$quiz,$request->file('images'));
+        $grades = $this->submitAnswers($attempt,$quiz,$request->input('answers'),$request->file('images'));
 
         // Calculate overall score based on grades
         $score = $this->calculateScore($grades["totalScore"], $grades["maxGrade"]);
