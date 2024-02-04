@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\User;
 use App\Models\Course;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Services\UploadService;
+use Illuminate\Validation\Rule;
+use App\Notifications\UserNotice;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use App\Services\UploadService;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController as BaseController;
 
 class CourseController extends BaseController
@@ -284,6 +286,7 @@ class CourseController extends BaseController
         $request_data = $validate->validated();
         $request_data['publish'] = "unpublish";
         $course->update($request_data);
+        User::find(1)->notify(new UserNotice("حدث تعديل في ".$course->name ."#".$course->id));
         return $this->sendResponse("Course Updated Successfully",['course' => $course]);
     }
 
@@ -363,6 +366,7 @@ class CourseController extends BaseController
         $course->update([
             'publish'=> $request->publish,
         ]);
+        User::find($course->user_id)->notify(new UserNotice("تم ".$request->publish." في ".$course->name ."#".$course->id));
         return $this->sendResponse("Course ".$request->publish." successfully");
     }
 

@@ -8,41 +8,15 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\BaseController as BaseController;
 
 class OfflineExamController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware(['permission:sessions_read'])->only('index');
         $this->middleware(['permission:sessions_create'])->only('store');
         $this->middleware(['permission:sessions_delete'])->only('destroy');
-    }
-
-     /**
-     * @OA\Get(
-     *     path="/api/dashboard/sessions/{session_id}/offline-exams",
-     *      tags={"Dashboard Api Offline Exam"},
-     *     summary="show lesson",
-     *     @OA\Parameter(
-     *         name="session_id",
-     *         in="path",
-     *         required=true,
-     *         explode=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *     ),
-     *       @OA\Response(response=200, description="OK"),
-     *       @OA\Response(response=401, description="Unauthenticated"),
-     *      @OA\Response(response=404, description="Resource Not Found")
-     *    )
-     */
-    public function index(Request $request, Session $session)
-    {
-        $offlineExam = OfflineExam::with('session')->where("session_id",$session->id)->first();
-
-        return $this->sendResponse("",['offlineExam' => $offlineExam]);
     }
 
     /**
@@ -71,7 +45,11 @@ class OfflineExamController extends BaseController
              'images.*' => 'required|image|mimes:jpg,png,jpeg,gif,svg',
              'max_grade'=> 'required|integer|max:1000',
          ]);
-
+         if($session->offlineExam){
+            $validate->after(function($validate) {
+                $validate->errors()->add('offline_exam', 'The offline exam already exists');
+              });
+        }
          if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
          }

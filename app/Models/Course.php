@@ -44,7 +44,7 @@ class Course extends Model
 
     public function quizzes()
     {
-        return $this->belongsToMany(Quiz::class, 'quiz_course');
+        return $this->belongsToMany(Quiz::class, 'quiz_course')->withPivot('duration');
     }
 
     public function subscriptions()

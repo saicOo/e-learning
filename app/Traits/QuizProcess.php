@@ -1,8 +1,11 @@
 <?php
 namespace App\Traits;
+use App\Models\User;
 use Illuminate\Support\Str;
+use App\Notifications\UserNotice;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+
 trait QuizProcess
 {
     private function saveScore($attempt, $quiz, $score){
@@ -12,6 +15,9 @@ trait QuizProcess
         if(!$questionIsArticle){
             $status = $this->quizProcess($score);
             $statusQuiz = $status;
+        }else{
+            User::find($attempt->course->user_id)->notify(
+                new UserNotice("يوجد اختبارات تحتاج الي تصحيح في ".$attempt->course->name." ".($attempt->lesson ? $attempt->lesson->name : "")));
         }
 
         $attempt->update([

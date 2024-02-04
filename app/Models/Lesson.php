@@ -15,17 +15,16 @@ class Lesson extends Model
     protected $appends = ['video_url','attached_url'];
 
     protected $hidden = [
-        'video',
         'attached',
     ];
 
 
     public function getVideoUrlAttribute(){
-        if ($this->video) {
-            if ($this->video_type == 'file') {
-                return Storage::disk('public')->url($this->video);
+        if ($this->video && $this->video->video) {
+            if ($this->video->video_type == 'file') {
+                return Storage::disk('public')->url($this->video->video);
             } else {
-                return $this->video;
+                return $this->video->video;
             }
         }
         return null;
@@ -37,6 +36,11 @@ class Lesson extends Model
         return null;
     }
 
+    public function video()
+    {
+        return $this->belongsTo(Video::class);
+    }
+
     public function course()
     {
         return $this->belongsTo(Course::class);
@@ -44,7 +48,7 @@ class Lesson extends Model
 
     public function quizzes()
     {
-        return $this->belongsToMany(Quiz::class, 'quiz_lesson');
+        return $this->belongsToMany(Quiz::class, 'quiz_lesson')->withPivot('duration');
     }
 
     public function attempts()

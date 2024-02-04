@@ -32,13 +32,12 @@ class CheckLessonProgress
         ->where('order', '<', $currentLesson->order)
         ->orderBy('order', 'desc')
         ->first();
-
         $student = $request->user();
         $currentLessonProgress = $student->hasCurrentLesson($currentLesson->id);
         $previousLessonProgress = $student->hasCurrentLesson($previousLesson->id);
 
         // في حالة اذا كان الدرس السابق لم يتم النجاح في اختباره
-        if ((!$previousLessonProgress || !$previousLessonProgress->is_passed) || (!$currentLessonProgress || !$currentLessonProgress->is_passed)) {
+        if ((!$previousLessonProgress || !$previousLessonProgress->is_passed) && (!$currentLessonProgress || !$currentLessonProgress->is_passed)) {
             return response()->json([
                 'status_code' => 403,
                 'success' => false,

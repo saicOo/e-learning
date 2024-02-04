@@ -21,7 +21,7 @@ class QuizController extends BaseController
         $this->middleware(['checkSubscription']);
         $this->middleware(['checkCourseProgress','checkCourseAttempt',
         'quizCompleted','quizRepetition','quizReview'])->only('startQuiz');
-        // $this->middleware(['checkSubmitQuiz'])->only('submitQuiz');
+        $this->middleware(['checkSubmitQuiz'])->only('submitQuiz');
         $this->uploadService = $uploadService;
     }
     use QuizProcess;
@@ -56,7 +56,7 @@ class QuizController extends BaseController
                  'quiz_id' => $quiz->id,
              ]);
          }else{
-            $quiz = Quiz::with('questions:id,title,options,type')->find($attempt->quiz_id);
+            $quiz = Course::find($lesson->id)->quizzes()->with('questions:id,title,options,type,image')->find($attempt->quiz_id);
          }
 
         $quiz->questions;
@@ -114,7 +114,6 @@ class QuizController extends BaseController
         $score = $this->calculateScore($grades["totalScore"], $grades["maxGrade"]);
 
         $response = $this->saveScore($attempt, $quiz, $score);
-
 
         return $this->sendResponse("Quiz Created Successfully", ['attempt' => $response['attempt'],'status'=> $response['status']]);
     }

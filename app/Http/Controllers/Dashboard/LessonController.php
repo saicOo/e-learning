@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\User;
+use App\Models\Video;
 use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
+use App\Notifications\UserNotice;
+use App\Notifications\StudentNotice;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
 use Pion\Laravel\ChunkUpload\Save\ChunkSave;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -153,6 +158,7 @@ class LessonController extends BaseController
     public function show(Lesson $lesson)
     {
         $lesson->quizzes;
+        $lesson->video;
         foreach ($lesson->attempts as $attempt) {
             $attempt->quiz;
             $attempt->student;
@@ -219,7 +225,8 @@ class LessonController extends BaseController
         if($request->has('order')){
             $lesson->reorderLessons($request->input('order'),$old_order);
         }
-
+        $notificationData = "تم تغيير محتوي ".$lesson->course->name." في ".$lesson->name;
+        User::find(1)->notify(new UserNotice($notificationData));
         return $this->sendResponse("Lesson Updated Successfully",['lesson' => $lesson]);
     }
 
@@ -272,6 +279,7 @@ class LessonController extends BaseController
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="video", type="file", example="path file"),
+     *             @OA\Property(property="video_type", type="string", example="file , url , shared"),
      *         ),
      *     ),
      *       @OA\Response(response=200, description="OK"),
@@ -281,50 +289,73 @@ class LessonController extends BaseController
      */
     public function uploadVideo(Request $request, Lesson $lesson)
     {
-        if($request->video_type == 'file'){
-            $validate = Validator::make($request->all(),
-            [
-                'video' => 'required|mimes:mp4|max:4024000',
-                'video_type' => 'required|in:file',
-            ]);
-        }else{
-            $validate = Validator::make($request->all(),
-            [
-                'video' => 'required',
-                'video_type' => 'required|in:url',
-            ]);
-        }
+        $rules = [
+            'video_type' => 'required|in:file,url,shared',
+        ];
+
+        if($request->input('video_type') == 'file') $rules += ['video' => 'required|mimetypes:video/*|max:4024000'];
+
+        if($request->input('video_type') == 'url') $rules += ['video' => 'required'];
+
+        if($request->input('video_type') == 'shared')$rules += ['video' => 'required|exists:videos,id'];
+
+        //Validated
+        $validate = Validator::make($request->all(), $rules);
 
         if($validate->fails()){
             return $this->sendError('validation error' ,$validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $receiver = new FileReceiver('video', $request, HandlerFactory::classFromRequest($request));
-        if ($receiver->isUploaded() === false) {
-            throw new UploadMissingFileException();
+        // Handle video based on the selected type
+        switch ($request->input('video_type')) {
+            case 'file':
+                $path_video = $this->saveVideoChunk($request,$lesson);
+                $video_type = "file";
+                break;
+
+            case 'url':
+                $path_video = $request->input('video');
+                $video_type = "url";
+                break;
+
+            case 'shared':
+                $video = Video::find($request->input('video'));
+                break;
         }
 
-        $save = $receiver->receive();
-
-        if ($save->isFinished()) {
-            if($lesson->type == 'file' && $lesson->video != null){
-                Storage::disk('public')->delete($lesson->video);
+        if($request->input('video_type') != "file"){
+            if($lesson->video && $lesson->video->video_type == 'file' && $lesson->video->shared_count == 1){
+                Storage::disk('public')->delete($lesson->video->video);
             }
-            $file = $save->getFile();
-            $path_video = $file->store('video',['disk' => 'public']);
-            $lesson->update([
-                'publish'=> "unpublish",
-                'video'=> $path_video,
-            ]);
-            $lesson->attempts()->update([
-                'status'=>'failed',
-                'is_visited'=>true
-            ]);
+        }
+        if($request->input('video_type') != "shared"){
+            if($lesson->video && $lesson->video->shared_count == 1){
+                $lesson->video()->update([
+                    'video'=> $path_video,
+                    'video_type'=> $video_type,
+                ]);
+                $video = $lesson->video;
+            }else{
+                $video = $lesson->video()->create([
+                    'video'=> $path_video,
+                    'video_type'=> $video_type,
+                ]);
+            }
         }
 
-        $handler = $save->handler();
+        $lesson->update([
+            'publish'=> "unpublish",
+            'video_id'=> $video->id,
+        ]);
 
-        return $this->sendResponse("The video has been uploaded successfully",["done" => $handler->getPercentageDone(),'lesson' => $lesson]);
+        $lesson->attempts()->update([
+            'status'=>'failed',
+            'is_visited'=>true
+        ]);
+        $notificationData = "تم تغيير محتوي ".$lesson->course->name." في ".$lesson->name;
+        Notification::send($lesson->course->students, new StudentNotice($notificationData));
+        User::find(1)->notify(new UserNotice($notificationData));
+        return $this->sendResponse("The video has been uploaded successfully");
     }
 
     /**
@@ -430,5 +461,26 @@ class LessonController extends BaseController
         ]);
 
         return $this->sendResponse("Lesson ".$request->publish." successfully");
+    }
+
+    private function saveVideoChunk($request, $lesson){
+        $receiver = new FileReceiver('video', $request, HandlerFactory::classFromRequest($request));
+        if ($receiver->isUploaded() === false) {
+            throw new UploadMissingFileException();
+        }
+
+        $save = $receiver->receive();
+
+        if ($save->isFinished()) {
+            if($lesson->video && $lesson->video->video_type == 'file' && $lesson->video->shared_count == 1){
+                Storage::disk('public')->delete($lesson->video->video);
+            }
+
+            $file = $save->getFile();
+            $path_video = $file->store('video',['disk' => 'public']);
+        }
+
+        $handler = $save->handler();
+        return $path_video;
     }
 }

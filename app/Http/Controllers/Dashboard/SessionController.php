@@ -56,7 +56,7 @@ class SessionController extends BaseController
     {
         $sessions = Session::query();
 
-        $sessions->with(["course","students"]);
+        $sessions->with(["course","students","offlineExam"]);
 
         $sessions->where('course_id', $course->id);
 
@@ -149,6 +149,7 @@ class SessionController extends BaseController
      */
     public function show(Session $session)
     {
+        $session->offlineExam;
         $session->students;
         return $this->sendResponse("",['session' => $session]);
     }

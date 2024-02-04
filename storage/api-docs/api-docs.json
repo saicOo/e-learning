@@ -1178,6 +1178,10 @@
                                     "video": {
                                         "type": "file",
                                         "example": "path file"
+                                    },
+                                    "video_type": {
+                                        "type": "string",
+                                        "example": "file , url , shared"
                                     }
                                 },
                                 "type": "object"
@@ -1354,36 +1358,33 @@
                 }
             }
         },
-        "/api/dashboard/sessions/{session_id}/offline-exams": {
+        "/api/dashboard/notifications": {
             "get": {
                 "tags": [
-                    "Dashboard Api Offline Exam"
+                    "Dashboard Api Notifications"
                 ],
-                "summary": "show lesson",
-                "operationId": "084d22e13b17f917a9c5ae99f6420d53",
-                "parameters": [
-                    {
-                        "name": "session_id",
-                        "in": "path",
-                        "required": true,
-                        "explode": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
+                "summary": "Get All Notifications",
+                "operationId": "18d70feb99b614bd92652b4e49938fd8",
                 "responses": {
                     "200": {
                         "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "404": {
-                        "description": "Resource Not Found"
                     }
                 }
             },
+            "post": {
+                "tags": [
+                    "Dashboard Api Notifications"
+                ],
+                "summary": "Read All Notifications",
+                "operationId": "187c819cced8be09dafbc7b023123ba5",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/sessions/{session_id}/offline-exams": {
             "post": {
                 "tags": [
                     "Dashboard Api Offline Exam"
@@ -3094,6 +3095,10 @@
                                     "message": {
                                         "type": "string",
                                         "example": "string"
+                                    },
+                                    "course_id": {
+                                        "type": "string",
+                                        "example": "string"
                                     }
                                 },
                                 "type": "object"
@@ -3449,6 +3454,32 @@
                 ],
                 "summary": "Get All Levels",
                 "operationId": "475692fd2ed64ada4de580d12b92054b",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/notifications": {
+            "get": {
+                "tags": [
+                    "Front Api Notifications"
+                ],
+                "summary": "Get All Notifications",
+                "operationId": "45d58931d9d90156c318250801727b9f",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Front Api Notifications"
+                ],
+                "summary": "Read All Notifications",
+                "operationId": "9f96bf9bb871b894557114c383b9d6c2",
                 "responses": {
                     "200": {
                         "description": "OK"

@@ -21,7 +21,7 @@ class AttemptSeeder extends Seeder
         foreach ($students as $student) {
             foreach ($student->courses as $course) {
                 foreach ($course->lessons as $lesson) {
-                    if(!$student->hasCurrentLesson($lesson->id)){
+                    if(!$student->hasCurrentLesson($lesson->id) && $lesson->order == 1){
                         foreach ($lesson->quizzes as $quiz) {
                             $this->createAttemptStudent($quiz,$student->id,$lesson);
                         }
@@ -45,7 +45,6 @@ class AttemptSeeder extends Seeder
         ]);
 
         foreach ($quiz->questions as $index => $question) {
-            // $images = $question->type != 3 ? null : ["answers/57.jpg","answers/57.jpg","answers/57.jpg"];
             $answer = $question->type != 3 ? rand(0,1) : null ;
             $grade = 0;
             $questionId = $question->id;
@@ -68,9 +67,9 @@ class AttemptSeeder extends Seeder
 
         $attempt->update([
             'score'=> $score,
+            'status'=> $score >= 50 ? 'successful': 'failed',
         ]);
 
-        // $this->quizProcess($quiz, $studentId, $score);
     }
 
     private function calculateScore($totalScore ,$maxGrade = 10)
@@ -79,36 +78,5 @@ class AttemptSeeder extends Seeder
         $overallScore = $totalScore != 0 ? ($totalScore / $maxGrade) * 100 : 0;
 
         return $overallScore;
-    }
-
-    private function quizProcess($quiz ,$studentId, $score = null)
-    {
-        // $quizProcess = QuizProcess::where('student_id', $studentId)
-        // ->where('lesson_id', $quiz->lesson_id)
-        // ->first();
-        // if($quizProcess){
-        //     $quizProcess->update([
-        //         'quiz_id' => $quiz->id,
-        //     ]);
-        // }else{
-            if($score != null){
-
-                if($score < 30) $status = "repetition";
-
-                if($score > 30) $status = "stoped";
-
-            }else{
-                $status = "started";
-            }
-
-
-            // QuizProcess::create([
-            //     'student_id' => $studentId,
-            //     'lesson_id' => $quiz->lesson_id,
-            //     'course_id' => $quiz->course_id,
-            //     'quiz_id' => $quiz->id,
-            //     'status' => $status,
-            // ]);
-        // }
     }
 }

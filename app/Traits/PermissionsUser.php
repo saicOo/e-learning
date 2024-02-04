@@ -19,7 +19,7 @@ trait PermissionsUser
                     'quizzes_create',
                     'quizzes_delete',
                     'quizzes_revision',
-                    'sessions_create',
+                    'sessions_read',
                 ];
                 break;
             case 'assistant':

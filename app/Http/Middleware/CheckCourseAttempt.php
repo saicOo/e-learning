@@ -18,8 +18,8 @@ class CheckCourseAttempt
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-        $courseId = $request->route('course')->id;
-        $attempt = $user->hasCurrentCourse($courseId);
+        $course = $request->route('course');
+        $attempt = $user->hasCurrentCourse($course->id);
         if($attempt){
             // Add the student's current quiz attempt
             $request->attributes->add(['attempt' => $attempt]);

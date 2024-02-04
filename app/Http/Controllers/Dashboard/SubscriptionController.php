@@ -9,8 +9,9 @@ use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Rules\ValidSubscription;
-use App\Http\Controllers\BaseController as BaseController;
+use App\Notifications\StudentNotice;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BaseController as BaseController;
 
 class SubscriptionController extends BaseController
 {
@@ -126,6 +127,8 @@ class SubscriptionController extends BaseController
             'end_date' => $current->copy()->addYear()
         ]);
 
+        $course = Course::find($request->course_id);
+        Student::find($request->student_id)->notify(new StudentNotice("مبرووك تم اشتراكك في ".$course->name));
         return $this->sendResponse("Student Is Subscription Successfully",['subscription' => $subscription]);
     }
 

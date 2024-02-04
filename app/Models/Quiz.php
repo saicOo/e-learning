@@ -17,12 +17,12 @@ class Quiz extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'quiz_course');
+        return $this->belongsToMany(Course::class, 'quiz_course')->withPivot('duration');
     }
 
     public function lessons()
     {
-        return $this->belongsToMany(Lesson::class, 'quiz_lesson');
+        return $this->belongsToMany(Lesson::class, 'quiz_lesson')->withPivot('duration');
     }
 
     public function attempts()

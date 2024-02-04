@@ -20,8 +20,8 @@ class QuizController extends BaseController
     {
         $this->middleware(['checkSubscription']);
         $this->middleware(['checkLessonAttempt',
-        'quizCompleted','quizRepetition','quizReview'])->only('startQuiz');
-        // $this->middleware(['checkSubmitQuiz'])->only('submitQuiz');
+        'quizCompleted','quizRepetition','quizReview','checkDurationQuiz'])->only('startQuiz');
+        $this->middleware(['checkSubmitQuiz','checkDurationQuiz'])->only('submitQuiz');
         $this->uploadService = $uploadService;
     }
     use QuizProcess;
@@ -57,7 +57,7 @@ class QuizController extends BaseController
                  'quiz_id' => $quiz->id,
              ]);
          }else{
-            $quiz = Quiz::with('questions:id,title,options,type')->find($attempt->quiz_id);
+            $quiz = Lesson::find($lesson->id)->quizzes()->with('questions:id,title,options,type,image')->find($attempt->quiz_id);
          }
 
         $quiz->questions;
@@ -94,6 +94,7 @@ class QuizController extends BaseController
      */
     public function submitQuiz(Request $request, Lesson $lesson)
     {
+
         //Validated
         $validate = Validator::make($request->all(),
         [

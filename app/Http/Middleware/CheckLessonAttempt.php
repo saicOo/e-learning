@@ -18,8 +18,8 @@ class CheckLessonAttempt
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-         $lessonId = $request->route('lesson')->id;
-        $attempt = $user->hasCurrentLesson($lessonId);
+         $lesson = $request->route('lesson');
+        $attempt = $user->hasCurrentLesson($lesson->id);
         if($attempt){
             $request->attributes->add(['attempt' => $attempt]);
         }

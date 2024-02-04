@@ -67,15 +67,20 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
     });
     // routes offline exams
     Route::controller(OfflineExamController::class)->group(function () {
-        Route::get('/sessions/{session}/offline-exams', 'index');
         Route::post('/sessions/{session}/offline-exams', 'store');
         Route::delete('offline-exams/{offlineExam}', 'destroy');
+    });
+    // routes notifications
+    Route::controller(NotificationController::class)->group(function () {
+        Route::get('/notifications', 'index');
+        Route::post('/notifications', 'markAsRead');
     });
     // routes questions
     Route::controller(QuestionController::class)->group(function () {
         Route::get('/questions', 'index');
         Route::post('/questions', 'store');
         Route::delete('questions/{question}', 'destroy');
+        Route::post('/questions/{question}/upload-video', 'uploadVideo');
     });
     // routes QuizAttempt
     Route::controller(QuizAttemptController::class)->group(function () {

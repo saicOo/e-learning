@@ -31,6 +31,12 @@ Route::group(["middleware"=>['auth:sanctum','abilities:student']],function(){
         Route::get('/{lesson}/start-quiz', 'QuizController@startQuiz');
         Route::post('/{lesson}/submit-quiz', 'QuizController@submitQuiz');
     });
+
+    // routes notifications
+    Route::controller(NotificationController::class)->group(function () {
+        Route::get('/notifications', 'index');
+        Route::post('/notifications', 'markAsRead');
+    });
 });
 
 Route::controller(CourseController::class)->group(function () {

@@ -156,9 +156,9 @@ class QuestionController extends BaseController
         if($request->image && $request->type == 3){
             $request_data['image'] = $this->uploadService->uploadImage('questions', $request->image);
         }
-        Question::create($request_data);
+        $question = Question::create($request_data);
 
-        return $this->sendResponse("Question Created Successfully");
+        return $this->sendResponse("Question Created Successfully",['question'=>$question]);
     }
 
     /**
