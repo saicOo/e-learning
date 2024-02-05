@@ -56,7 +56,7 @@ class QuizController extends BaseController
                  'quiz_id' => $quiz->id,
              ]);
          }else{
-            $quiz = Course::find($lesson->id)->quizzes()->with('questions:id,title,options,type,image')->find($attempt->quiz_id);
+            $quiz = Course::find($course->id)->quizzes()->with('questions:id,title,options,type,image')->find($attempt->quiz_id);
          }
 
         $quiz->questions;
