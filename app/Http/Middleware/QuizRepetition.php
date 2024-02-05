@@ -20,7 +20,7 @@ class QuizRepetition
 
         if($attempt && $attempt->status_passed == "repetition"){
             $currentTime = now();
-            $endTime = $attempt->created_at->addMinutes(2);
+            $endTime = $attempt->created_at->addMinutes(5);
             if($currentTime >= $endTime){
                 $attempt->delete();
             }else{

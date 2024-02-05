@@ -31,15 +31,36 @@ class CategoryController extends BaseController
      *             type="string",
      *         ),
      *     ),
+     * @OA\Parameter(
+     *         name="level_id",
+     *         in="query",
+     *         description="filter categories with level",
+     *         required=false,
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
      *     @OA\Response(response=200, description="OK"),
      *     @OA\Response(response=401, description="Unauthenticated"),
      * )
      */
     public function index(Request $request)
     {
-        $categories = Category::when($request->search,function ($query) use ($request){ // if search
-            return $query->where('name','Like','%'.$request->search.'%');
-        })->get();
+
+        $categories = Category::query();
+
+        $categories->with(['level:id,name']);
+
+        // Filter by course name
+        if ($request->has('search')) {
+            $categories->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+        if($request->has('level_id')){
+            $categories->where('level_id', $request->input('level_id'));
+        }
+
+        $categories = $categories->withCount(['courses'])->latest('created_at')->get();
 
         return $this->sendResponse("",['categories' => $categories]);
     }

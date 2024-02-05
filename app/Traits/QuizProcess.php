@@ -24,7 +24,7 @@ trait QuizProcess
             'score'=>$score,
             'status'=>$status,
             'is_submit'=> true,
-            'is_visited'=> $status == "successful" ? true : false,
+            'is_visited'=> !$questionIsArticle ? true : false,
         ]);
 
         return ['attempt' => $attempt,'status'=> $statusQuiz];
