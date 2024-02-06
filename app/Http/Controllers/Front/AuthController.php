@@ -64,6 +64,14 @@ class AuthController extends BaseController
                 ], 200);
             }
 
+            if ($student && $student->publish != "publish") {
+                return response()->json([
+                    'success' => false,
+                    'status_code' => Response::HTTP_UNAUTHORIZED,
+                    'message' => 'This student is not authorized to log in!'
+                ], 200);
+            }
+
             $token = $student->createToken('token',['student'])->plainTextToken;
 
             $expiry_minutes = 365 * 24; // // 1 year

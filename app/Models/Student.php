@@ -65,9 +65,23 @@ class Student extends Authenticatable
         ->withPivot('start_date', 'end_date')->where('end_date', '>', now());
     }
 
+    public function sessions()
+    {
+        return $this->belongsToMany(Session::class, 'attendances')->withPivot('status');
+    }
+
     public function attendances()
     {
         return $this->hasMany(Attendance::class);
+    }
+
+    public function hasSessions($courseId)
+    {
+        $sessions = $this->sessions()->with('offlineExam')
+            ->where('course_id', $courseId)
+            ->get();
+
+        return $sessions;
     }
 
     public function hasCurrentLesson($currentLessonId)
@@ -94,4 +108,5 @@ class Student extends Authenticatable
         // Check if the attempt exists and the grade is above a passing threshold
         return $attempt;
     }
+
 }

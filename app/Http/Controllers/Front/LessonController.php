@@ -52,6 +52,8 @@ class LessonController extends BaseController
         if ($course->publish != "publish") {
             return $this->sendError('Record not found.');
         }
+        $user = Auth::user();
+        $sessions = $user->hasSessions($course->id);
 
         $lessons = Lesson::query();
         $lessons->select(["id","name","description"]);
@@ -75,9 +77,9 @@ class LessonController extends BaseController
                 $is_quiz = true;
             }
 
-            $quizAttempt = $lesson->attempts()->where('student_id', $request->user()->id)->first();
+            $quizAttempt = $lesson->attempts()->where('student_id', $user->id)->first();
 
-            $quizAttempt = $request->user()->hasCurrentLesson($lesson->id);
+            $quizAttempt = $user->hasCurrentLesson($lesson->id);
             $lessonData = [
                 'id' => $lesson->id,
                 'name' => $lesson->name,
@@ -88,7 +90,7 @@ class LessonController extends BaseController
             $lessonsData[] = $lessonData;
         }
 
-        return $this->sendResponse("",['lessons' => $lessonsData]);
+        return $this->sendResponse("",['lessons' => $lessonsData,'sessions'=>$sessions]);
 
     }
 

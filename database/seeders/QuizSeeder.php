@@ -24,7 +24,7 @@ class QuizSeeder extends Seeder
 
             $quiz = $category->quizzes()->create([
                 "title" => $quizzes_name[rand(0,count($quizzes_name) - 1)],
-                "questions_count" => 5,
+                "questions_count" => 3,
             ]);
 
             foreach ($questions as $question_id) {

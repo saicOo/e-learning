@@ -20,7 +20,7 @@ class QuizRepetition
 
         if($attempt && $attempt->status_passed == "repetition"){
             $currentTime = now();
-            $endTime = $attempt->created_at->addMinutes(5);
+            $endTime = $attempt->created_at->addMinutes(3);
             if($currentTime >= $endTime){
                 $attempt->delete();
             }else{
@@ -28,7 +28,8 @@ class QuizRepetition
                 return response()->json([
                     'status_code' => 403,
                     'success' => false,
-                    'message' => 'There are '.$remainingTime.' minutes left to retake the quiz'
+                    'is_repetition' => true,
+                    'message' => 'متبقي من الوقت '.$remainingTime.' دقيقة لاعادة الاختبار'
                   ], 200);
             }
         }

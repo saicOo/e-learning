@@ -20,6 +20,7 @@ trait PermissionsUser
                     'quizzes_delete',
                     'quizzes_revision',
                     'sessions_read',
+                    'contacts_read',
                 ];
                 break;
             case 'assistant':
@@ -32,6 +33,7 @@ trait PermissionsUser
                     'sessions_create',
                     'sessions_update',
                     'sessions_delete',
+                    'contacts_read',
                 ];
                 break;
 

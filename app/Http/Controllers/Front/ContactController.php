@@ -54,8 +54,9 @@ class ContactController extends BaseController
          $dataNotification = 'يوجد رسالة جديده من  '.$request->email.' يجب الاطلاع عليها !';
         if ($request->course_id){
             $course = Course::findOrFail($request->course_id);
-            $dataNotification = "طلب للاشتراك في #".$course->id." ".$course->name;
-            $request_data['message'] =  $dataNotification;
+            $dataMessage = "طلب للاشتراك في #".$course->id." ".$course->name;
+            $dataNotification =  $dataMessage .' من '.$request->email .' ('.$request->phone.')';
+            $request_data['message'] =  $dataMessage;
             $users = User::where('id','=',$course->user_id)->orWhere('user_id','=',$course->user_id)->orWhereRoleIs('manager')->get();
         }
 

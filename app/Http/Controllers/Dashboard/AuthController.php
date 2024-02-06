@@ -58,6 +58,14 @@ class AuthController extends BaseController
                 ], 200);
             }
 
+            if ($user && $user->publish != "publish") {
+                return response()->json([
+                    'success' => false,
+                    'status_code' => Response::HTTP_UNAUTHORIZED,
+                    'message' => 'This user is not authorized to log in!'
+                ], 200);
+            }
+
             $token = $user->createToken('token',['user'])->plainTextToken;
             $expiry_minutes = 365 * 24; // // 1 year
             $cookie = cookie('token', $token, $expiry_minutes);

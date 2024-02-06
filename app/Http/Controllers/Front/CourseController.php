@@ -129,7 +129,6 @@ class CourseController extends BaseController
         if ($course->publish != "publish") {
             return $this->sendError('Record not found.');
         }
-        $student = $request->user();
         $user = Auth::user();
         $quizAttempt = $user->hasCurrentCourse($course->id);
         $previousLessons = $course->lessons()->select(["id","name","description","order"])->orderBy('order')->get();

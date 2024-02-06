@@ -82,7 +82,7 @@ class QuestionController extends BaseController
             $questions->where('type', $request->input('type'));
         }
 
-        $questions = $questions->get();
+        $questions = $questions->latest('created_at')->get();
 
         return $this->sendResponse("",['questions' => $questions]);
 

@@ -56,7 +56,7 @@ class QuizController extends BaseController
             $quizzes->where('category_id', $request->input('category_id'));
         }
 
-        $quizzes = $quizzes->withCount(['courses','lessons'])->get();
+        $quizzes = $quizzes->withCount(['courses','lessons'])->latest('created_at')->get();
 
         return $this->sendResponse("",['quizzes' => $quizzes]);
     }

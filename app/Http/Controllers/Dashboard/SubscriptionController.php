@@ -84,7 +84,7 @@ class SubscriptionController extends BaseController
             }
         }
 
-        $subscriptions = $subscriptions->get();
+        $subscriptions = $subscriptions->latest('created_at')->get();
 
         return $this->sendResponse("",['subscriptions' => $subscriptions]);
     }

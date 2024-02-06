@@ -103,7 +103,7 @@ Route::group(["middleware"=>['auth:sanctum','abilities:user']],function(){
         Route::delete('/sessions/{session}', 'destroy');
     });
     // routes contacts
-Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
+    Route::apiResource('contacts', 'ContactController')->only(['index','update','destroy']);
     // routes category
     Route::apiResource('categories', 'CategoryController')->only(['index','store','update','destroy']);
     // routes subscriptions
@@ -115,13 +115,16 @@ Route::apiResource('contacts', 'ContactController')->only(['index','destroy']);
         Route::get('/subscriptions','SubscriptionController@subscriptionReport');
         });
 
+
     Route::group(["prefix"=>'courses',"namespace"=>'Course',],function(){
         Route::post('{course}/quizzes','QuizController@store');
         });
     Route::group(["prefix"=>'lessons',"namespace"=>'Lesson',],function(){
         Route::post('{lesson}/quizzes','QuizController@store');
         });
-
+        Route::group(["prefix"=>'report',"namespace"=>'Reports',],function(){
+            Route::get('/courses/{course}/students-score','StudentController@studentsScore');
+            });
     Route::post('/logout', 'AuthController@logout');
 
 });

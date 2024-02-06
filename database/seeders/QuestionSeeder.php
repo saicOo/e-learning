@@ -20,7 +20,7 @@ class QuestionSeeder extends Seeder
         ,'لماذا السؤال الرابع','هل السؤال الاول','هل السؤال الثاني',];
         for ($i=0; $i < 150; $i++) {
             $category = Category::inRandomOrder()->first();
-            $type = rand(1,3); //1=>TrueFalse, 2=>Choice,3 =>Article'
+            $type = $i > 75 ? rand(1,3) : rand(1,2); //1=>TrueFalse, 2=>Choice,3 =>Article'
             $optionCount = 2;
             $options = [];
             $correct_option = rand(0,1);

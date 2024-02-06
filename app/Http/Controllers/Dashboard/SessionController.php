@@ -64,7 +64,7 @@ class SessionController extends BaseController
             $lessons->date('session_date', $request->input('session_date'));
         }
 
-        $sessions = $sessions->get();
+        $sessions = $sessions->latest('created_at')->get();
 
         return $this->sendResponse("",['sessions' => $sessions]);
     }
