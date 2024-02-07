@@ -74,7 +74,7 @@ class AuthController extends BaseController
 
             $token = $student->createToken('token',['student'])->plainTextToken;
 
-            $expiry_minutes = 365 * 24; // // 1 year
+            $expiry_minutes = 60 * 24 * 365; // // 1 year
             $cookie = cookie('token', $token, $expiry_minutes);
             // $cookie = cookie('token', $token, $expiry_minutes)->withSameSite('None');
             $expiry_date = Carbon::now();

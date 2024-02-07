@@ -34,7 +34,7 @@ class CheckSubscription
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
-                'message' => 'You are not a subscriber !'
+                'message' => __('auth.not_subscriber')
               ], 200);
         }
 

@@ -19,17 +19,6 @@ class CheckCourseProgress
         $course = $request->route('course');
         $student = $request->user();
 
-            // $previousLesson = $course->lessons()->select(["id","name","description","order"])->orderBy('order', 'DESC')->first();
-            // $previousLessonProgress = $student->hasCurrentLesson($previousLesson->id);
-            // // في حالة اذا كان الدرس السابق لم يتم النجاح في اختباره
-            // if (!$previousLessonProgress || !$previousLessonProgress->is_passed) {
-            //     return response()->json([
-            //         'status_code' => 403,
-            //         'success' => false,
-            //         'message' => 'Please complete the previous lesson quiz.'
-            //     ], 200);
-            // }
-
         $previousLessons = $course->lessons()->select(["id","order"])->orderBy('order')->get();
         $previousLessonProgress = true;
         foreach ($previousLessons as $previousLesson) {
@@ -44,7 +33,7 @@ class CheckCourseProgress
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
-                'message' => 'Please complete the previous lesson quiz.!'
+                'message' => __('auth.please_complete_all_lessons')
             ], 200);
         }
 

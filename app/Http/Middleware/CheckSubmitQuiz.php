@@ -30,7 +30,7 @@ class CheckSubmitQuiz
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
-                'message' => 'The quiz cannot be sent before it has been taken'
+                'message' => __('auth.quiz_cannot_send')
               ], 200);
         }
         return $next($request);

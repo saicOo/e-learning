@@ -26,7 +26,7 @@ class CheckUserAccess
         return response()->json([
             'status_code' => 403,
             'success' => false,
-            'message' => 'Not authorized.'
+            'message' => __('auth.not_authorized')
           ], 200);
     }
 }

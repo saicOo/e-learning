@@ -21,7 +21,7 @@ class QuizReview
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
-                'message' => 'Quiz is under review Wait'
+                'message' => __('auth.quiz_review')
               ], 200);
         }
         return $next($request);

@@ -20,7 +20,7 @@ class QuizRepetition
 
         if($attempt && $attempt->status_passed == "repetition"){
             $currentTime = now();
-            $endTime = $attempt->created_at->addMinutes(3);
+            $endTime = $attempt->created_at->addMinutes(10);
             if($currentTime >= $endTime){
                 $attempt->delete();
             }else{
@@ -29,7 +29,7 @@ class QuizRepetition
                     'status_code' => 403,
                     'success' => false,
                     'is_repetition' => true,
-                    'message' => 'متبقي من الوقت '.$remainingTime.' دقيقة لاعادة الاختبار'
+                    'message' => __('auth.quiz_repetition',['minutes'=>$remainingTime])
                   ], 200);
             }
         }

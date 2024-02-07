@@ -22,7 +22,7 @@ class QuizCompleted
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
-                'message' => 'The quiz has been completed and cannot be repeated'
+                'message' => __('auth.quiz_completed')
               ], 200);
         }
 

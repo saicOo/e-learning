@@ -30,7 +30,7 @@ class CheckAssistantAccess
             return response()->json([
                 'success' => false,
                 'status_code' => 404,
-                'message' => 'The Assistant Not Fount'
+                'message' => __('auth.assistant_not_fount')
               ], 200);
         }
 

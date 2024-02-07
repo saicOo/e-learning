@@ -23,7 +23,7 @@ class CheckCourseOffline
         return response()->json([
             'status_code' => 403,
             'success' => false,
-            'message' => 'This course cannot be accessed. This domain is for offline courses only.'
+            'message' => __('auth.offline_courses_only')
         ], 200);
     }
 }

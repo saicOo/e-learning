@@ -48,8 +48,7 @@ class CheckApiAffiliationMiddleware
         return response()->json([
             'status_code' => 403,
             'success' => false,
-            'message' => 'You do not have access'
-            // 'message' => 'Not authorized.'
+            'message' => __('auth.not_access')
           ], 200);
     }
 }

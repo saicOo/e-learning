@@ -41,7 +41,7 @@ class CheckLessonProgress
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
-                'message' => 'Please complete the previous lesson quiz.'
+                'message' => __('auth.please_complete_lesson')
               ], 200);
         }
         return $next($request);

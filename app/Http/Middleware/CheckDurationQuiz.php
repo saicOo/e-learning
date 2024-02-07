@@ -46,7 +46,7 @@ class CheckDurationQuiz
             return response()->json([
                 'status_code' => 403,
                 'success' => false,
-                'message' => 'Quiz time is over!'
+                'message' => __('auth.quiz_time_over')
               ], 200);
         } else {
             return $next($request);

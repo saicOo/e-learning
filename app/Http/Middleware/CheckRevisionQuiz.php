@@ -23,7 +23,7 @@ class CheckRevisionQuiz
         return response()->json([
             'status_code' => 403,
             'success' => false,
-            'message' => 'The quiz cannot be revised again.'
+            'message' => __('auth.quiz_revised')
           ], 200);
     }
 }
